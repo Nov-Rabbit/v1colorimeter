@@ -1,0 +1,3 @@
+D:\v1\FlyCapture2\src\FlyCapture2SimpleGUI_CSharp\obj\x86\Debug\FlyCapture2SimpleGUI_CSharp.Form1.resources
+D:\v1\FlyCapture2\src\FlyCapture2SimpleGUI_CSharp\obj\x86\Debug\FlyCapture2SimpleGUI_CSharp.Properties.Resources.resources
+D:\v1\FlyCapture2\src\FlyCapture2SimpleGUI_CSharp\obj\x86\Debug\FlyCapture2SimpleGUI_CSharp_2010.csproj.GenerateResource.Cache
