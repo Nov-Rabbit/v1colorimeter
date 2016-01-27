@@ -1,0 +1,4 @@
+D:\v1\FlyCapture2\src\FlyCapture2Test_CSharp\bin\Debug\FlyCapture2Test_CSharp.exe.config
+D:\v1\FlyCapture2\src\FlyCapture2Test_CSharp\obj\Debug\FlyCapture2Test_CSharp.exe
+D:\v1\FlyCapture2\src\FlyCapture2Test_CSharp\obj\Debug\FlyCapture2Test_CSharp.pdb
+D:\v1\FlyCapture2\src\FlyCapture2Test_CSharp\obj\Debug\FlyCapture2Test_CSharp_2012.csprojResolveAssemblyReference.cache
