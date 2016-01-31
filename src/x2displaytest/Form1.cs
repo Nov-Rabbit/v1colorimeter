@@ -62,12 +62,30 @@ namespace Colorimeter_Config_GUI
 
             picturebox_config.Image = m_processedImage.bitmap;
             picturebox_config.Invalidate();
+
+            picturebox_test.Image = m_processedImage.bitmap;
+            picturebox_test.Invalidate();
+            
         }
 
         private void UpdateStatusBar()
         {
 
-            String statusString;
+
+            String statusString, string_temp, string_uptime;
+            try
+            {
+                string_temp = String.Format(
+                    m_camera.GetProperty(PropertyType.Temperature).absValue.ToString());
+            }
+            catch
+            {
+                string_temp = "N/A";
+            }
+            tbox_ccdtemp.Text = string_temp;
+            tbox_ccdtemp.Refresh();
+
+            
 
             statusString = String.Format(
                 "Image size: {0} x {1}",
@@ -75,6 +93,8 @@ namespace Colorimeter_Config_GUI
                 m_rawImage.rows);
 
             toolStripStatusLabelImageSize.Text = statusString;
+            
+
 
             try
             {
@@ -104,6 +124,8 @@ namespace Colorimeter_Config_GUI
 
             toolStripStatusLabelTimestamp.Text = statusString;
             statusStrip1.Refresh();
+
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
