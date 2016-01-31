@@ -53,20 +53,50 @@ namespace Colorimeter_Config_GUI
             this.Btn_Lv = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.Tags = new System.Windows.Forms.TabControl();
-            this.Tab_Config = new System.Windows.Forms.TabPage();
             this.Tab_Test = new System.Windows.Forms.TabPage();
-            this.Tab_Audit = new System.Windows.Forms.TabPage();
-            this.label2 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.picturebox_test = new System.Windows.Forms.PictureBox();
+            this.Tab_Audit = new System.Windows.Forms.TabPage();
+            this.Tab_Config = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.Panel_Audit = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_config)).BeginInit();
             this.panel2.SuspendLayout();
             this.Tags.SuspendLayout();
-            this.Tab_Config.SuspendLayout();
             this.Tab_Test.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_test)).BeginInit();
+            this.Tab_Audit.SuspendLayout();
+            this.Tab_Config.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.Panel_Audit.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -204,7 +234,7 @@ namespace Colorimeter_Config_GUI
             this.picturebox_config.Location = new System.Drawing.Point(448, 28);
             this.picturebox_config.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.picturebox_config.Name = "picturebox_config";
-            this.picturebox_config.Size = new System.Drawing.Size(800, 800);
+            this.picturebox_config.Size = new System.Drawing.Size(804, 804);
             this.picturebox_config.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picturebox_config.TabIndex = 5;
             this.picturebox_config.TabStop = false;
@@ -283,9 +313,8 @@ namespace Colorimeter_Config_GUI
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(44, 542);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(187, 25);
+            this.label3.Size = new System.Drawing.Size(0, 25);
             this.label3.TabIndex = 11;
-            this.label3.Text = "Calibration Output";
             // 
             // Tags
             // 
@@ -298,6 +327,68 @@ namespace Colorimeter_Config_GUI
             this.Tags.SelectedIndex = 0;
             this.Tags.Size = new System.Drawing.Size(1372, 912);
             this.Tags.TabIndex = 12;
+            // 
+            // Tab_Test
+            // 
+            this.Tab_Test.Controls.Add(this.panel5);
+            this.Tab_Test.Controls.Add(this.panel4);
+            this.Tab_Test.Controls.Add(this.label5);
+            this.Tab_Test.Controls.Add(this.panel3);
+            this.Tab_Test.Controls.Add(this.label6);
+            this.Tab_Test.Controls.Add(this.label4);
+            this.Tab_Test.Controls.Add(this.picturebox_test);
+            this.Tab_Test.Location = new System.Drawing.Point(4, 38);
+            this.Tab_Test.Name = "Tab_Test";
+            this.Tab_Test.Padding = new System.Windows.Forms.Padding(3);
+            this.Tab_Test.Size = new System.Drawing.Size(1364, 870);
+            this.Tab_Test.TabIndex = 1;
+            this.Tab_Test.Text = "Test";
+            this.Tab_Test.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(9, 10);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(151, 29);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Colorimeter";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(18, 296);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(66, 29);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "DUT";
+            // 
+            // picturebox_test
+            // 
+            this.picturebox_test.Location = new System.Drawing.Point(529, 27);
+            this.picturebox_test.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.picturebox_test.Name = "picturebox_test";
+            this.picturebox_test.Size = new System.Drawing.Size(804, 804);
+            this.picturebox_test.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picturebox_test.TabIndex = 6;
+            this.picturebox_test.TabStop = false;
+            // 
+            // Tab_Audit
+            // 
+            this.Tab_Audit.Controls.Add(this.textBox5);
+            this.Tab_Audit.Controls.Add(this.label13);
+            this.Tab_Audit.Controls.Add(this.Panel_Audit);
+            this.Tab_Audit.Controls.Add(this.label12);
+            this.Tab_Audit.Controls.Add(this.pictureBox1);
+            this.Tab_Audit.Location = new System.Drawing.Point(4, 38);
+            this.Tab_Audit.Name = "Tab_Audit";
+            this.Tab_Audit.Padding = new System.Windows.Forms.Padding(3);
+            this.Tab_Audit.Size = new System.Drawing.Size(1364, 870);
+            this.Tab_Audit.TabIndex = 2;
+            this.Tab_Audit.Text = "Audit";
+            this.Tab_Audit.UseVisualStyleBackColor = true;
             // 
             // Tab_Config
             // 
@@ -314,27 +405,6 @@ namespace Colorimeter_Config_GUI
             this.Tab_Config.Text = "Configuration";
             this.Tab_Config.UseVisualStyleBackColor = true;
             // 
-            // Tab_Test
-            // 
-            this.Tab_Test.Controls.Add(this.picturebox_test);
-            this.Tab_Test.Location = new System.Drawing.Point(4, 38);
-            this.Tab_Test.Name = "Tab_Test";
-            this.Tab_Test.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Test.Size = new System.Drawing.Size(1364, 870);
-            this.Tab_Test.TabIndex = 1;
-            this.Tab_Test.Text = "Test";
-            this.Tab_Test.UseVisualStyleBackColor = true;
-            // 
-            // Tab_Audit
-            // 
-            this.Tab_Audit.Location = new System.Drawing.Point(4, 38);
-            this.Tab_Audit.Name = "Tab_Audit";
-            this.Tab_Audit.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Audit.Size = new System.Drawing.Size(1364, 870);
-            this.Tab_Audit.TabIndex = 2;
-            this.Tab_Audit.Text = "Audit";
-            this.Tab_Audit.UseVisualStyleBackColor = true;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -345,15 +415,205 @@ namespace Colorimeter_Config_GUI
             this.label2.TabIndex = 12;
             this.label2.Text = "Calibration Steps";
             // 
-            // picturebox_test
+            // label6
             // 
-            this.picturebox_test.Location = new System.Drawing.Point(529, 27);
-            this.picturebox_test.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.picturebox_test.Name = "picturebox_test";
-            this.picturebox_test.Size = new System.Drawing.Size(800, 800);
-            this.picturebox_test.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picturebox_test.TabIndex = 6;
-            this.picturebox_test.TabStop = false;
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(9, 582);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(146, 29);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "Test Result";
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.Transparent;
+            this.panel3.Controls.Add(this.label11);
+            this.panel3.Controls.Add(this.textBox4);
+            this.panel3.Controls.Add(this.label10);
+            this.panel3.Controls.Add(this.textBox3);
+            this.panel3.Controls.Add(this.label9);
+            this.panel3.Location = new System.Drawing.Point(14, 42);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(497, 251);
+            this.panel3.TabIndex = 10;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.Transparent;
+            this.panel4.Controls.Add(this.textBox1);
+            this.panel4.Controls.Add(this.label7);
+            this.panel4.Location = new System.Drawing.Point(14, 328);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(497, 251);
+            this.panel4.TabIndex = 11;
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.Transparent;
+            this.panel5.Controls.Add(this.textBox2);
+            this.panel5.Location = new System.Drawing.Point(14, 613);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(497, 251);
+            this.panel5.TabIndex = 11;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(3, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(47, 29);
+            this.label7.TabIndex = 12;
+            this.label7.Text = "SN";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(69, 6);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(290, 35);
+            this.textBox1.TabIndex = 13;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(3, 155);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(249, 29);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "CCD Temperature (C)";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(259, 155);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(170, 35);
+            this.textBox3.TabIndex = 15;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(5, 197);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(106, 29);
+            this.label10.TabIndex = 16;
+            this.label10.Text = "Up Time";
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(117, 197);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(312, 35);
+            this.textBox4.TabIndex = 17;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(5, 113);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(0, 29);
+            this.label11.TabIndex = 18;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(467, 28);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(804, 804);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(20, 28);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(146, 29);
+            this.label12.TabIndex = 7;
+            this.label12.Text = "Audit Steps";
+            // 
+            // Panel_Audit
+            // 
+            this.Panel_Audit.BackColor = System.Drawing.Color.LightGray;
+            this.Panel_Audit.Controls.Add(this.textBox8);
+            this.Panel_Audit.Controls.Add(this.textBox7);
+            this.Panel_Audit.Controls.Add(this.textBox6);
+            this.Panel_Audit.Controls.Add(this.button3);
+            this.Panel_Audit.Controls.Add(this.button1);
+            this.Panel_Audit.Location = new System.Drawing.Point(25, 60);
+            this.Panel_Audit.Name = "Panel_Audit";
+            this.Panel_Audit.Size = new System.Drawing.Size(435, 549);
+            this.Panel_Audit.TabIndex = 8;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(20, 621);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(153, 29);
+            this.label13.TabIndex = 9;
+            this.label13.Text = "Audit Result";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox5.Location = new System.Drawing.Point(101, 662);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(295, 170);
+            this.textBox5.TabIndex = 15;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(76, 20);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(306, 51);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Insert Standard Source";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(76, 483);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(306, 51);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Run Audit";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(81, 97);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(66, 35);
+            this.textBox6.TabIndex = 3;
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(192, 97);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(66, 35);
+            this.textBox7.TabIndex = 4;
+            // 
+            // textBox8
+            // 
+            this.textBox8.Location = new System.Drawing.Point(305, 97);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(66, 35);
+            this.textBox8.TabIndex = 5;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Location = new System.Drawing.Point(117, 75);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(282, 116);
+            this.textBox2.TabIndex = 0;
             // 
             // Form_Config
             // 
@@ -383,10 +643,22 @@ namespace Colorimeter_Config_GUI
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_config)).EndInit();
             this.panel2.ResumeLayout(false);
             this.Tags.ResumeLayout(false);
+            this.Tab_Test.ResumeLayout(false);
+            this.Tab_Test.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picturebox_test)).EndInit();
+            this.Tab_Audit.ResumeLayout(false);
+            this.Tab_Audit.PerformLayout();
             this.Tab_Config.ResumeLayout(false);
             this.Tab_Config.PerformLayout();
-            this.Tab_Test.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picturebox_test)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Panel_Audit.ResumeLayout(false);
+            this.Panel_Audit.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -423,6 +695,30 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.TabPage Tab_Audit;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox picturebox_test;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Panel Panel_Audit;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
 

@@ -327,7 +327,6 @@ namespace Colorimeter_Config_GUI
 
 
 
-
     }
 }
 

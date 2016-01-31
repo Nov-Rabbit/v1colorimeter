@@ -53,3 +53,10 @@ F:\v1colorimeter\src\x2displaytest\obj\x64\Debug\FlyCapture2SimpleGUI_CSharp_201
 F:\v1colorimeter\src\x2displaytest\obj\x64\Debug\Colorimeter_Config_GUI.Form_Config.resources
 F:\v1colorimeter\src\x2displaytest\obj\x64\Debug\FlyCapture2SimpleGUI_CSharp.Properties.Resources.resources
 F:\v1colorimeter\src\x2displaytest\obj\x64\Debug\FlyCapture2SimpleGUI_CSharp_2010.csproj.GenerateResource.Cache
+F:\v1colorimeter\src\bin\x64\Debug\FlyCapture2SimpleGUI_CSharpd.exe.config
+F:\v1colorimeter\src\obj\x64\Debug\FlyCapture2SimpleGUI_CSharpd.exe
+F:\v1colorimeter\src\obj\x64\Debug\FlyCapture2SimpleGUI_CSharpd.pdb
+F:\v1colorimeter\src\obj\x64\Debug\FlyCapture2SimpleGUI_CSharp_2010.csprojResolveAssemblyReference.cache
+F:\v1colorimeter\src\obj\x64\Debug\Colorimeter_Config_GUI.Form_Config.resources
+F:\v1colorimeter\src\obj\x64\Debug\FlyCapture2SimpleGUI_CSharp.Properties.Resources.resources
+F:\v1colorimeter\src\obj\x64\Debug\FlyCapture2SimpleGUI_CSharp_2010.csproj.GenerateResource.Cache
