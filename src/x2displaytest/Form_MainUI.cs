@@ -44,6 +44,9 @@ namespace Colorimeter_Config_GUI
         private bool m_grabImages;
         private AutoResetEvent m_grabThreadExited;
         private BackgroundWorker m_grabThread;
+        private Graphics g;
+        private bool mdraw = false;
+        private Color mcolor = Color.Red;
 
         public Form_Config()
         {
@@ -54,38 +57,84 @@ namespace Colorimeter_Config_GUI
             m_camCtlDlg = new CameraControlDialog();
 
             m_grabThreadExited = new AutoResetEvent(false);
+
+            
         }
+
+        private void UpdateTestUI(object sender, ProgressChangedEventArgs e)
+        {
+            String statusString;
+            try
+            {
+                statusString = String.Format(
+                    m_camera.GetProperty(PropertyType.Temperature).absValue.ToString());
+            }
+            catch
+            {
+                statusString = "N/A";
+            }
+            tbox_ccdtemp.Text = statusString;
+            tbox_ccdtemp.Refresh();
+
+            TimeStamp timestamp;
+            lock (this)
+            {
+                timestamp = m_rawImage.timeStamp;
+            }
+
+            statusString = String.Format(
+                "Timestamp: {0:000}.{1:0000}.{2:0000}",
+                timestamp.cycleSeconds,
+                timestamp.cycleCount,
+                timestamp.cycleOffset);
+
+            tbox_uptime.Text = statusString;
+            tbox_uptime.Refresh();
+            picturebox_test.Image = m_processedImage.bitmap;
+            picturebox_test.Invalidate();
+        }
+
+        private void UpdateAuditUI(object sender, ProgressChangedEventArgs e)
+        {
+            picturebox_audit.Image = m_processedImage.bitmap;
+            picturebox_audit.Invalidate();
+        }
+
+        private void UpdateConfigUI(object sender, ProgressChangedEventArgs e)
+        {
+            picturebox_config.Image = m_processedImage.bitmap;
+            picturebox_config.Invalidate();
+
+        }
+
 
         private void UpdateUI(object sender, ProgressChangedEventArgs e)
         {
             UpdateStatusBar();
 
-            picturebox_config.Image = m_processedImage.bitmap;
-            picturebox_config.Invalidate();
+            if (Tabs.SelectedTab == Tabs.TabPages["Tab_Test"])
+            {
+                UpdateTestUI(null, null);
+            }
+            else if (Tabs.SelectedTab == Tabs.TabPages["Tab_Audit"])
+            {
+                UpdateAuditUI(null, null);
+            }
+            else if (Tabs.SelectedTab == Tabs.TabPages["Tab_Config"])
+            {
+                UpdateConfigUI(null, null);
+            }            
+            else
+            {
+                MessageBox.Show("Please select running mode", "Reminder");
+            }
 
-            picturebox_test.Image = m_processedImage.bitmap;
-            picturebox_test.Invalidate();
-            
         }
+
 
         private void UpdateStatusBar()
         {
-
-
-            String statusString, string_temp, string_uptime;
-            try
-            {
-                string_temp = String.Format(
-                    m_camera.GetProperty(PropertyType.Temperature).absValue.ToString());
-            }
-            catch
-            {
-                string_temp = "N/A";
-            }
-            tbox_ccdtemp.Text = string_temp;
-            tbox_ccdtemp.Refresh();
-
-            
+            String statusString;
 
             statusString = String.Format(
                 "Image size: {0} x {1}",
@@ -93,8 +142,6 @@ namespace Colorimeter_Config_GUI
                 m_rawImage.rows);
 
             toolStripStatusLabelImageSize.Text = statusString;
-            
-
 
             try
             {
@@ -163,6 +210,7 @@ namespace Colorimeter_Config_GUI
                     // Set embedded timestamp to on
                     EmbeddedImageInfo embeddedInfo = m_camera.GetEmbeddedImageInfo();
                     embeddedInfo.timestamp.onOff = true;
+                    tbox_uptime.Text = embeddedInfo.timestamp.ToString();
                     m_camera.SetEmbeddedImageInfo(embeddedInfo);
 
                     m_camera.StartCapture();
@@ -324,26 +372,60 @@ namespace Colorimeter_Config_GUI
         private void Size_Calibration_Btn_Click(object sender, EventArgs e)
         {
             Btn_Size.Enabled = false;
-            
+            Btn_Size.BackColor = System.Drawing.Color.LightSteelBlue;
             Btn_Color.Enabled = false;
             Btn_FF.Enabled = false;
             Btn_Lv.Enabled = false;
 
             // pop out the message box.
-            object size_cal_msg = "Choose the area of interest and type in dimension";
+            object size_cal_msg = "Choose the DUT boundaries and type in dimension in mm";
             object size_cal_title = "Size Calibration";
             MessageBox.Show(size_cal_msg.ToString(), size_cal_title.ToString());
             
             // at cal mode, the picture freeze.
-            toolStripButtonStop_Click(null, null);
+            m_grabImages = false;
+            m_camera.StopCapture();
 
-            // Restrict Cursor in picture box
+            // Mouse Down Event and Pick the Left Point
 
-            // Mouse Click Event and Pick the Left Point
+            // Mouse pressed down to draw the horizontal line
 
-            // Mouse Click Evlent and Pick the Right Point
+            // Mouse Up Evlent and Pick the Right Point
 
             // Get the relative value and calculate the size paramter
+
+        }
+        
+        private void picturebox_config_MouseDown(object sender, MouseEventArgs e)
+        {
+            mdraw = true;
+            g = Graphics.FromImage(picturebox_config.Image);
+            Pen pen1 = new Pen(mcolor, 4);
+
+            Point mouseDownLocatoion = new Point(e.X, e.Y);
+            Point pointup = new Point(e.X, picturebox_config.Location.Y);
+            Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
+            g.DrawLine(pen1, pointup, pointdown);
+            g.Save();
+            picturebox_config.Image = picturebox_config.Image;
+        }
+
+        private void picturebox_config_MouseUp(object sender, MouseEventArgs e)
+        {
+            mdraw = false;
+            Pen pen1 = new Pen(mcolor, 4);
+
+            Point mouseUpLocatoion = new Point(e.X, e.Y);
+            Point pointup = new Point(e.X, picturebox_config.Location.Y);
+            Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
+            g.DrawLine(pen1, pointup, pointdown);
+            g.Save();
+
+            Point pointleft = new Point(picturebox_config.Location.X + picturebox_config.Size.Width/2 , e.Y);
+            Point pointright = new Point(e.X, e.Y);
+            g.DrawLine(pen1, pointleft, pointright);
+            g.Save();
+            picturebox_config.Image = picturebox_config.Image;
 
         }
 
@@ -352,15 +434,3 @@ namespace Colorimeter_Config_GUI
     }
 }
 
-//=============================================================================
-// $Log: not supported by cvs2svn $
-// Revision 1.3  2011/02/02 17:52:47  soowei
-// [1] Handle grab errors in the grab loop
-//
-// Revision 1.2  2011/02/02 01:20:16  soowei
-// [1] Add some more information to GUI
-//
-// Revision 1.1  2011/02/01 23:10:35  soowei
-// [1] Adding FlyCapture2SimpleGUI_CSharp example
-//
-//=============================================================================
