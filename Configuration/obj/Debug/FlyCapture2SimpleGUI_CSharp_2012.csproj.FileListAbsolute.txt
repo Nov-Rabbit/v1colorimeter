@@ -1,5 +1,0 @@
-D:\v1\FlyCapture2\src\FlyCapture2SimpleGUI_CSharp\bin\Debug\FlyCapture2SimpleGUI_CSharpd.exe.config
-D:\v1\FlyCapture2\src\FlyCapture2SimpleGUI_CSharp\obj\Debug\FlyCapture2SimpleGUI_CSharp_2012.csprojResolveAssemblyReference.cache
-D:\v1\FlyCapture2\src\FlyCapture2SimpleGUI_CSharp\obj\Debug\FlyCapture2SimpleGUI_CSharp.Form1.resources
-D:\v1\FlyCapture2\src\FlyCapture2SimpleGUI_CSharp\obj\Debug\FlyCapture2SimpleGUI_CSharp.Properties.Resources.resources
-D:\v1\FlyCapture2\src\FlyCapture2SimpleGUI_CSharp\obj\Debug\FlyCapture2SimpleGUI_CSharp_2012.csproj.GenerateResource.Cache
