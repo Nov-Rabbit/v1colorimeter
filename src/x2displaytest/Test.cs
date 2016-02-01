@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 
-namespace FlyCapture2SimpleGUI_CSharp
+using System.Diagnostics;
+
+using FlyCapture2Managed;
+using FlyCapture2Managed.Gui;
+
+
+namespace Colorimeter_Config_GUI
 {
-    class Test
-    {
-    }
+
 }

@@ -5,7 +5,5 @@ using System.Text;
 
 namespace FlyCapture2SimpleGUI_CSharp
 {
-    class Config
-    {
-    }
+
 }

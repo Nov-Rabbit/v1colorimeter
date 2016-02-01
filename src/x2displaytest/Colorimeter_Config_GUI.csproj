@@ -152,9 +152,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audit.cs" />
+    <Compile Include="Audit.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="Test.cs" />
+    <Compile Include="Test.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Form_MainUI.cs">
       <SubType>Form</SubType>
     </Compile>

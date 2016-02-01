@@ -1,5 +1,5 @@
 //=============================================================================
-// Copyright © 2010 Point Grey Research, Inc. All Rights Reserved.
+// Copyright © 2015 Point Grey Research, Inc. All Rights Reserved.
 //
 // This software is the confidential and proprietary information of Point
 // Grey Research, Inc. ("Confidential Information").  You shall not
@@ -51,23 +51,22 @@ namespace Colorimeter_Config_GUI
         public Form_Config()
         {
             InitializeComponent();
-
             m_rawImage = new ManagedImage();
             m_processedImage = new ManagedImage();
             m_camCtlDlg = new CameraControlDialog();
-
             m_grabThreadExited = new AutoResetEvent(false);
-
             
         }
 
         private void UpdateTestUI(object sender, ProgressChangedEventArgs e)
         {
             String statusString;
+
+            double ccd_temp = m_camera.GetProperty(PropertyType.Temperature).valueA / 10 - 273.15;
+
             try
             {
-                statusString = String.Format(
-                    m_camera.GetProperty(PropertyType.Temperature).absValue.ToString());
+                statusString = String.Format(ccd_temp.ToString());
             }
             catch
             {
@@ -82,11 +81,9 @@ namespace Colorimeter_Config_GUI
                 timestamp = m_rawImage.timeStamp;
             }
 
-            statusString = String.Format(
-                "Timestamp: {0:000}.{1:0000}.{2:0000}",
-                timestamp.cycleSeconds,
-                timestamp.cycleCount,
-                timestamp.cycleOffset);
+            TimeSpan cam_ontime = TimeSpan.FromSeconds(timestamp.cycleSeconds);
+            statusString = String.Format("{0:D2}h:{1:D2}m.{2:D2}s",
+                cam_ontime.Hours, cam_ontime.Minutes, cam_ontime.Seconds);
 
             tbox_uptime.Text = statusString;
             tbox_uptime.Refresh();
@@ -243,7 +240,7 @@ namespace Colorimeter_Config_GUI
         private void UpdateFormCaption(CameraInfo camInfo)
         {
             String captionString = String.Format(
-                "FlyCapture2SimpleGUI_CSharp - {0} {1} ({2})",
+                "X2 Display Test Station - {0} {1} ({2})",
                 camInfo.vendorName,
                 camInfo.modelName,
                 camInfo.serialNumber);
