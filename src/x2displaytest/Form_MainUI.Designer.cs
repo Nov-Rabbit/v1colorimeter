@@ -43,6 +43,8 @@ namespace Colorimeter_Config_GUI
             this.newCameraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stretchToFillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.picturebox_config = new System.Windows.Forms.PictureBox();
             this.Btn_Size = new System.Windows.Forms.Button();
@@ -85,7 +87,9 @@ namespace Colorimeter_Config_GUI
             this.label12 = new System.Windows.Forms.Label();
             this.picturebox_audit = new System.Windows.Forms.PictureBox();
             this.Tab_Config = new System.Windows.Forms.TabPage();
+            this.label_x = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label_y = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -186,7 +190,8 @@ namespace Colorimeter_Config_GUI
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.imageToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
@@ -223,6 +228,20 @@ namespace Colorimeter_Config_GUI
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // imageToolStripMenuItem
+            // 
+            this.imageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stretchToFillToolStripMenuItem});
+            this.imageToolStripMenuItem.Name = "imageToolStripMenuItem";
+            this.imageToolStripMenuItem.Size = new System.Drawing.Size(103, 41);
+            this.imageToolStripMenuItem.Text = "Image";
+            // 
+            // stretchToFillToolStripMenuItem
+            // 
+            this.stretchToFillToolStripMenuItem.Name = "stretchToFillToolStripMenuItem";
+            this.stretchToFillToolStripMenuItem.Size = new System.Drawing.Size(249, 42);
+            this.stretchToFillToolStripMenuItem.Text = "Stretch to Fill";
+            // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
@@ -239,10 +258,10 @@ namespace Colorimeter_Config_GUI
             this.picturebox_config.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.picturebox_config.Name = "picturebox_config";
             this.picturebox_config.Size = new System.Drawing.Size(804, 804);
+            this.picturebox_config.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picturebox_config.TabIndex = 5;
             this.picturebox_config.TabStop = false;
-            this.picturebox_config.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picturebox_config_MouseDown);
-            this.picturebox_config.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picturebox_config_MouseUp);
+            this.picturebox_config.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picturebox_config_MouseMove);
             // 
             // Btn_Size
             // 
@@ -647,6 +666,8 @@ namespace Colorimeter_Config_GUI
             // 
             // Tab_Config
             // 
+            this.Tab_Config.Controls.Add(this.label_y);
+            this.Tab_Config.Controls.Add(this.label_x);
             this.Tab_Config.Controls.Add(this.label2);
             this.Tab_Config.Controls.Add(this.panel2);
             this.Tab_Config.Controls.Add(this.label3);
@@ -660,6 +681,15 @@ namespace Colorimeter_Config_GUI
             this.Tab_Config.Text = "Configuration";
             this.Tab_Config.UseVisualStyleBackColor = true;
             // 
+            // label_x
+            // 
+            this.label_x.AutoSize = true;
+            this.label_x.Location = new System.Drawing.Point(945, 674);
+            this.label_x.Name = "label_x";
+            this.label_x.Size = new System.Drawing.Size(97, 29);
+            this.label_x.TabIndex = 13;
+            this.label_x.Text = "label_x";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -669,6 +699,15 @@ namespace Colorimeter_Config_GUI
             this.label2.Size = new System.Drawing.Size(178, 25);
             this.label2.TabIndex = 12;
             this.label2.Text = "Calibration Steps";
+            // 
+            // label_y
+            // 
+            this.label_y.AutoSize = true;
+            this.label_y.Location = new System.Drawing.Point(945, 703);
+            this.label_y.Name = "label_y";
+            this.label_y.Size = new System.Drawing.Size(97, 29);
+            this.label_y.TabIndex = 14;
+            this.label_y.Text = "label_y";
             // 
             // Form_Config
             // 
@@ -778,6 +817,10 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.TextBox tbox_errorcode;
         private System.Windows.Forms.TextBox tbox_colorimeterstatus;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ToolStripMenuItem imageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stretchToFillToolStripMenuItem;
+        private System.Windows.Forms.Label label_x;
+        private System.Windows.Forms.Label label_y;
     }
 }
 

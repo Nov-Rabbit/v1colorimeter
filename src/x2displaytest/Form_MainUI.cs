@@ -89,6 +89,20 @@ namespace Colorimeter_Config_GUI
             tbox_uptime.Refresh();
             picturebox_test.Image = m_processedImage.bitmap;
             picturebox_test.Invalidate();
+
+            if (ccd_temp > 50.0 || timestamp.cycleSeconds > 3600 * 24)
+            {
+                tbox_colorimeterstatus.BackColor = Color.Red;
+                tbox_colorimeterstatus.Text = "Fail. Reset Station";
+            }
+            else 
+            {
+                tbox_colorimeterstatus.BackColor = Color.LightGray;
+                tbox_colorimeterstatus.Text = "OK";
+            }
+
+            tbox_colorimeterstatus.Refresh();
+
         }
 
         private void UpdateAuditUI(object sender, ProgressChangedEventArgs e)
@@ -202,6 +216,8 @@ namespace Colorimeter_Config_GUI
                     m_camCtlDlg.Connect(m_camera);
 
                     CameraInfo camInfo = m_camera.GetCameraInfo();
+                    camInfo.vendorName = "MicroTest";
+                    camInfo.modelName = "v1";
                     UpdateFormCaption(camInfo);
 
                     // Set embedded timestamp to on
@@ -244,7 +260,6 @@ namespace Colorimeter_Config_GUI
                 camInfo.vendorName,
                 camInfo.modelName,
                 camInfo.serialNumber);
-
             this.Text = captionString;
         }
 
@@ -383,6 +398,9 @@ namespace Colorimeter_Config_GUI
             m_grabImages = false;
             m_camera.StopCapture();
 
+            picturebox_config.SizeMode = PictureBoxSizeMode.StretchImage;
+
+
             // Mouse Down Event and Pick the Left Point
 
             // Mouse pressed down to draw the horizontal line
@@ -392,7 +410,25 @@ namespace Colorimeter_Config_GUI
             // Get the relative value and calculate the size paramter
 
         }
-        
+
+        private void picturebox_config_MouseMove(object sender, MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            Graphics g = CreateGraphics();
+            Pen p = new Pen(Color.Navy);
+
+            Point pointup = new Point(e.X, picturebox_config.Location.Y);
+            Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
+            g.DrawLine(p, pointup, pointdown);
+            label_x.Location = new Point(e.X -label_x.Width, e.Y);
+            label_y.Location = new Point(e.X, e.Y - label_y.Height);
+            label_x.Text = e.X.ToString();
+            label_y.Text = e.Y.ToString();
+            
+
+
+        }
+      /*  
         private void picturebox_config_MouseDown(object sender, MouseEventArgs e)
         {
             mdraw = true;
@@ -400,6 +436,7 @@ namespace Colorimeter_Config_GUI
             Pen pen1 = new Pen(mcolor, 4);
 
             Point mouseDownLocatoion = new Point(e.X, e.Y);
+
             Point pointup = new Point(e.X, picturebox_config.Location.Y);
             Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
             g.DrawLine(pen1, pointup, pointdown);
@@ -425,6 +462,7 @@ namespace Colorimeter_Config_GUI
             picturebox_config.Image = picturebox_config.Image;
 
         }
+*/
 
 
 
