@@ -14,8 +14,6 @@
 // SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
 // THIS SOFTWARE OR ITS DERIVATIVES.
 //=============================================================================
-
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -42,8 +40,6 @@ namespace Colorimeter_Config_GUI
         private bool m_grabImages;
         private AutoResetEvent m_grabThreadExited;
         private BackgroundWorker m_grabThread;
-        private Graphics g;
-        private Color mcolor = Color.Red;
 
         public Form_Config()
         {
@@ -55,87 +51,79 @@ namespace Colorimeter_Config_GUI
             
         }
 
-     
+        
+// colorimeter status
 
-        private void UpdateConfigUI(object sender, ProgressChangedEventArgs e)
+        private double UpdateUpTime()
         {
-            picturebox_config.Image = m_processedImage.bitmap;
-            picturebox_config.Invalidate();
-
-        }
-
-
-
-        private void UpdateUI(object sender, ProgressChangedEventArgs e)
-        {
-            UpdateStatusBar();
-
-            if (Tabs.SelectedTab == Tabs.TabPages["Tab_Test"])
-            {
-                Test test_case = new Test();
-                test_case.UpdateTestUI(null, null);
-                
-            }
-            else if (Tabs.SelectedTab == Tabs.TabPages["Tab_Audit"])
-            {
-                Audit audit_case = new Audit();
-
-            }
-            else if (Tabs.SelectedTab == Tabs.TabPages["Tab_Config"])
-            {
-                UpdateConfigUI(null, null);
-            }            
-            else
-            {
-                MessageBox.Show("Please select running mode", "Reminder");
-            }
-
-        }
-
-
-        private void UpdateStatusBar()
-        {
-            
             String statusString;
-
-            statusString = String.Format(
-                "Image size: {0} x {1}",
-                m_rawImage.cols,
-                m_rawImage.rows);
-
-            toolStripStatusLabelImageSize.Text = statusString;
-
-            try
-            {
-                statusString = String.Format(
-                "Requested frame rate: {0}Hz",
-                m_camera.GetProperty(PropertyType.FrameRate).absValue);
-            }
-            catch (FC2Exception ex)
-            {
-                statusString = "Requested frame rate: 0.00Hz";
-            }
-
-            toolStripStatusLabelFrameRate.Text = statusString;
-
             TimeStamp timestamp;
-
             lock (this)
             {
                 timestamp = m_rawImage.timeStamp;
             }
 
-            statusString = String.Format(
-                "Timestamp: {0:000}.{1:0000}.{2:0000}",
-                timestamp.cycleSeconds,
-                timestamp.cycleCount,
-                timestamp.cycleOffset);
+            TimeSpan cam_ontime = TimeSpan.FromSeconds(timestamp.cycleSeconds);
+            statusString = String.Format("{0:D2}h:{1:D2}m.{2:D2}s",
+                cam_ontime.Hours, cam_ontime.Minutes, cam_ontime.Seconds);
 
-            toolStripStatusLabelTimestamp.Text = statusString;
-            statusStrip1.Refresh();
+            tbox_uptime.Text = statusString;
+            tbox_uptime.Refresh();
+
+            return cam_ontime.Hours;
+
+        }
+
+        private double UpdateCCDTemperature()
+        {
+            String statusString;
+            try
+                {
+                double ccd_temp = m_camera.GetProperty(PropertyType.Temperature).valueA / 10 - 273.15;
+
+                try
+                    {
+                    statusString = String.Format(ccd_temp.ToString());
+                    }
+                catch
+                    {
+                    statusString = "N/A";
+                    }
+                tbox_ccdtemp.Text = statusString;
+                tbox_ccdtemp.Refresh();
+                return ccd_temp;
+                }
+            catch (FC2Exception ex)
+                {
+                Debug.WriteLine("Failed to load form successfully: " + ex.Message);
+                Environment.ExitCode = -1;
+                Application.Exit();
+                return 0.0; 
+                }
 
             
+           }
+
+        private bool colorimeterstatus()
+        {
+            double CCDTemperature = UpdateCCDTemperature();
+            double UpTime = UpdateUpTime();
+
+            if (CCDTemperature < 50 && UpTime < 24)
+            {
+                tbox_colorimeterstatus.Text = "OK";
+                tbox_colorimeterstatus.BackColor = Color.Green;
+                return true;
+            }
+            else
+            {
+                tbox_colorimeterstatus.Text = "Fail";
+                tbox_colorimeterstatus.BackColor = Color.Red;
+                return false;
+            }
         }
+
+// UI related
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -204,10 +192,66 @@ namespace Colorimeter_Config_GUI
             Show();
         }
 
+        private void UpdateUI(object sender, ProgressChangedEventArgs e)
+        {
+            UpdateStatusBar();
+            UpdateCCDTemperature();
+            UpdateUpTime();
+            picturebox_test.Image = m_processedImage.bitmap;
+            picturebox_test.Invalidate();
+
+        }
+
+        private void UpdateStatusBar()
+        {
+
+            String statusString;
+
+            statusString = String.Format(
+                "Image size: {0} x {1}",
+                m_rawImage.cols,
+                m_rawImage.rows);
+
+            toolStripStatusLabelImageSize.Text = statusString;
+
+            try
+            {
+                statusString = String.Format(
+                "Requested frame rate: {0}Hz",
+                m_camera.GetProperty(PropertyType.FrameRate).absValue);
+            }
+            catch (FC2Exception ex)
+            {
+                statusString = "Requested frame rate: 0.00Hz";
+            }
+
+            toolStripStatusLabelFrameRate.Text = statusString;
+
+            TimeStamp timestamp;
+
+            lock (this)
+            {
+                timestamp = m_rawImage.timeStamp;
+            }
+
+            statusString = String.Format(
+                "Timestamp: {0:000}.{1:0000}.{2:0000}",
+                timestamp.cycleSeconds,
+                timestamp.cycleCount,
+                timestamp.cycleOffset);
+
+            toolStripStatusLabelTimestamp.Text = statusString;
+            statusStrip1.Refresh();
+
+        }
+
         private void UpdateFormCaption(CameraInfo camInfo)
         {
+            station_info stationparameters = new station_info();
+
             String captionString = String.Format(
                 "X2 Display Test Station - {0} {1} ({2})",
+                
                 camInfo.vendorName,
                 camInfo.modelName,
                 camInfo.serialNumber);
@@ -332,89 +376,87 @@ namespace Colorimeter_Config_GUI
             Form1_Load(sender, e);
         }
 
-        private void Size_Calibration_Btn_Click(object sender, EventArgs e)
+        private void realSizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Btn_Size.Enabled = false;
-            Btn_Size.BackColor = System.Drawing.Color.LightSteelBlue;
-            Btn_Color.Enabled = false;
-            Btn_FF.Enabled = false;
-            Btn_Lv.Enabled = false;
 
-            // pop out the message box.
-            object size_cal_msg = "Choose the DUT boundaries and type in dimension in mm";
-            object size_cal_title = "Size Calibration";
-            MessageBox.Show(size_cal_msg.ToString(), size_cal_title.ToString());
-            
-            // at cal mode, the picture freeze.
-            m_grabImages = false;
-            m_camera.StopCapture();
-
-            picturebox_config.SizeMode = PictureBoxSizeMode.StretchImage;
-
-
-            // Mouse Down Event and Pick the Left Point
-
-            // Mouse pressed down to draw the horizontal line
-
-            // Mouse Up Evlent and Pick the Right Point
-
-            // Get the relative value and calculate the size paramter
+                picturebox_test.SizeMode = PictureBoxSizeMode.Normal;
+                picturebox_test.Refresh();
 
         }
 
-        private void picturebox_config_MouseMove(object sender, MouseEventArgs e)
+        private void stretchToFillToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            base.OnMouseMove(e);
-            Graphics g = CreateGraphics();
-            Pen p = new Pen(Color.Red);
+                picturebox_test.SizeMode = PictureBoxSizeMode.StretchImage;
+                picturebox_test.Refresh();
+        }
 
-            Point pointup = new Point(e.X, picturebox_config.Location.Y);
-            Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
-            g.DrawLine(p, pointup, pointdown);
-            label_x.Location = new Point(e.X -label_x.Width, e.Y);
-            label_y.Location = new Point(e.X, e.Y - label_y.Height);
-            label_x.Text = e.X.ToString();
-            label_y.Text = e.Y.ToString();
-            MessageBox.Show("stop", "title");
+        // test prerequisite
+
+        private bool checkDUT()
+        {
+            // check DUT is inserted into fixture or not
+            if (true)
+            {
+                tbox_dut_connect.Text = "DUT connected";
+                tbox_dut_connect.BackColor = Color.Green;
+                return true;
+            }
+            else
+            {
+                tbox_dut_connect.Text = "No DUT";
+                tbox_dut_connect.BackColor = Color.Red;
+                MessageBox.Show("DUT Not Detected", "Warning");
+                return false;
+            }
 
         }
 
-
-      /*  
-        private void picturebox_config_MouseDown(object sender, MouseEventArgs e)
+        private bool checksnformat()
         {
-            mdraw = true;
-            g = Graphics.FromImage(picturebox_config.Image);
-            Pen pen1 = new Pen(mcolor, 4);
-
-            Point mouseDownLocatoion = new Point(e.X, e.Y);
-
-            Point pointup = new Point(e.X, picturebox_config.Location.Y);
-            Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
-            g.DrawLine(pen1, pointup, pointdown);
-            g.Save();
-            picturebox_config.Image = picturebox_config.Image;
+            if (tbox_sn.Text.Length == 6)
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Please type in 6 digit SN");
+                return false;
+            }
         }
 
-        private void picturebox_config_MouseUp(object sender, MouseEventArgs e)
+        private bool checkshopfloor()
         {
-            mdraw = false;
-            Pen pen1 = new Pen(mcolor, 4);
-
-            Point mouseUpLocatoion = new Point(e.X, e.Y);
-            Point pointup = new Point(e.X, picturebox_config.Location.Y);
-            Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
-            g.DrawLine(pen1, pointup, pointdown);
-            g.Save();
-
-            Point pointleft = new Point(picturebox_config.Location.X + picturebox_config.Size.Width/2 , e.Y);
-            Point pointright = new Point(e.X, e.Y);
-            g.DrawLine(pen1, pointleft, pointright);
-            g.Save();
-            picturebox_config.Image = picturebox_config.Image;
-
+            tbox_shopfloor.Text = "OK";
+            tbox_shopfloor.BackColor = Color.Green;
+            return true;
         }
-*/
+        // test related
+        private void btn_start_Click(object sender, EventArgs e)
+        {
+            if (!colorimeterstatus())
+            {
+                MessageBox.Show("Reset Colorimeter");
+            }
+            else if (!checkDUT())
+            {
+                MessageBox.Show("Please insert DUT");
+            }
+            else if (string.IsNullOrEmpty(tbox_sn.Text)) 
+            {
+                MessageBox.Show("Please type SN");
+            }
+            else if (!checksnformat())
+            {
+                MessageBox.Show("SN format is wrong");
+            }
+            else
+            {
+                btn_start.Enabled = false;
+                btn_start.BackColor = Color.LightBlue;
+            }
+        }
+
+        // test log
 
 
 
