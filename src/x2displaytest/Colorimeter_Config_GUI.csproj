@@ -161,7 +161,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="station_info.cs" />
     <EmbeddedResource Include="Form_MainUI.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Form_MainUI.cs</DependentUpon>

@@ -45,6 +45,7 @@ namespace Colorimeter_Config_GUI
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stretchToFillToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.realSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.Tab_Config = new System.Windows.Forms.TabPage();
@@ -58,7 +59,7 @@ namespace Colorimeter_Config_GUI
             this.label3 = new System.Windows.Forms.Label();
             this.picturebox_config = new System.Windows.Forms.PictureBox();
             this.Tab_Audit = new System.Windows.Forms.TabPage();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.tbox_audit_result = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.Panel_Audit = new System.Windows.Forms.Panel();
             this.textBox8 = new System.Windows.Forms.TextBox();
@@ -74,6 +75,10 @@ namespace Colorimeter_Config_GUI
             this.label8 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.tbox_shopfloor = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.tbox_dut_connect = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.btn_start = new System.Windows.Forms.Button();
             this.tbox_sn = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -90,11 +95,7 @@ namespace Colorimeter_Config_GUI
             this.label4 = new System.Windows.Forms.Label();
             this.picturebox_test = new System.Windows.Forms.PictureBox();
             this.Tabs = new System.Windows.Forms.TabControl();
-            this.realSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label15 = new System.Windows.Forms.Label();
-            this.tbox_dut_connect = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.tbox_shopfloor = new System.Windows.Forms.TextBox();
+            this.Btn_Size = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -251,6 +252,13 @@ namespace Colorimeter_Config_GUI
             this.stretchToFillToolStripMenuItem.Text = "Stretch to Fill";
             this.stretchToFillToolStripMenuItem.Click += new System.EventHandler(this.stretchToFillToolStripMenuItem_Click);
             // 
+            // realSizeToolStripMenuItem
+            // 
+            this.realSizeToolStripMenuItem.Name = "realSizeToolStripMenuItem";
+            this.realSizeToolStripMenuItem.Size = new System.Drawing.Size(249, 42);
+            this.realSizeToolStripMenuItem.Text = "Real Size";
+            this.realSizeToolStripMenuItem.Click += new System.EventHandler(this.realSizeToolStripMenuItem_Click);
+            // 
             // panel1
             // 
             this.panel1.AutoScroll = true;
@@ -319,6 +327,7 @@ namespace Colorimeter_Config_GUI
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.panel2.Controls.Add(this.Btn_Size);
             this.panel2.Controls.Add(this.Btn_FF);
             this.panel2.Controls.Add(this.Btn_Color);
             this.panel2.Controls.Add(this.Btn_Lv);
@@ -374,13 +383,13 @@ namespace Colorimeter_Config_GUI
             // 
             this.picturebox_config.Location = new System.Drawing.Point(0, 0);
             this.picturebox_config.Name = "picturebox_config";
-            this.picturebox_config.Size = new System.Drawing.Size(100, 50);
+            this.picturebox_config.Size = new System.Drawing.Size(1008, 1008);
             this.picturebox_config.TabIndex = 15;
             this.picturebox_config.TabStop = false;
             // 
             // Tab_Audit
             // 
-            this.Tab_Audit.Controls.Add(this.textBox5);
+            this.Tab_Audit.Controls.Add(this.tbox_audit_result);
             this.Tab_Audit.Controls.Add(this.label13);
             this.Tab_Audit.Controls.Add(this.Panel_Audit);
             this.Tab_Audit.Controls.Add(this.label12);
@@ -393,13 +402,13 @@ namespace Colorimeter_Config_GUI
             this.Tab_Audit.Text = "Audit";
             this.Tab_Audit.UseVisualStyleBackColor = true;
             // 
-            // textBox5
+            // tbox_audit_result
             // 
-            this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox5.Location = new System.Drawing.Point(101, 662);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(295, 170);
-            this.textBox5.TabIndex = 15;
+            this.tbox_audit_result.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_audit_result.Location = new System.Drawing.Point(101, 662);
+            this.tbox_audit_result.Name = "tbox_audit_result";
+            this.tbox_audit_result.Size = new System.Drawing.Size(295, 170);
+            this.tbox_audit_result.TabIndex = 15;
             // 
             // label13
             // 
@@ -555,6 +564,44 @@ namespace Colorimeter_Config_GUI
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(497, 283);
             this.panel4.TabIndex = 11;
+            // 
+            // tbox_shopfloor
+            // 
+            this.tbox_shopfloor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbox_shopfloor.Location = new System.Drawing.Point(270, 51);
+            this.tbox_shopfloor.Name = "tbox_shopfloor";
+            this.tbox_shopfloor.ReadOnly = true;
+            this.tbox_shopfloor.Size = new System.Drawing.Size(170, 35);
+            this.tbox_shopfloor.TabIndex = 23;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(5, 51);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(256, 29);
+            this.label16.TabIndex = 22;
+            this.label16.Text = "Shop Floor Connected";
+            // 
+            // tbox_dut_connect
+            // 
+            this.tbox_dut_connect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbox_dut_connect.Location = new System.Drawing.Point(270, 10);
+            this.tbox_dut_connect.Name = "tbox_dut_connect";
+            this.tbox_dut_connect.ReadOnly = true;
+            this.tbox_dut_connect.Size = new System.Drawing.Size(170, 35);
+            this.tbox_dut_connect.TabIndex = 21;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(5, 10);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(186, 29);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "DUT Connected";
             // 
             // btn_start
             // 
@@ -718,50 +765,16 @@ namespace Colorimeter_Config_GUI
             this.Tabs.Size = new System.Drawing.Size(1822, 1129);
             this.Tabs.TabIndex = 12;
             // 
-            // realSizeToolStripMenuItem
+            // Btn_Size
             // 
-            this.realSizeToolStripMenuItem.Name = "realSizeToolStripMenuItem";
-            this.realSizeToolStripMenuItem.Size = new System.Drawing.Size(249, 42);
-            this.realSizeToolStripMenuItem.Text = "Real Size";
-            this.realSizeToolStripMenuItem.Click += new System.EventHandler(this.realSizeToolStripMenuItem_Click);
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(5, 10);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(186, 29);
-            this.label15.TabIndex = 15;
-            this.label15.Text = "DUT Connected";
-            // 
-            // tbox_dut_connect
-            // 
-            this.tbox_dut_connect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.tbox_dut_connect.Location = new System.Drawing.Point(270, 10);
-            this.tbox_dut_connect.Name = "tbox_dut_connect";
-            this.tbox_dut_connect.ReadOnly = true;
-            this.tbox_dut_connect.Size = new System.Drawing.Size(170, 35);
-            this.tbox_dut_connect.TabIndex = 21;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(5, 51);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(256, 29);
-            this.label16.TabIndex = 22;
-            this.label16.Text = "Shop Floor Connected";
-            // 
-            // tbox_shopfloor
-            // 
-            this.tbox_shopfloor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.tbox_shopfloor.Location = new System.Drawing.Point(270, 51);
-            this.tbox_shopfloor.Name = "tbox_shopfloor";
-            this.tbox_shopfloor.ReadOnly = true;
-            this.tbox_shopfloor.Size = new System.Drawing.Size(170, 35);
-            this.tbox_shopfloor.TabIndex = 23;
+            this.Btn_Size.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Btn_Size.Location = new System.Drawing.Point(13, 34);
+            this.Btn_Size.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Btn_Size.Name = "Btn_Size";
+            this.Btn_Size.Size = new System.Drawing.Size(297, 80);
+            this.Btn_Size.TabIndex = 10;
+            this.Btn_Size.Text = "Size Calibration";
+            this.Btn_Size.UseVisualStyleBackColor = true;
             // 
             // Form_Config
             // 
@@ -843,7 +856,7 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox picturebox_config;
         private System.Windows.Forms.TabPage Tab_Audit;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox tbox_audit_result;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Panel Panel_Audit;
         private System.Windows.Forms.TextBox textBox8;
@@ -880,6 +893,7 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox tbox_shopfloor;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button Btn_Size;
     }
 }
 

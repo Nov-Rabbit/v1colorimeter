@@ -190,6 +190,8 @@ namespace Colorimeter_Config_GUI
             }
 
             Show();
+            tbox_sn.Focus();
+
         }
 
         private void UpdateUI(object sender, ProgressChangedEventArgs e)
@@ -247,7 +249,6 @@ namespace Colorimeter_Config_GUI
 
         private void UpdateFormCaption(CameraInfo camInfo)
         {
-            station_info stationparameters = new station_info();
 
             String captionString = String.Format(
                 "X2 Display Test Station - {0} {1} ({2})",
@@ -309,7 +310,7 @@ namespace Colorimeter_Config_GUI
                 {
                     m_rawImage.Convert(PixelFormat.PixelFormatBgr, m_processedImage);
                 }
-
+                
                 worker.ReportProgress(0);
             }
 
@@ -430,7 +431,9 @@ namespace Colorimeter_Config_GUI
             tbox_shopfloor.BackColor = Color.Green;
             return true;
         }
-        // test related
+        
+        
+// test related
         private void btn_start_Click(object sender, EventArgs e)
         {
             if (!colorimeterstatus())
@@ -441,7 +444,11 @@ namespace Colorimeter_Config_GUI
             {
                 MessageBox.Show("Please insert DUT");
             }
-            else if (string.IsNullOrEmpty(tbox_sn.Text)) 
+            else if (!checkshopfloor())
+            {
+                MessageBox.Show("Shopfloor system is not working");
+            }
+            else if (string.IsNullOrEmpty(tbox_sn.Text))
             {
                 MessageBox.Show("Please type SN");
             }
@@ -449,12 +456,83 @@ namespace Colorimeter_Config_GUI
             {
                 MessageBox.Show("SN format is wrong");
             }
+
             else
             {
                 btn_start.Enabled = false;
                 btn_start.BackColor = Color.LightBlue;
+                //Time of start test
+                DateTime testTime = DateTime.Now;
+                string str_StartTestTime = string.Format("{0:yyyyMMdd}" + "{0:HHmmss}", testTime, testTime);
             }
         }
+
+
+        private Rectangle GetCropRectangle(Bitmap m_prossedimage, float CropThreshold, Size FilterSize, out PointF[] cornerpointsf) 
+        {
+            Rectangle CropRect = new Rectangle(0, 0, int(m_processedImage.cols) - 1, int(m_processedImage.rows) - 1);
+            
+        }
+
+        /*
+        
+        private Rectangle GetCropRectangle(Measurement m, float CropThreshold, Size FilterSize, out ROIRectangle ROIRect)
+        {
+            Rectangle CropRect = new Rectangle(0, 0, m.NbrCols - 1, m.NbrRows - 1);
+            Measurement tmpMeas = m;
+
+            if (FilterSize.Width > 1 || FilterSize.Height > 1)
+            {
+                tmpMeas = RadiantCommon20.ImageProcess.MedianFilter(ref tmpMeas, RadiantCommonCS20.TristimType.TrisY, FilterSize, 1, CropRect, -1);
+            }
+
+            CropRect = RadiantCommon20.ImageProcess.CalcClipRange(tmpMeas, MeasurementBase.TristimlusType.TrisY, ImageProcess.ThresholdMethod.PercentOfMax, CropThreshold);
+
+            ROIRect = new ROIRectangle(CropRect);
+            Pen PenColor = new Pen(Color.LightGray);
+            PenColor.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            PenColor.DashPattern = new float[] { 5.0F, 2.0F };
+            ROIRect.PenColor = PenColor;
+            return CropRect;
+        }
+
+        private PMMeasurement CropOutUnit(PMMeasurement Meas, int Col, int Row, int PanelCols, int PanelRows, Rectangle Rect)
+        {
+            float DisplayWidthMM = 196f; // orig 110
+            float DisplayHeightMM = 147f; // orig 70
+
+            float GapXmm = ((Rect.Width + 1) * Meas.ScaleFactorCol * 1000 - PanelCols * DisplayWidthMM) / (PanelCols - 1);
+            float GapYmm = ((Rect.Height + 1) * Meas.ScaleFactorRow * 1000 - PanelRows * DisplayHeightMM) / (PanelRows - 1);
+
+            float w = ((DisplayWidthMM + GapXmm) / 1000f) / Meas.ScaleFactorCol;
+            int x0 = Rect.Left - (int)((GapXmm / 2000f) / Meas.ScaleFactorCol);
+
+            int xl = x0 + (int)(Col * w);
+            int xr = x0 + (int)((Col + 1) * w);
+            xl = Math.Max(xl, 0);
+            xr = Math.Min(xr, Meas.NbrCols - 1);
+
+            float h = ((DisplayHeightMM + GapYmm) / 1000f) / Meas.ScaleFactorRow;
+            int y0 = Rect.Top - (int)((GapYmm / 2000f) / Meas.ScaleFactorRow);
+
+            int yt = y0 + (int)(Row * h);
+            int yb = y0 + (int)((Row + 1) * h);
+            yt = Math.Max(yt, 0);
+            yb = Math.Min(yb, Meas.NbrRows - 1);
+
+            int AdditionalCropping = 5;
+
+            xl += AdditionalCropping;
+            xr -= AdditionalCropping;
+            yt += AdditionalCropping;
+            yb -= AdditionalCropping;
+
+            Rectangle CropRect = new Rectangle(xl, yt, xr - xl, yb - yt);
+            return Meas.CropOut(CropRect);
+        }
+
+         * */
+
 
         // test log
 
