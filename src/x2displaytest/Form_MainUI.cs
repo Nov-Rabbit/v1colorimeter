@@ -1,8 +1,8 @@
 //=============================================================================
-// Copyright © 2015 Point Grey Research, Inc. All Rights Reserved.
+// Copyright © 2016 Microtest Inc. All Rights Reserved.
 //
-// This software is the confidential and proprietary information of Point
-// Grey Research, Inc. ("Confidential Information").  You shall not
+// This software is the confidential and proprietary information of Microtest, Inc.
+// ("Confidential Information").  You shall not
 // disclose such Confidential Information and shall use it only in
 // accordance with the terms of the license agreement you entered into
 // with PGR.
@@ -14,9 +14,7 @@
 // SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
 // THIS SOFTWARE OR ITS DERIVATIVES.
 //=============================================================================
-//=============================================================================
-// $Id: Form1.cs,v 1.4 2011-02-03 23:34:52 soowei Exp $
-//=============================================================================
+
 
 using System;
 using System.Collections.Generic;
@@ -34,7 +32,7 @@ using FlyCapture2Managed.Gui;
 
 namespace Colorimeter_Config_GUI
 {
-
+   
     public partial class Form_Config : Form
     {
         private FlyCapture2Managed.Gui.CameraControlDialog m_camCtlDlg;
@@ -45,7 +43,6 @@ namespace Colorimeter_Config_GUI
         private AutoResetEvent m_grabThreadExited;
         private BackgroundWorker m_grabThread;
         private Graphics g;
-        private bool mdraw = false;
         private Color mcolor = Color.Red;
 
         public Form_Config()
@@ -58,58 +55,7 @@ namespace Colorimeter_Config_GUI
             
         }
 
-        private void UpdateTestUI(object sender, ProgressChangedEventArgs e)
-        {
-            String statusString;
-
-            double ccd_temp = m_camera.GetProperty(PropertyType.Temperature).valueA / 10 - 273.15;
-
-            try
-            {
-                statusString = String.Format(ccd_temp.ToString());
-            }
-            catch
-            {
-                statusString = "N/A";
-            }
-            tbox_ccdtemp.Text = statusString;
-            tbox_ccdtemp.Refresh();
-
-            TimeStamp timestamp;
-            lock (this)
-            {
-                timestamp = m_rawImage.timeStamp;
-            }
-
-            TimeSpan cam_ontime = TimeSpan.FromSeconds(timestamp.cycleSeconds);
-            statusString = String.Format("{0:D2}h:{1:D2}m.{2:D2}s",
-                cam_ontime.Hours, cam_ontime.Minutes, cam_ontime.Seconds);
-
-            tbox_uptime.Text = statusString;
-            tbox_uptime.Refresh();
-            picturebox_test.Image = m_processedImage.bitmap;
-            picturebox_test.Invalidate();
-
-            if (ccd_temp > 50.0 || timestamp.cycleSeconds > 3600 * 24)
-            {
-                tbox_colorimeterstatus.BackColor = Color.Red;
-                tbox_colorimeterstatus.Text = "Fail. Reset Station";
-            }
-            else 
-            {
-                tbox_colorimeterstatus.BackColor = Color.LightGray;
-                tbox_colorimeterstatus.Text = "OK";
-            }
-
-            tbox_colorimeterstatus.Refresh();
-
-        }
-
-        private void UpdateAuditUI(object sender, ProgressChangedEventArgs e)
-        {
-            picturebox_audit.Image = m_processedImage.bitmap;
-            picturebox_audit.Invalidate();
-        }
+     
 
         private void UpdateConfigUI(object sender, ProgressChangedEventArgs e)
         {
@@ -119,17 +65,21 @@ namespace Colorimeter_Config_GUI
         }
 
 
+
         private void UpdateUI(object sender, ProgressChangedEventArgs e)
         {
             UpdateStatusBar();
 
             if (Tabs.SelectedTab == Tabs.TabPages["Tab_Test"])
             {
-                UpdateTestUI(null, null);
+                Test test_case = new Test();
+                test_case.UpdateTestUI(null, null);
+                
             }
             else if (Tabs.SelectedTab == Tabs.TabPages["Tab_Audit"])
             {
-                UpdateAuditUI(null, null);
+                Audit audit_case = new Audit();
+
             }
             else if (Tabs.SelectedTab == Tabs.TabPages["Tab_Config"])
             {
@@ -145,6 +95,7 @@ namespace Colorimeter_Config_GUI
 
         private void UpdateStatusBar()
         {
+            
             String statusString;
 
             statusString = String.Format(
@@ -183,7 +134,7 @@ namespace Colorimeter_Config_GUI
             toolStripStatusLabelTimestamp.Text = statusString;
             statusStrip1.Refresh();
 
-
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -415,7 +366,7 @@ namespace Colorimeter_Config_GUI
         {
             base.OnMouseMove(e);
             Graphics g = CreateGraphics();
-            Pen p = new Pen(Color.Navy);
+            Pen p = new Pen(Color.Red);
 
             Point pointup = new Point(e.X, picturebox_config.Location.Y);
             Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
@@ -424,10 +375,11 @@ namespace Colorimeter_Config_GUI
             label_y.Location = new Point(e.X, e.Y - label_y.Height);
             label_x.Text = e.X.ToString();
             label_y.Text = e.Y.ToString();
-            
-
+            MessageBox.Show("stop", "title");
 
         }
+
+
       /*  
         private void picturebox_config_MouseDown(object sender, MouseEventArgs e)
         {

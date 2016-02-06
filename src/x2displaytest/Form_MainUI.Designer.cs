@@ -87,9 +87,9 @@ namespace Colorimeter_Config_GUI
             this.label12 = new System.Windows.Forms.Label();
             this.picturebox_audit = new System.Windows.Forms.PictureBox();
             this.Tab_Config = new System.Windows.Forms.TabPage();
+            this.label_y = new System.Windows.Forms.Label();
             this.label_x = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label_y = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -117,7 +117,7 @@ namespace Colorimeter_Config_GUI
             this.toolStrip1.Location = new System.Drawing.Point(0, 47);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(1372, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1672, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -162,10 +162,10 @@ namespace Colorimeter_Config_GUI
             this.toolStripStatusLabelImageSize,
             this.toolStripStatusLabelFrameRate,
             this.toolStripStatusLabelTimestamp});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 990);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 960);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1372, 42);
+            this.statusStrip1.Size = new System.Drawing.Size(1672, 42);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -195,7 +195,7 @@ namespace Colorimeter_Config_GUI
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
-            this.menuStrip1.Size = new System.Drawing.Size(1372, 47);
+            this.menuStrip1.Size = new System.Drawing.Size(1672, 47);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -254,10 +254,10 @@ namespace Colorimeter_Config_GUI
             // 
             // picturebox_config
             // 
-            this.picturebox_config.Location = new System.Drawing.Point(0, 0);
+            this.picturebox_config.Location = new System.Drawing.Point(-4, 0);
             this.picturebox_config.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.picturebox_config.Name = "picturebox_config";
-            this.picturebox_config.Size = new System.Drawing.Size(804, 804);
+            this.picturebox_config.Size = new System.Drawing.Size(1008, 1008);
             this.picturebox_config.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picturebox_config.TabIndex = 5;
             this.picturebox_config.TabStop = false;
@@ -293,7 +293,7 @@ namespace Colorimeter_Config_GUI
             this.panel2.Controls.Add(this.Btn_Color);
             this.panel2.Controls.Add(this.Btn_Lv);
             this.panel2.Controls.Add(this.Btn_Size);
-            this.panel2.Location = new System.Drawing.Point(941, 71);
+            this.panel2.Location = new System.Drawing.Point(1353, 63);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(317, 455);
             this.panel2.TabIndex = 9;
@@ -347,11 +347,11 @@ namespace Colorimeter_Config_GUI
             this.Tabs.Controls.Add(this.Tab_Audit);
             this.Tabs.Controls.Add(this.Tab_Config);
             this.Tabs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Tabs.Location = new System.Drawing.Point(0, 75);
+            this.Tabs.Location = new System.Drawing.Point(0, 87);
             this.Tabs.Margin = new System.Windows.Forms.Padding(6);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
-            this.Tabs.Size = new System.Drawing.Size(1372, 912);
+            this.Tabs.Size = new System.Drawing.Size(1822, 1129);
             this.Tabs.TabIndex = 12;
             // 
             // Tab_Test
@@ -366,7 +366,7 @@ namespace Colorimeter_Config_GUI
             this.Tab_Test.Location = new System.Drawing.Point(4, 38);
             this.Tab_Test.Name = "Tab_Test";
             this.Tab_Test.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Test.Size = new System.Drawing.Size(1364, 870);
+            this.Tab_Test.Size = new System.Drawing.Size(1814, 1087);
             this.Tab_Test.TabIndex = 1;
             this.Tab_Test.Text = "Test";
             this.Tab_Test.UseVisualStyleBackColor = true;
@@ -551,10 +551,10 @@ namespace Colorimeter_Config_GUI
             // 
             // picturebox_test
             // 
-            this.picturebox_test.Location = new System.Drawing.Point(527, 55);
+            this.picturebox_test.Location = new System.Drawing.Point(569, 10);
             this.picturebox_test.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.picturebox_test.Name = "picturebox_test";
-            this.picturebox_test.Size = new System.Drawing.Size(804, 804);
+            this.picturebox_test.Size = new System.Drawing.Size(1008, 1008);
             this.picturebox_test.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picturebox_test.TabIndex = 6;
             this.picturebox_test.TabStop = false;
@@ -569,7 +569,7 @@ namespace Colorimeter_Config_GUI
             this.Tab_Audit.Location = new System.Drawing.Point(4, 38);
             this.Tab_Audit.Name = "Tab_Audit";
             this.Tab_Audit.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Audit.Size = new System.Drawing.Size(1364, 870);
+            this.Tab_Audit.Size = new System.Drawing.Size(1814, 1087);
             this.Tab_Audit.TabIndex = 2;
             this.Tab_Audit.Text = "Audit";
             this.Tab_Audit.UseVisualStyleBackColor = true;
@@ -656,10 +656,10 @@ namespace Colorimeter_Config_GUI
             // 
             // picturebox_audit
             // 
-            this.picturebox_audit.Location = new System.Drawing.Point(467, 28);
+            this.picturebox_audit.Location = new System.Drawing.Point(531, 60);
             this.picturebox_audit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.picturebox_audit.Name = "picturebox_audit";
-            this.picturebox_audit.Size = new System.Drawing.Size(804, 804);
+            this.picturebox_audit.Size = new System.Drawing.Size(1008, 1008);
             this.picturebox_audit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picturebox_audit.TabIndex = 6;
             this.picturebox_audit.TabStop = false;
@@ -676,15 +676,24 @@ namespace Colorimeter_Config_GUI
             this.Tab_Config.Location = new System.Drawing.Point(4, 38);
             this.Tab_Config.Name = "Tab_Config";
             this.Tab_Config.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Config.Size = new System.Drawing.Size(1364, 870);
+            this.Tab_Config.Size = new System.Drawing.Size(1814, 1087);
             this.Tab_Config.TabIndex = 0;
             this.Tab_Config.Text = "Configuration";
             this.Tab_Config.UseVisualStyleBackColor = true;
             // 
+            // label_y
+            // 
+            this.label_y.AutoSize = true;
+            this.label_y.Location = new System.Drawing.Point(1405, 719);
+            this.label_y.Name = "label_y";
+            this.label_y.Size = new System.Drawing.Size(97, 29);
+            this.label_y.TabIndex = 14;
+            this.label_y.Text = "label_y";
+            // 
             // label_x
             // 
             this.label_x.AutoSize = true;
-            this.label_x.Location = new System.Drawing.Point(945, 674);
+            this.label_x.Location = new System.Drawing.Point(1405, 690);
             this.label_x.Name = "label_x";
             this.label_x.Size = new System.Drawing.Size(97, 29);
             this.label_x.TabIndex = 13;
@@ -694,26 +703,17 @@ namespace Colorimeter_Config_GUI
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(1020, 43);
+            this.label2.Location = new System.Drawing.Point(1420, 35);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(178, 25);
             this.label2.TabIndex = 12;
             this.label2.Text = "Calibration Steps";
             // 
-            // label_y
-            // 
-            this.label_y.AutoSize = true;
-            this.label_y.Location = new System.Drawing.Point(945, 703);
-            this.label_y.Name = "label_y";
-            this.label_y.Size = new System.Drawing.Size(97, 29);
-            this.label_y.TabIndex = 14;
-            this.label_y.Text = "label_y";
-            // 
             // Form_Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1372, 1032);
+            this.ClientSize = new System.Drawing.Size(1672, 1002);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label1);
