@@ -28,9 +28,14 @@ using System.Diagnostics;
 using FlyCapture2Managed;
 using FlyCapture2Managed.Gui;
 
+using AForge;
+using AForge.Imaging;
+using AForge.Math;
+using AForge.Math.Geometry;
+
 namespace Colorimeter_Config_GUI
 {
-   
+
     public partial class Form_Config : Form
     {
         private FlyCapture2Managed.Gui.CameraControlDialog m_camCtlDlg;
@@ -48,11 +53,11 @@ namespace Colorimeter_Config_GUI
             m_processedImage = new ManagedImage();
             m_camCtlDlg = new CameraControlDialog();
             m_grabThreadExited = new AutoResetEvent(false);
-            
+
         }
 
-        
-// colorimeter status
+
+        // colorimeter status
 
         private double UpdateUpTime()
         {
@@ -78,31 +83,31 @@ namespace Colorimeter_Config_GUI
         {
             String statusString;
             try
-                {
+            {
                 double ccd_temp = m_camera.GetProperty(PropertyType.Temperature).valueA / 10 - 273.15;
 
                 try
-                    {
+                {
                     statusString = String.Format(ccd_temp.ToString());
-                    }
+                }
                 catch
-                    {
+                {
                     statusString = "N/A";
-                    }
+                }
                 tbox_ccdtemp.Text = statusString;
                 tbox_ccdtemp.Refresh();
                 return ccd_temp;
-                }
+            }
             catch (FC2Exception ex)
-                {
+            {
                 Debug.WriteLine("Failed to load form successfully: " + ex.Message);
                 Environment.ExitCode = -1;
                 Application.Exit();
-                return 0.0; 
-                }
+                return 0.0;
+            }
 
-            
-           }
+
+        }
 
         private bool colorimeterstatus()
         {
@@ -123,7 +128,7 @@ namespace Colorimeter_Config_GUI
             }
         }
 
-// UI related
+        // UI related
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -252,7 +257,7 @@ namespace Colorimeter_Config_GUI
 
             String captionString = String.Format(
                 "X2 Display Test Station - {0} {1} ({2})",
-                
+
                 camInfo.vendorName,
                 camInfo.modelName,
                 camInfo.serialNumber);
@@ -310,7 +315,7 @@ namespace Colorimeter_Config_GUI
                 {
                     m_rawImage.Convert(PixelFormat.PixelFormatBgr, m_processedImage);
                 }
-                
+
                 worker.ReportProgress(0);
             }
 
@@ -373,22 +378,22 @@ namespace Colorimeter_Config_GUI
                 m_camCtlDlg.Disconnect();
                 m_camera.Disconnect();
             }
-            
+
             Form1_Load(sender, e);
         }
 
         private void realSizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-                picturebox_test.SizeMode = PictureBoxSizeMode.Normal;
-                picturebox_test.Refresh();
+            picturebox_test.SizeMode = PictureBoxSizeMode.Normal;
+            picturebox_test.Refresh();
 
         }
 
         private void stretchToFillToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                picturebox_test.SizeMode = PictureBoxSizeMode.StretchImage;
-                picturebox_test.Refresh();
+            picturebox_test.SizeMode = PictureBoxSizeMode.StretchImage;
+            picturebox_test.Refresh();
         }
 
         // test prerequisite
@@ -431,9 +436,9 @@ namespace Colorimeter_Config_GUI
             tbox_shopfloor.BackColor = Color.Green;
             return true;
         }
-        
-        
-// test related
+
+
+        // test related
         private void btn_start_Click(object sender, EventArgs e)
         {
             if (!colorimeterstatus())
@@ -468,76 +473,170 @@ namespace Colorimeter_Config_GUI
         }
 
 
-        private Rectangle GetCropRectangle(Bitmap m_prossedimage, float CropThreshold, Size FilterSize, out PointF[] cornerpointsf) 
-        {
-            Rectangle CropRect = new Rectangle(0, 0, int(m_processedImage.cols) - 1, int(m_processedImage.rows) - 1);
-            
-        }
 
-        /*
-        
-        private Rectangle GetCropRectangle(Measurement m, float CropThreshold, Size FilterSize, out ROIRectangle ROIRect)
-        {
-            Rectangle CropRect = new Rectangle(0, 0, m.NbrCols - 1, m.NbrRows - 1);
-            Measurement tmpMeas = m;
 
-            if (FilterSize.Width > 1 || FilterSize.Height > 1)
+        // analysis related
+        private void btn_openrawfile_Click(object sender, EventArgs e)
+        {
+            if (rbtn_colorimeter.Checked)
             {
-                tmpMeas = RadiantCommon20.ImageProcess.MedianFilter(ref tmpMeas, RadiantCommonCS20.TristimType.TrisY, FilterSize, 1, CropRect, -1);
+                m_rawImage.Convert(PixelFormat.PixelFormatMono8, m_processedImage);
+                picturebox_raw.Image = m_processedImage.bitmap;
+            }
+            else if (rbtn_loadfile.Checked)
+            {
+
+                OpenFileDialog ofd = new OpenFileDialog();
+
+                ofd.Title = "Open Image";
+                ofd.Filter = "bmp files (*.bmp) | *.bmp";
+
+                if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    picturebox_raw.Refresh();
+                    picturebox_raw.Image = (Bitmap)System.Drawing.Image.FromFile(ofd.FileName);
+                   
+                }
+                else
+                {
+                    MessageBox.Show("Please check Image Source");
+                }
+                ofd.Dispose();
+
+                // somehow not working. Need debug later
+                if (realSizeToolStripMenuItem.Checked)
+                {
+                    picturebox_raw.SizeMode = PictureBoxSizeMode.Normal;
+                }
+                else
+                {
+                    picturebox_raw.SizeMode = PictureBoxSizeMode.StretchImage;
+                }
+
+                Show();
             }
 
-            CropRect = RadiantCommon20.ImageProcess.CalcClipRange(tmpMeas, MeasurementBase.TristimlusType.TrisY, ImageProcess.ThresholdMethod.PercentOfMax, CropThreshold);
-
-            ROIRect = new ROIRectangle(CropRect);
-            Pen PenColor = new Pen(Color.LightGray);
-            PenColor.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-            PenColor.DashPattern = new float[] { 5.0F, 2.0F };
-            ROIRect.PenColor = PenColor;
-            return CropRect;
         }
 
-        private PMMeasurement CropOutUnit(PMMeasurement Meas, int Col, int Row, int PanelCols, int PanelRows, Rectangle Rect)
+        private void btn_process_Click(object sender, EventArgs e)
         {
-            float DisplayWidthMM = 196f; // orig 110
-            float DisplayHeightMM = 147f; // orig 70
+            if (rbtn_corner.Checked)
+            {
+                Bitmap rawimg = new Bitmap(picturebox_raw.Image);
+                GetCropRectangle(rawimg);
+                
+            }
+            else if (rbtn_9ptuniformity.Checked)
+            {
+            }
+            else if (rbtn_16ptuniformity.Checked)
+            {
+            }
+            else if (rbtn_worstzone.Checked)
+            {
+            }
+            else
+            {
+                MessageBox.Show("Please check processing item");
+            }
 
-            float GapXmm = ((Rect.Width + 1) * Meas.ScaleFactorCol * 1000 - PanelCols * DisplayWidthMM) / (PanelCols - 1);
-            float GapYmm = ((Rect.Height + 1) * Meas.ScaleFactorRow * 1000 - PanelRows * DisplayHeightMM) / (PanelRows - 1);
-
-            float w = ((DisplayWidthMM + GapXmm) / 1000f) / Meas.ScaleFactorCol;
-            int x0 = Rect.Left - (int)((GapXmm / 2000f) / Meas.ScaleFactorCol);
-
-            int xl = x0 + (int)(Col * w);
-            int xr = x0 + (int)((Col + 1) * w);
-            xl = Math.Max(xl, 0);
-            xr = Math.Min(xr, Meas.NbrCols - 1);
-
-            float h = ((DisplayHeightMM + GapYmm) / 1000f) / Meas.ScaleFactorRow;
-            int y0 = Rect.Top - (int)((GapYmm / 2000f) / Meas.ScaleFactorRow);
-
-            int yt = y0 + (int)(Row * h);
-            int yb = y0 + (int)((Row + 1) * h);
-            yt = Math.Max(yt, 0);
-            yb = Math.Min(yb, Meas.NbrRows - 1);
-
-            int AdditionalCropping = 5;
-
-            xl += AdditionalCropping;
-            xr -= AdditionalCropping;
-            yt += AdditionalCropping;
-            yb -= AdditionalCropping;
-
-            Rectangle CropRect = new Rectangle(xl, yt, xr - xl, yb - yt);
-            return Meas.CropOut(CropRect);
         }
 
-         * */
+        private void GetCropRectangle(Bitmap m)
+        {
+            Rectangle CropRect = new Rectangle(0, 0, m.Width - 1, m.Height - 1);
+
+            BlobCounter bbc = new BlobCounter();
+            bbc.FilterBlobs = true;
+            bbc.MinHeight = 5;
+            bbc.MinWidth = 5;
+
+            bbc.ProcessImage(m);
+
+            Blob[] blobs = bbc.GetObjectsInformation();
+            SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
+
+            foreach (var blob in blobs)
+            {
+                List<IntPoint> edgePoints = bbc.GetBlobsEdgePoints(blob);
+                List<IntPoint> cornerPoints;
+
+                // use the shape checker to extract the corner points
+                if (shapeChecker.IsQuadrilateral(edgePoints, out cornerPoints))
+                {
+                    // only do things if the corners from a rectangle 
+                    if (shapeChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
+                    {
+                        List<System.Drawing.Point> Points = new List<System.Drawing.Point>();
+                        foreach (var point in cornerPoints)
+                        {
+                            Points.Add(new System.Drawing.Point(point.X, point.Y));
+                        }
+                        Graphics g = Graphics.FromImage(m);
+                        g.DrawPolygon(new Pen(Color.Red, 5.0f), Points.ToArray());
+
+                        m.Save("F:\\x2displaytest\\test.bmp");
+
+                        g.Dispose();
+                    }
+
+                }
+
+                // check for rectangle 
+
+            }
 
 
-        // test log
 
 
 
+            /*
+        
+
+            private PMMeasurement CropOutUnit(PMMeasurement Meas, int Col, int Row, int PanelCols, int PanelRows, Rectangle Rect)
+            {
+                float DisplayWidthMM = 196f; // orig 110
+                float DisplayHeightMM = 147f; // orig 70
+
+                float GapXmm = ((Rect.Width + 1) * Meas.ScaleFactorCol * 1000 - PanelCols * DisplayWidthMM) / (PanelCols - 1);
+                float GapYmm = ((Rect.Height + 1) * Meas.ScaleFactorRow * 1000 - PanelRows * DisplayHeightMM) / (PanelRows - 1);
+
+                float w = ((DisplayWidthMM + GapXmm) / 1000f) / Meas.ScaleFactorCol;
+                int x0 = Rect.Left - (int)((GapXmm / 2000f) / Meas.ScaleFactorCol);
+
+                int xl = x0 + (int)(Col * w);
+                int xr = x0 + (int)((Col + 1) * w);
+                xl = Math.Max(xl, 0);
+                xr = Math.Min(xr, Meas.NbrCols - 1);
+
+                float h = ((DisplayHeightMM + GapYmm) / 1000f) / Meas.ScaleFactorRow;
+                int y0 = Rect.Top - (int)((GapYmm / 2000f) / Meas.ScaleFactorRow);
+
+                int yt = y0 + (int)(Row * h);
+                int yb = y0 + (int)((Row + 1) * h);
+                yt = Math.Max(yt, 0);
+                yb = Math.Min(yb, Meas.NbrRows - 1);
+
+                int AdditionalCropping = 5;
+
+                xl += AdditionalCropping;
+                xr -= AdditionalCropping;
+                yt += AdditionalCropping;
+                yb -= AdditionalCropping;
+
+                Rectangle CropRect = new Rectangle(xl, yt, xr - xl, yb - yt);
+                return Meas.CropOut(CropRect);
+            }
+
+             * */
+
+
+            // test log
+
+
+
+        }
     }
 }
+
 

@@ -9,3 +9,9 @@ F:\v1colorimeter\src\x2displaytest\obj\Debug\FlyCapture2SimpleGUI_CSharp.Propert
 F:\v1colorimeter\src\x2displaytest\obj\Debug\Colorimeter_Config_GUI.csproj.GenerateResource.Cache
 F:\v1colorimeter\src\x2displaytest\obj\Debug\FlyCapture2SimpleGUI_CSharpd.exe
 F:\v1colorimeter\src\x2displaytest\obj\Debug\FlyCapture2SimpleGUI_CSharpd.pdb
+F:\v1colorimeter\src\x2displaytest\bin\Debug\AForge.dll
+F:\v1colorimeter\src\x2displaytest\bin\Debug\AForge.Imaging.dll
+F:\v1colorimeter\src\x2displaytest\bin\Debug\AForge.Math.dll
+F:\v1colorimeter\src\x2displaytest\bin\Debug\AForge.xml
+F:\v1colorimeter\src\x2displaytest\bin\Debug\AForge.Imaging.xml
+F:\v1colorimeter\src\x2displaytest\bin\Debug\AForge.Math.xml

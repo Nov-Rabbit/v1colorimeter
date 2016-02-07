@@ -53,6 +53,7 @@ namespace Colorimeter_Config_GUI
             this.label_x = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.Btn_Size = new System.Windows.Forms.Button();
             this.Btn_FF = new System.Windows.Forms.Button();
             this.Btn_Color = new System.Windows.Forms.Button();
             this.Btn_Lv = new System.Windows.Forms.Button();
@@ -95,7 +96,24 @@ namespace Colorimeter_Config_GUI
             this.label4 = new System.Windows.Forms.Label();
             this.picturebox_test = new System.Windows.Forms.PictureBox();
             this.Tabs = new System.Windows.Forms.TabControl();
-            this.Btn_Size = new System.Windows.Forms.Button();
+            this.tab_Analysis = new System.Windows.Forms.TabPage();
+            this.gbox_sourcefile = new System.Windows.Forms.GroupBox();
+            this.rbtn_colorimeter = new System.Windows.Forms.RadioButton();
+            this.rbtn_loadfile = new System.Windows.Forms.RadioButton();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.picturebox_raw = new System.Windows.Forms.PictureBox();
+            this.pictureBox_processed = new System.Windows.Forms.PictureBox();
+            this.btn_load = new System.Windows.Forms.Button();
+            this.btn_save = new System.Windows.Forms.Button();
+            this.btn_process = new System.Windows.Forms.Button();
+            this.gbox_process = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbox_image = new System.Windows.Forms.CheckBox();
+            this.cbox_data = new System.Windows.Forms.CheckBox();
+            this.rbtn_corner = new System.Windows.Forms.RadioButton();
+            this.rbtn_9ptuniformity = new System.Windows.Forms.RadioButton();
+            this.rbtn_16ptuniformity = new System.Windows.Forms.RadioButton();
+            this.rbtn_worstzone = new System.Windows.Forms.RadioButton();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -111,6 +129,13 @@ namespace Colorimeter_Config_GUI
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_test)).BeginInit();
             this.Tabs.SuspendLayout();
+            this.tab_Analysis.SuspendLayout();
+            this.gbox_sourcefile.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picturebox_raw)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_processed)).BeginInit();
+            this.gbox_process.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -299,7 +324,7 @@ namespace Colorimeter_Config_GUI
             // label_y
             // 
             this.label_y.AutoSize = true;
-            this.label_y.Location = new System.Drawing.Point(1405, 719);
+            this.label_y.Location = new System.Drawing.Point(1119, 674);
             this.label_y.Name = "label_y";
             this.label_y.Size = new System.Drawing.Size(97, 29);
             this.label_y.TabIndex = 14;
@@ -308,7 +333,7 @@ namespace Colorimeter_Config_GUI
             // label_x
             // 
             this.label_x.AutoSize = true;
-            this.label_x.Location = new System.Drawing.Point(1405, 690);
+            this.label_x.Location = new System.Drawing.Point(1119, 645);
             this.label_x.Name = "label_x";
             this.label_x.Size = new System.Drawing.Size(97, 29);
             this.label_x.TabIndex = 13;
@@ -336,6 +361,17 @@ namespace Colorimeter_Config_GUI
             this.panel2.Size = new System.Drawing.Size(317, 455);
             this.panel2.TabIndex = 9;
             this.panel2.Tag = "";
+            // 
+            // Btn_Size
+            // 
+            this.Btn_Size.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Btn_Size.Location = new System.Drawing.Point(13, 34);
+            this.Btn_Size.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Btn_Size.Name = "Btn_Size";
+            this.Btn_Size.Size = new System.Drawing.Size(297, 80);
+            this.Btn_Size.TabIndex = 10;
+            this.Btn_Size.Text = "Size Calibration";
+            this.Btn_Size.UseVisualStyleBackColor = true;
             // 
             // Btn_FF
             // 
@@ -757,6 +793,7 @@ namespace Colorimeter_Config_GUI
             this.Tabs.Controls.Add(this.Tab_Test);
             this.Tabs.Controls.Add(this.Tab_Audit);
             this.Tabs.Controls.Add(this.Tab_Config);
+            this.Tabs.Controls.Add(this.tab_Analysis);
             this.Tabs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Tabs.Location = new System.Drawing.Point(0, 87);
             this.Tabs.Margin = new System.Windows.Forms.Padding(6);
@@ -765,16 +802,216 @@ namespace Colorimeter_Config_GUI
             this.Tabs.Size = new System.Drawing.Size(1822, 1129);
             this.Tabs.TabIndex = 12;
             // 
-            // Btn_Size
+            // tab_Analysis
             // 
-            this.Btn_Size.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Btn_Size.Location = new System.Drawing.Point(13, 34);
-            this.Btn_Size.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Btn_Size.Name = "Btn_Size";
-            this.Btn_Size.Size = new System.Drawing.Size(297, 80);
-            this.Btn_Size.TabIndex = 10;
-            this.Btn_Size.Text = "Size Calibration";
-            this.Btn_Size.UseVisualStyleBackColor = true;
+            this.tab_Analysis.Controls.Add(this.groupBox1);
+            this.tab_Analysis.Controls.Add(this.gbox_process);
+            this.tab_Analysis.Controls.Add(this.btn_process);
+            this.tab_Analysis.Controls.Add(this.btn_save);
+            this.tab_Analysis.Controls.Add(this.gbox_sourcefile);
+            this.tab_Analysis.Controls.Add(this.btn_load);
+            this.tab_Analysis.Controls.Add(this.tableLayoutPanel1);
+            this.tab_Analysis.Location = new System.Drawing.Point(4, 38);
+            this.tab_Analysis.Name = "tab_Analysis";
+            this.tab_Analysis.Padding = new System.Windows.Forms.Padding(3);
+            this.tab_Analysis.Size = new System.Drawing.Size(1814, 1087);
+            this.tab_Analysis.TabIndex = 3;
+            this.tab_Analysis.Text = "Analysis";
+            this.tab_Analysis.UseVisualStyleBackColor = true;
+            // 
+            // gbox_sourcefile
+            // 
+            this.gbox_sourcefile.Controls.Add(this.rbtn_colorimeter);
+            this.gbox_sourcefile.Controls.Add(this.rbtn_loadfile);
+            this.gbox_sourcefile.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbox_sourcefile.Location = new System.Drawing.Point(8, 691);
+            this.gbox_sourcefile.Name = "gbox_sourcefile";
+            this.gbox_sourcefile.Size = new System.Drawing.Size(373, 214);
+            this.gbox_sourcefile.TabIndex = 6;
+            this.gbox_sourcefile.TabStop = false;
+            this.gbox_sourcefile.Text = "Source Images";
+            // 
+            // rbtn_colorimeter
+            // 
+            this.rbtn_colorimeter.AutoSize = true;
+            this.rbtn_colorimeter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_colorimeter.Location = new System.Drawing.Point(21, 49);
+            this.rbtn_colorimeter.Name = "rbtn_colorimeter";
+            this.rbtn_colorimeter.Size = new System.Drawing.Size(238, 33);
+            this.rbtn_colorimeter.TabIndex = 0;
+            this.rbtn_colorimeter.TabStop = true;
+            this.rbtn_colorimeter.Text = "Colorimeter Image";
+            this.rbtn_colorimeter.UseVisualStyleBackColor = true;
+            // 
+            // rbtn_loadfile
+            // 
+            this.rbtn_loadfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_loadfile.Location = new System.Drawing.Point(21, 75);
+            this.rbtn_loadfile.Name = "rbtn_loadfile";
+            this.rbtn_loadfile.Size = new System.Drawing.Size(189, 73);
+            this.rbtn_loadfile.TabIndex = 1;
+            this.rbtn_loadfile.Text = "Load File";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.picturebox_raw, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pictureBox_processed, 1, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 6);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 86.39761F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.60239F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1414, 669);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // picturebox_raw
+            // 
+            this.picturebox_raw.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picturebox_raw.Location = new System.Drawing.Point(3, 3);
+            this.picturebox_raw.Name = "picturebox_raw";
+            this.picturebox_raw.Size = new System.Drawing.Size(701, 663);
+            this.picturebox_raw.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picturebox_raw.TabIndex = 0;
+            this.picturebox_raw.TabStop = false;
+            // 
+            // pictureBox_processed
+            // 
+            this.pictureBox_processed.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox_processed.Location = new System.Drawing.Point(710, 3);
+            this.pictureBox_processed.Name = "pictureBox_processed";
+            this.pictureBox_processed.Size = new System.Drawing.Size(701, 663);
+            this.pictureBox_processed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox_processed.TabIndex = 1;
+            this.pictureBox_processed.TabStop = false;
+            // 
+            // btn_load
+            // 
+            this.btn_load.Location = new System.Drawing.Point(69, 921);
+            this.btn_load.Name = "btn_load";
+            this.btn_load.Size = new System.Drawing.Size(180, 54);
+            this.btn_load.TabIndex = 2;
+            this.btn_load.Text = "Load";
+            this.btn_load.UseVisualStyleBackColor = true;
+            this.btn_load.Click += new System.EventHandler(this.btn_openrawfile_Click);
+            // 
+            // btn_save
+            // 
+            this.btn_save.Location = new System.Drawing.Point(1210, 921);
+            this.btn_save.Name = "btn_save";
+            this.btn_save.Size = new System.Drawing.Size(189, 54);
+            this.btn_save.TabIndex = 8;
+            this.btn_save.Text = "Save";
+            this.btn_save.UseVisualStyleBackColor = true;
+            // 
+            // btn_process
+            // 
+            this.btn_process.Location = new System.Drawing.Point(627, 921);
+            this.btn_process.Name = "btn_process";
+            this.btn_process.Size = new System.Drawing.Size(177, 54);
+            this.btn_process.TabIndex = 9;
+            this.btn_process.Text = "Process";
+            this.btn_process.UseVisualStyleBackColor = true;
+            this.btn_process.Click += new System.EventHandler(this.btn_process_Click);
+            // 
+            // gbox_process
+            // 
+            this.gbox_process.Controls.Add(this.rbtn_worstzone);
+            this.gbox_process.Controls.Add(this.rbtn_16ptuniformity);
+            this.gbox_process.Controls.Add(this.rbtn_9ptuniformity);
+            this.gbox_process.Controls.Add(this.rbtn_corner);
+            this.gbox_process.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbox_process.Location = new System.Drawing.Point(403, 691);
+            this.gbox_process.Name = "gbox_process";
+            this.gbox_process.Size = new System.Drawing.Size(698, 214);
+            this.gbox_process.TabIndex = 12;
+            this.gbox_process.TabStop = false;
+            this.gbox_process.Text = "Processing Items";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.cbox_data);
+            this.groupBox1.Controls.Add(this.cbox_image);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(1134, 691);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(283, 214);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Save Items";
+            // 
+            // cbox_image
+            // 
+            this.cbox_image.AutoSize = true;
+            this.cbox_image.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbox_image.Location = new System.Drawing.Point(23, 44);
+            this.cbox_image.Name = "cbox_image";
+            this.cbox_image.Size = new System.Drawing.Size(106, 33);
+            this.cbox_image.TabIndex = 0;
+            this.cbox_image.Text = "Image";
+            this.cbox_image.UseVisualStyleBackColor = true;
+            // 
+            // cbox_data
+            // 
+            this.cbox_data.AutoSize = true;
+            this.cbox_data.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbox_data.Location = new System.Drawing.Point(23, 86);
+            this.cbox_data.Name = "cbox_data";
+            this.cbox_data.Size = new System.Drawing.Size(88, 33);
+            this.cbox_data.TabIndex = 1;
+            this.cbox_data.Text = "Data";
+            this.cbox_data.UseVisualStyleBackColor = true;
+            // 
+            // rbtn_corner
+            // 
+            this.rbtn_corner.AutoSize = true;
+            this.rbtn_corner.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_corner.Location = new System.Drawing.Point(23, 43);
+            this.rbtn_corner.Name = "rbtn_corner";
+            this.rbtn_corner.Size = new System.Drawing.Size(240, 33);
+            this.rbtn_corner.TabIndex = 0;
+            this.rbtn_corner.TabStop = true;
+            this.rbtn_corner.Text = "Corner Extraction";
+            this.rbtn_corner.UseVisualStyleBackColor = true;
+            // 
+            // rbtn_9ptuniformity
+            // 
+            this.rbtn_9ptuniformity.AutoSize = true;
+            this.rbtn_9ptuniformity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_9ptuniformity.Location = new System.Drawing.Point(23, 85);
+            this.rbtn_9ptuniformity.Name = "rbtn_9ptuniformity";
+            this.rbtn_9ptuniformity.Size = new System.Drawing.Size(207, 33);
+            this.rbtn_9ptuniformity.TabIndex = 1;
+            this.rbtn_9ptuniformity.TabStop = true;
+            this.rbtn_9ptuniformity.Text = "9-pt Uniformity";
+            this.rbtn_9ptuniformity.UseVisualStyleBackColor = true;
+            // 
+            // rbtn_16ptuniformity
+            // 
+            this.rbtn_16ptuniformity.AutoSize = true;
+            this.rbtn_16ptuniformity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_16ptuniformity.Location = new System.Drawing.Point(23, 124);
+            this.rbtn_16ptuniformity.Name = "rbtn_16ptuniformity";
+            this.rbtn_16ptuniformity.Size = new System.Drawing.Size(221, 33);
+            this.rbtn_16ptuniformity.TabIndex = 2;
+            this.rbtn_16ptuniformity.TabStop = true;
+            this.rbtn_16ptuniformity.Text = "16-pt Uniformity";
+            this.rbtn_16ptuniformity.UseVisualStyleBackColor = true;
+            // 
+            // rbtn_worstzone
+            // 
+            this.rbtn_worstzone.AutoSize = true;
+            this.rbtn_worstzone.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_worstzone.Location = new System.Drawing.Point(23, 163);
+            this.rbtn_worstzone.Name = "rbtn_worstzone";
+            this.rbtn_worstzone.Size = new System.Drawing.Size(171, 33);
+            this.rbtn_worstzone.TabIndex = 3;
+            this.rbtn_worstzone.TabStop = true;
+            this.rbtn_worstzone.Text = "Worst Zone";
+            this.rbtn_worstzone.UseVisualStyleBackColor = true;
             // 
             // Form_Config
             // 
@@ -820,6 +1057,16 @@ namespace Colorimeter_Config_GUI
             this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_test)).EndInit();
             this.Tabs.ResumeLayout(false);
+            this.tab_Analysis.ResumeLayout(false);
+            this.gbox_sourcefile.ResumeLayout(false);
+            this.gbox_sourcefile.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picturebox_raw)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_processed)).EndInit();
+            this.gbox_process.ResumeLayout(false);
+            this.gbox_process.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -894,6 +1141,24 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.TextBox tbox_shopfloor;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button Btn_Size;
+        private System.Windows.Forms.TabPage tab_Analysis;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.PictureBox picturebox_raw;
+        private System.Windows.Forms.PictureBox pictureBox_processed;
+        private System.Windows.Forms.Button btn_load;
+        private System.Windows.Forms.RadioButton rbtn_loadfile;
+        private System.Windows.Forms.RadioButton rbtn_colorimeter;
+        private System.Windows.Forms.GroupBox gbox_sourcefile;
+        private System.Windows.Forms.Button btn_save;
+        private System.Windows.Forms.Button btn_process;
+        private System.Windows.Forms.GroupBox gbox_process;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox cbox_data;
+        private System.Windows.Forms.CheckBox cbox_image;
+        private System.Windows.Forms.RadioButton rbtn_corner;
+        private System.Windows.Forms.RadioButton rbtn_9ptuniformity;
+        private System.Windows.Forms.RadioButton rbtn_16ptuniformity;
+        private System.Windows.Forms.RadioButton rbtn_worstzone;
     }
 }
 
