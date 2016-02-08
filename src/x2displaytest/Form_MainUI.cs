@@ -35,6 +35,8 @@ using AForge.Imaging;
 using AForge.Math;
 using AForge.Math.Geometry;
 
+using DUTclass;
+
 namespace Colorimeter_Config_GUI
 {
 
@@ -62,6 +64,9 @@ namespace Colorimeter_Config_GUI
         string rawdirectory = System.IO.Directory.GetCurrentDirectory() + "\\raw\\";       // raw test logs including important test images.
         string summarydirectory = System.IO.Directory.GetCurrentDirectory() + "\\log\\summary\\"; // summary logs. 
 
+
+        //dut setup
+        DUTclass.hodor dut = new DUTclass.hodor();
         public Form_Config()
         {
             InitializeComponent();
@@ -69,7 +74,7 @@ namespace Colorimeter_Config_GUI
             m_processedImage = new ManagedImage();
             m_camCtlDlg = new CameraControlDialog();
             m_grabThreadExited = new AutoResetEvent(false);
-
+            
         }
 
 
@@ -447,8 +452,9 @@ namespace Colorimeter_Config_GUI
 
         private bool checksnformat()
         {
-            if (tbox_sn.Text.Length == 6)
+            if (tbox_sn.Text.Length == 6) //fake condition. More input is needed from Square
             {
+                
                 return true;
             }
             else
@@ -530,8 +536,13 @@ namespace Colorimeter_Config_GUI
             GetDisplayCorner(processbmp, out displaycornerPoints);
 
             // Show the cropped test image in the UI;
-            refreshtestimage(cropimage(m_processedImage.bitmap));
 
+            Bitmap updateimg = croppingimage(m_processedImage.bitmap, displaycornerPoints);
+
+            refreshtestimage(updateimg);
+
+            updateimg = croppedimage(m_processedImage.bitmap);
+            
             // divide into the data array of interests
 
             // load pass/fail time 
@@ -568,46 +579,74 @@ namespace Colorimeter_Config_GUI
                     if (shapeChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
                     {
                         flagPoints = cornerPoints;
-                        
+                        continue;
                     }
                     else
                     {
                         MessageBox.Show("Cannot Find the Display");
                         flagPoints = null;
                         picturebox_test.Image = m;
-
+                        continue;
                     }
-
                 }
-
+                
             }
             displaycornerPoints = flagPoints;
+
         }
+
+
+
+        private Bitmap croppingimage(Bitmap srcimg, List<IntPoint> cornerPoints)
+        {
+            Graphics g = Graphics.FromImage(srcimg);
+            List<System.Drawing.Point> Points = new List<System.Drawing.Point>();
+            foreach (var point in cornerPoints)
+            {
+                Points.Add(new System.Drawing.Point(point.X, point.Y));
+            }
+            g.DrawPolygon(new Pen(Color.Red, 15.0f), Points.ToArray());
+            srcimg.Save(tempdirectory + tbox_sn.Text + "_cropping.bmp");
+            g.Dispose();
+            return srcimg;
+        }
+        
         // crop the source image to the new crop bmp, returned and stored also in the temp folder
-        private Bitmap cropimage(Bitmap src)
+        private Bitmap croppedimage(Bitmap src)
         {
             //Create crop filter
-            AForge.Imaging.Filters.SimpleQuadrilateralTransformation filter = new AForge.Imaging.Filters.SimpleQuadrilateralTransformation(displaycornerPoints, picturebox_test.Width, picturebox_test.Height);
+            AForge.Imaging.Filters.SimpleQuadrilateralTransformation filter = new AForge.Imaging.Filters.SimpleQuadrilateralTransformation(displaycornerPoints, dut.widthinuipixel, dut.heightinuipixel);
 
             //Create cropped display image
             Bitmap des = filter.Apply(src);
-            des.Save(tempdirectory + tbox_sn.Text + "_crop.bmp");
+            des.Save(tempdirectory + tbox_sn.Text + "_cropped.bmp");
             return des;
         }
 
-        private void refreshtestimage(Bitmap updateimg)
+        private void refreshtestimage(Bitmap srcimg)
         {
             //need add command to create picturetbox automatically
-
                 picturebox_test_update.Visible = true;
-                picturebox_test_update.Image = updateimg;
+                picturebox_test_update.Image = srcimg;
                 picturebox_test_update.Show();
                 picturebox_test_update.Update();
                 picturebox_test_update.Invalidate();
                 picturebox_test_update.Show();
 
+            /*
+           if (picturebox_test.Image != null)
+           {
+               picturebox_test.Image.Dispose();
+           }
+           picturebox_test.Image = updateimg;
+           picturebox_test.Update();
+           picturebox_test.Refresh();
+           picturebox_test.Show();
+            */
             // need dispose control picturebox
         }
+
+
 
 // analysis related
         private void btn_openrawfile_Click(object sender, EventArgs e)
@@ -668,6 +707,17 @@ namespace Colorimeter_Config_GUI
                 else if (rbtn_worstzone.Checked)
                 {
                 }
+                else if (rbtn_cropping.Checked)
+                {
+                    Bitmap rawimg = new Bitmap(picturebox_raw.Image);
+                    Bitmap desimage = croppingimage(rawimg, displaycornerPoints);
+                    pictureBox_processed.Image = desimage;
+                    pictureBox_processed.Update();
+                    pictureBox_processed.Refresh();
+                    pictureBox_processed.Show();
+
+                }
+                    
                 else
                 {
                     MessageBox.Show("Please check processing item");
@@ -714,7 +764,7 @@ namespace Colorimeter_Config_GUI
                         Graphics g = Graphics.FromImage(m);
                         g.DrawPolygon(new Pen(Color.Red, 5.0f), Points.ToArray());
 
-                        m.Save("F:\\x2displaytest\\test.bmp");
+                        m.Save(tempdirectory + tbox_sn.Text + "_cropping.bmp");
 
                         g.Dispose();
                     }

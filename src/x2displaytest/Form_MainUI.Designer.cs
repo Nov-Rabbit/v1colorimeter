@@ -71,6 +71,7 @@ namespace Colorimeter_Config_GUI
             this.label12 = new System.Windows.Forms.Label();
             this.picturebox_audit = new System.Windows.Forms.PictureBox();
             this.Tab_Test = new System.Windows.Forms.TabPage();
+            this.picturebox_test_update = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.rbtn_auto = new System.Windows.Forms.RadioButton();
@@ -92,7 +93,6 @@ namespace Colorimeter_Config_GUI
             this.cbox_contrast = new System.Windows.Forms.CheckBox();
             this.cbox_whitelv = new System.Windows.Forms.CheckBox();
             this.btn_start = new System.Windows.Forms.Button();
-            this.panel5 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tbox_shopfloor = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -130,7 +130,8 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.picturebox_raw = new System.Windows.Forms.PictureBox();
             this.pictureBox_processed = new System.Windows.Forms.PictureBox();
-            this.picturebox_test_update = new System.Windows.Forms.PictureBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.rbtn_cropping = new System.Windows.Forms.RadioButton();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -141,6 +142,7 @@ namespace Colorimeter_Config_GUI
             this.Panel_Audit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_audit)).BeginInit();
             this.Tab_Test.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picturebox_test_update)).BeginInit();
             this.panel7.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -154,7 +156,6 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_raw)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_processed)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picturebox_test_update)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -549,6 +550,7 @@ namespace Colorimeter_Config_GUI
             // 
             // Tab_Test
             // 
+            this.Tab_Test.Controls.Add(this.label18);
             this.Tab_Test.Controls.Add(this.picturebox_test_update);
             this.Tab_Test.Controls.Add(this.label8);
             this.Tab_Test.Controls.Add(this.panel7);
@@ -557,7 +559,6 @@ namespace Colorimeter_Config_GUI
             this.Tab_Test.Controls.Add(this.label6);
             this.Tab_Test.Controls.Add(this.label17);
             this.Tab_Test.Controls.Add(this.panel6);
-            this.Tab_Test.Controls.Add(this.panel5);
             this.Tab_Test.Controls.Add(this.panel4);
             this.Tab_Test.Controls.Add(this.label5);
             this.Tab_Test.Controls.Add(this.panel3);
@@ -570,6 +571,18 @@ namespace Colorimeter_Config_GUI
             this.Tab_Test.TabIndex = 1;
             this.Tab_Test.Text = "Test";
             this.Tab_Test.UseVisualStyleBackColor = true;
+            // 
+            // picturebox_test_update
+            // 
+            this.picturebox_test_update.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picturebox_test_update.Location = new System.Drawing.Point(518, 17);
+            this.picturebox_test_update.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.picturebox_test_update.Name = "picturebox_test_update";
+            this.picturebox_test_update.Size = new System.Drawing.Size(900, 900);
+            this.picturebox_test_update.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picturebox_test_update.TabIndex = 19;
+            this.picturebox_test_update.TabStop = false;
+            this.picturebox_test_update.Visible = false;
             // 
             // label8
             // 
@@ -625,10 +638,10 @@ namespace Colorimeter_Config_GUI
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(83, 928);
+            this.textBox2.Location = new System.Drawing.Point(122, 928);
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(282, 62);
+            this.textBox2.Size = new System.Drawing.Size(243, 62);
             this.textBox2.TabIndex = 0;
             this.textBox2.Visible = false;
             // 
@@ -791,14 +804,6 @@ namespace Colorimeter_Config_GUI
             this.btn_start.Text = "Start";
             this.btn_start.UseVisualStyleBackColor = true;
             this.btn_start.Click += new System.EventHandler(this.btn_start_Click);
-            // 
-            // panel5
-            // 
-            this.panel5.BackColor = System.Drawing.Color.Transparent;
-            this.panel5.Location = new System.Drawing.Point(518, 918);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(911, 86);
-            this.panel5.TabIndex = 11;
             // 
             // panel4
             // 
@@ -975,6 +980,7 @@ namespace Colorimeter_Config_GUI
             // 
             // picturebox_test
             // 
+            this.picturebox_test.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.picturebox_test.Location = new System.Drawing.Point(518, 17);
             this.picturebox_test.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.picturebox_test.Name = "picturebox_test";
@@ -1050,6 +1056,7 @@ namespace Colorimeter_Config_GUI
             // 
             // gbox_process
             // 
+            this.gbox_process.Controls.Add(this.rbtn_cropping);
             this.gbox_process.Controls.Add(this.rbtn_worstzone);
             this.gbox_process.Controls.Add(this.rbtn_16ptuniformity);
             this.gbox_process.Controls.Add(this.rbtn_9ptuniformity);
@@ -1208,16 +1215,28 @@ namespace Colorimeter_Config_GUI
             this.pictureBox_processed.TabIndex = 1;
             this.pictureBox_processed.TabStop = false;
             // 
-            // picturebox_test_update
+            // label18
             // 
-            this.picturebox_test_update.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.picturebox_test_update.Location = new System.Drawing.Point(518, 17);
-            this.picturebox_test_update.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.picturebox_test_update.Name = "picturebox_test_update";
-            this.picturebox_test_update.Size = new System.Drawing.Size(900, 900);
-            this.picturebox_test_update.TabIndex = 19;
-            this.picturebox_test_update.TabStop = false;
-            this.picturebox_test_update.Visible = false;
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(31, 923);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(81, 29);
+            this.label18.TabIndex = 20;
+            this.label18.Text = "Result";
+            this.label18.Visible = false;
+            // 
+            // rbtn_cropping
+            // 
+            this.rbtn_cropping.AutoSize = true;
+            this.rbtn_cropping.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_cropping.Location = new System.Drawing.Point(269, 44);
+            this.rbtn_cropping.Name = "rbtn_cropping";
+            this.rbtn_cropping.Size = new System.Drawing.Size(146, 33);
+            this.rbtn_cropping.TabIndex = 4;
+            this.rbtn_cropping.TabStop = true;
+            this.rbtn_cropping.Text = "Cropping";
+            this.rbtn_cropping.UseVisualStyleBackColor = true;
             // 
             // Form_Config
             // 
@@ -1255,6 +1274,7 @@ namespace Colorimeter_Config_GUI
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_audit)).EndInit();
             this.Tab_Test.ResumeLayout(false);
             this.Tab_Test.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picturebox_test_update)).EndInit();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             this.panel6.ResumeLayout(false);
@@ -1275,7 +1295,6 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_raw)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_processed)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picturebox_test_update)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1323,7 +1342,6 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.PictureBox picturebox_audit;
         private System.Windows.Forms.TabPage Tab_Test;
-        private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.TextBox tbox_errorcode;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBox2;
@@ -1385,6 +1403,8 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.RadioButton rbtn_auto;
         private System.Windows.Forms.RadioButton rbtn_manual;
         private System.Windows.Forms.PictureBox picturebox_test_update;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.RadioButton rbtn_cropping;
     }
 }
 
