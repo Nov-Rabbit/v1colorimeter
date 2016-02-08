@@ -56,6 +56,7 @@ namespace Colorimeter_Config_GUI
         private bool isdemomode = false; //Demo mode can only be used for analysis tab.
         private bool istestimagelock = false; // Lock the picturebox_test or not
         DateTime timezero = DateTime.Now;
+        int systemidletime = 2500; // in millisecond
 
         //log setup
         string currentdirectory = System.IO.Directory.GetCurrentDirectory();             // current working folder
@@ -545,13 +546,19 @@ namespace Colorimeter_Config_GUI
             // Show the cropped test image in the UI;
             // Bitmap srcimg = m_processedImage.bitmap;
             m_processedImage.bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp");
-            Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp", true)); 
+
+            //need save bmp outside as file format and reload so that 
+            Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp", true));
             Bitmap updateimg = croppingimage(srcimg, displaycornerPoints);
 
+            // show cropping image
             refreshtestimage(updateimg);
+            Thread.Sleep(TimeSpan.FromMilliseconds(systemidletime));
 
+            // show cropped image
             updateimg = croppedimage(m_processedImage.bitmap);
-            
+            refreshtestimage(updateimg);
+            Thread.Sleep(TimeSpan.FromMilliseconds(systemidletime));
             // divide into the data array of interests
 
             // load pass/fail time 
@@ -634,17 +641,7 @@ namespace Colorimeter_Config_GUI
 
         private void refreshtestimage(Bitmap srcimg)
         {
-            //need add command to create picturetbox automatically
-
-            /*
-                picturebox_test_update.Visible = true;
-                picturebox_test_update.Image = srcimg;
-                picturebox_test_update.Show();
-                picturebox_test_update.Update();
-                picturebox_test_update.Invalidate();
-                picturebox_test_update.Show();
-            */
-         
+          // istestimagelock = false;
            if (picturebox_test.Image != null)
            {
                picturebox_test.Image.Dispose();
@@ -652,9 +649,6 @@ namespace Colorimeter_Config_GUI
            picturebox_test.Image = srcimg;
            this.Refresh();
            istestimagelock = true;
-           
-  
-            // need dispose control picturebox
         }
 
 
@@ -704,8 +698,6 @@ namespace Colorimeter_Config_GUI
 
                 if (rbtn_corner.Checked)
                 {
-                    Bitmap rawimg = new Bitmap(picturebox_raw.Image);
-                    GetCropRectanglle(rawimg);
 
                 }
                 else if (rbtn_9ptuniformity.Checked)
@@ -740,60 +732,6 @@ namespace Colorimeter_Config_GUI
             }
 
         }
-
-        private void GetCropRectanglle(Bitmap m)
-        {
-            Rectangle CropRect = new Rectangle(0, 0, m.Width - 1, m.Height - 1);
-
-            BlobCounter bbc = new BlobCounter();
-            bbc.FilterBlobs = true;
-            bbc.MinHeight = 5;
-            bbc.MinWidth = 5;
-
-            bbc.ProcessImage(m);
-
-            Blob[] blobs = bbc.GetObjectsInformation();
-            SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
-
-            foreach (var blob in blobs)
-            {
-                List<IntPoint> edgePoints = bbc.GetBlobsEdgePoints(blob);
-                List<IntPoint> cornerPoints;
-
-                // use the shape checker to extract the corner points
-                if (shapeChecker.IsQuadrilateral(edgePoints, out cornerPoints))
-                {
-                    // only do things if the corners from a rectangle 
-                    if (shapeChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
-                    {
-                        List<System.Drawing.Point> Points = new List<System.Drawing.Point>();
-                        foreach (var point in cornerPoints)
-                        {
-                            Points.Add(new System.Drawing.Point(point.X, point.Y));
-                        }
-                        Graphics g = Graphics.FromImage(m);
-                        g.DrawPolygon(new Pen(Color.Red, 5.0f), Points.ToArray());
-
-                        m.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropping.bmp");
-
-                        g.Dispose();
-                    }
-
-                }
-
-                // check for rectangle 
-
-            }
-
-
-
-// test log
-
-
-
-        }
-
-
 
     }
 }
