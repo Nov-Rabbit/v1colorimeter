@@ -48,6 +48,7 @@ namespace Colorimeter_Config_GUI
         private bool m_grabImages;
         private AutoResetEvent m_grabThreadExited;
         private BackgroundWorker m_grabThread;
+        private List<IntPoint> flagPoints, displaycornerPoints;
 
         //test setup
         private bool isdemomode = false; //Demo mode can only be used for analysis tab.
@@ -340,7 +341,7 @@ namespace Colorimeter_Config_GUI
 
                 lock (this)
                 {
-                    m_rawImage.Convert(FlyCapture2Managed. PixelFormat.PixelFormatBgr, m_processedImage);
+                    m_rawImage.Convert(FlyCapture2Managed.PixelFormat.PixelFormatBgr, m_processedImage);
                 }
 
                 worker.ReportProgress(0);
@@ -511,21 +512,25 @@ namespace Colorimeter_Config_GUI
             {
                 btn_start.Enabled = false;
                 btn_start.BackColor = Color.LightBlue;
-                //Time of start test
-                Bitmap m_orig = m_processedImage.bitmap.Clone(new Rectangle(0, 0, m_processedImage.bitmap.Width, m_processedImage.bitmap.Height), System.Drawing.Imaging.PixelFormat.Format1bppIndexed);
-                m_orig.Save(tempdirectory+"flag.bmp");
-                Bitmap flagbmp = (Bitmap)System.Drawing.Image.FromFile(tempdirectory + "flag.bmp", true);
-                Bitmap processbmp = flagbmp.Clone(new Rectangle(0, 0, flagbmp.Width, flagbmp.Height), System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                GetDisplayCorner(processbmp);
-                
+
+                displaytest(m_processedImage);
+
+ 
             }
         }
-        /*
-        private bool displaytest(m_processedImage)
+
+        private bool displaytest(ManagedImage m_processedImage)
         {
             // get display corner position 
+            //Process Image to 1bpp to increase SNR 
+            Bitmap m_orig = m_processedImage.bitmap.Clone(new Rectangle(0, 0, m_processedImage.bitmap.Width, m_processedImage.bitmap.Height), System.Drawing.Imaging.PixelFormat.Format1bppIndexed);
+            // only support the 32bppArgb for Aforge Blob Counter
+            Bitmap processbmp = m_orig.Clone(new Rectangle(0, 0, m_orig.Width, m_orig.Height), System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            
+            GetDisplayCorner(processbmp, out displaycornerPoints);
 
-            // recrop the test image
+            // Show the cropped test image in the UI;
+            refreshtestimage(cropimage(m_processedImage.bitmap));
 
             // divide into the data array of interests
 
@@ -535,11 +540,11 @@ namespace Colorimeter_Config_GUI
 
             return true;
         }
-        */
-        private Rectangle GetDisplayCorner(Bitmap m)
-        {
-            Rectangle CropRect = new Rectangle(0, 0, m.Width - 1, m.Height - 1);
 
+
+        // crop the bitmap with display rectangle inside and get 4 points list
+        private void GetDisplayCorner(Bitmap m, out List<IntPoint> displaycornerPoints)
+        {
             BlobCounter bbc = new BlobCounter();
             bbc.FilterBlobs = true;
             bbc.MinHeight = 5;
@@ -555,26 +560,54 @@ namespace Colorimeter_Config_GUI
                 List<IntPoint> edgePoints = bbc.GetBlobsEdgePoints(blob);
                 List<IntPoint> cornerPoints;
 
+
                 // use the shape checker to extract the corner points
                 if (shapeChecker.IsQuadrilateral(edgePoints, out cornerPoints))
                 {
                     // only do things if the corners from a rectangle 
                     if (shapeChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
                     {
-                        MessageBox.Show("Find Display Corners");
-                        picturebox_test.Image = m;
+                        flagPoints = cornerPoints;
+                        
                     }
                     else
                     {
                         MessageBox.Show("Cannot Find the Display");
+                        flagPoints = null;
                         picturebox_test.Image = m;
+
                     }
-                }     
+
+                }
+
             }
-            return CropRect;
+            displaycornerPoints = flagPoints;
+        }
+        // crop the source image to the new crop bmp, returned and stored also in the temp folder
+        private Bitmap cropimage(Bitmap src)
+        {
+            //Create crop filter
+            AForge.Imaging.Filters.SimpleQuadrilateralTransformation filter = new AForge.Imaging.Filters.SimpleQuadrilateralTransformation(displaycornerPoints, picturebox_test.Width, picturebox_test.Height);
+
+            //Create cropped display image
+            Bitmap des = filter.Apply(src);
+            des.Save(tempdirectory + tbox_sn.Text + "_crop.bmp");
+            return des;
         }
 
+        private void refreshtestimage(Bitmap updateimg)
+        {
+            //need add command to create picturetbox automatically
 
+                picturebox_test_update.Visible = true;
+                picturebox_test_update.Image = updateimg;
+                picturebox_test_update.Show();
+                picturebox_test_update.Update();
+                picturebox_test_update.Invalidate();
+                picturebox_test_update.Show();
+
+            // need dispose control picturebox
+        }
 
 // analysis related
         private void btn_openrawfile_Click(object sender, EventArgs e)

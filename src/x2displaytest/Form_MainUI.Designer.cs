@@ -71,16 +71,33 @@ namespace Colorimeter_Config_GUI
             this.label12 = new System.Windows.Forms.Label();
             this.picturebox_audit = new System.Windows.Forms.PictureBox();
             this.Tab_Test = new System.Windows.Forms.TabPage();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.tbox_errorcode = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.rbtn_auto = new System.Windows.Forms.RadioButton();
+            this.rbtn_manual = new System.Windows.Forms.RadioButton();
+            this.tbox_errorcode = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.cbox_blue = new System.Windows.Forms.CheckBox();
+            this.cbox_green = new System.Windows.Forms.CheckBox();
+            this.cbox_red = new System.Windows.Forms.CheckBox();
+            this.cbox_blacklv = new System.Windows.Forms.CheckBox();
+            this.cbox_gamma = new System.Windows.Forms.CheckBox();
+            this.cbox_mura_black0 = new System.Windows.Forms.CheckBox();
+            this.cbox_white_mura = new System.Windows.Forms.CheckBox();
+            this.cbox_mura_grey127 = new System.Windows.Forms.CheckBox();
+            this.cbox_colorgamut = new System.Windows.Forms.CheckBox();
+            this.cbox_contrast = new System.Windows.Forms.CheckBox();
+            this.cbox_whitelv = new System.Windows.Forms.CheckBox();
+            this.btn_start = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tbox_shopfloor = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.tbox_dut_connect = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.btn_start = new System.Windows.Forms.Button();
             this.tbox_sn = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -113,23 +130,7 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.picturebox_raw = new System.Windows.Forms.PictureBox();
             this.pictureBox_processed = new System.Windows.Forms.PictureBox();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.cbox_whitelv = new System.Windows.Forms.CheckBox();
-            this.cbox_contrast = new System.Windows.Forms.CheckBox();
-            this.cbox_colorgamut = new System.Windows.Forms.CheckBox();
-            this.cbox_mura_grey127 = new System.Windows.Forms.CheckBox();
-            this.cbox_white_mura = new System.Windows.Forms.CheckBox();
-            this.cbox_mura_black0 = new System.Windows.Forms.CheckBox();
-            this.cbox_gamma = new System.Windows.Forms.CheckBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.cbox_blacklv = new System.Windows.Forms.CheckBox();
-            this.cbox_red = new System.Windows.Forms.CheckBox();
-            this.cbox_green = new System.Windows.Forms.CheckBox();
-            this.cbox_blue = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.rbtn_manual = new System.Windows.Forms.RadioButton();
-            this.rbtn_auto = new System.Windows.Forms.RadioButton();
+            this.picturebox_test_update = new System.Windows.Forms.PictureBox();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -140,6 +141,8 @@ namespace Colorimeter_Config_GUI
             this.Panel_Audit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_audit)).BeginInit();
             this.Tab_Test.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_test)).BeginInit();
@@ -151,8 +154,7 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_raw)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_processed)).BeginInit();
-            this.panel6.SuspendLayout();
-            this.panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picturebox_test_update)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -165,7 +167,7 @@ namespace Colorimeter_Config_GUI
             this.toolStrip1.Location = new System.Drawing.Point(0, 53);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(2);
-            this.toolStrip1.Size = new System.Drawing.Size(1433, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1517, 27);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -210,10 +212,10 @@ namespace Colorimeter_Config_GUI
             this.toolStripStatusLabelImageSize,
             this.toolStripStatusLabelFrameRate,
             this.toolStripStatusLabelTimestamp});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1087);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1100);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1433, 42);
+            this.statusStrip1.Size = new System.Drawing.Size(1517, 42);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -243,7 +245,7 @@ namespace Colorimeter_Config_GUI
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(12, 6, 3, 6);
-            this.menuStrip1.Size = new System.Drawing.Size(1433, 53);
+            this.menuStrip1.Size = new System.Drawing.Size(1517, 53);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -547,6 +549,7 @@ namespace Colorimeter_Config_GUI
             // 
             // Tab_Test
             // 
+            this.Tab_Test.Controls.Add(this.picturebox_test_update);
             this.Tab_Test.Controls.Add(this.label8);
             this.Tab_Test.Controls.Add(this.panel7);
             this.Tab_Test.Controls.Add(this.tbox_errorcode);
@@ -568,23 +571,6 @@ namespace Colorimeter_Config_GUI
             this.Tab_Test.Text = "Test";
             this.Tab_Test.UseVisualStyleBackColor = true;
             // 
-            // panel5
-            // 
-            this.panel5.BackColor = System.Drawing.Color.Transparent;
-            this.panel5.Location = new System.Drawing.Point(518, 918);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(911, 86);
-            this.panel5.TabIndex = 11;
-            // 
-            // tbox_errorcode
-            // 
-            this.tbox_errorcode.Location = new System.Drawing.Point(399, 955);
-            this.tbox_errorcode.Name = "tbox_errorcode";
-            this.tbox_errorcode.ReadOnly = true;
-            this.tbox_errorcode.Size = new System.Drawing.Size(87, 35);
-            this.tbox_errorcode.TabIndex = 13;
-            this.tbox_errorcode.Visible = false;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -596,6 +582,46 @@ namespace Colorimeter_Config_GUI
             this.label8.Text = "Error Code";
             this.label8.Visible = false;
             // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.rbtn_auto);
+            this.panel7.Controls.Add(this.rbtn_manual);
+            this.panel7.Location = new System.Drawing.Point(14, 407);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(496, 105);
+            this.panel7.TabIndex = 18;
+            // 
+            // rbtn_auto
+            // 
+            this.rbtn_auto.AutoSize = true;
+            this.rbtn_auto.Location = new System.Drawing.Point(252, 34);
+            this.rbtn_auto.Name = "rbtn_auto";
+            this.rbtn_auto.Size = new System.Drawing.Size(143, 33);
+            this.rbtn_auto.TabIndex = 1;
+            this.rbtn_auto.Text = "Automatic";
+            this.rbtn_auto.UseVisualStyleBackColor = true;
+            // 
+            // rbtn_manual
+            // 
+            this.rbtn_manual.AutoSize = true;
+            this.rbtn_manual.Checked = true;
+            this.rbtn_manual.Location = new System.Drawing.Point(22, 34);
+            this.rbtn_manual.Name = "rbtn_manual";
+            this.rbtn_manual.Size = new System.Drawing.Size(116, 33);
+            this.rbtn_manual.TabIndex = 0;
+            this.rbtn_manual.TabStop = true;
+            this.rbtn_manual.Text = "Manual";
+            this.rbtn_manual.UseVisualStyleBackColor = true;
+            // 
+            // tbox_errorcode
+            // 
+            this.tbox_errorcode.Location = new System.Drawing.Point(399, 955);
+            this.tbox_errorcode.Name = "tbox_errorcode";
+            this.tbox_errorcode.ReadOnly = true;
+            this.tbox_errorcode.Size = new System.Drawing.Size(87, 35);
+            this.tbox_errorcode.TabIndex = 13;
+            this.tbox_errorcode.Visible = false;
+            // 
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -605,6 +631,174 @@ namespace Colorimeter_Config_GUI
             this.textBox2.Size = new System.Drawing.Size(282, 62);
             this.textBox2.TabIndex = 0;
             this.textBox2.Visible = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(17, 379);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(138, 29);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "Test Mode";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(18, 515);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(142, 29);
+            this.label17.TabIndex = 16;
+            this.label17.Text = "Test_Items";
+            // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.cbox_blue);
+            this.panel6.Controls.Add(this.cbox_green);
+            this.panel6.Controls.Add(this.cbox_red);
+            this.panel6.Controls.Add(this.cbox_blacklv);
+            this.panel6.Controls.Add(this.cbox_gamma);
+            this.panel6.Controls.Add(this.cbox_mura_black0);
+            this.panel6.Controls.Add(this.cbox_white_mura);
+            this.panel6.Controls.Add(this.cbox_mura_grey127);
+            this.panel6.Controls.Add(this.cbox_colorgamut);
+            this.panel6.Controls.Add(this.cbox_contrast);
+            this.panel6.Controls.Add(this.cbox_whitelv);
+            this.panel6.Controls.Add(this.btn_start);
+            this.panel6.Location = new System.Drawing.Point(17, 547);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(494, 370);
+            this.panel6.TabIndex = 15;
+            // 
+            // cbox_blue
+            // 
+            this.cbox_blue.AutoSize = true;
+            this.cbox_blue.Location = new System.Drawing.Point(8, 198);
+            this.cbox_blue.Name = "cbox_blue";
+            this.cbox_blue.Size = new System.Drawing.Size(132, 33);
+            this.cbox_blue.TabIndex = 25;
+            this.cbox_blue.Text = "Blue xyY";
+            this.cbox_blue.UseVisualStyleBackColor = true;
+            // 
+            // cbox_green
+            // 
+            this.cbox_green.AutoSize = true;
+            this.cbox_green.Location = new System.Drawing.Point(8, 159);
+            this.cbox_green.Name = "cbox_green";
+            this.cbox_green.Size = new System.Drawing.Size(150, 33);
+            this.cbox_green.TabIndex = 24;
+            this.cbox_green.Text = "Green xyY";
+            this.cbox_green.UseVisualStyleBackColor = true;
+            // 
+            // cbox_red
+            // 
+            this.cbox_red.AutoSize = true;
+            this.cbox_red.Location = new System.Drawing.Point(8, 120);
+            this.cbox_red.Name = "cbox_red";
+            this.cbox_red.Size = new System.Drawing.Size(128, 33);
+            this.cbox_red.TabIndex = 23;
+            this.cbox_red.Text = "Red xyY";
+            this.cbox_red.UseVisualStyleBackColor = true;
+            // 
+            // cbox_blacklv
+            // 
+            this.cbox_blacklv.AutoSize = true;
+            this.cbox_blacklv.Location = new System.Drawing.Point(8, 42);
+            this.cbox_blacklv.Name = "cbox_blacklv";
+            this.cbox_blacklv.Size = new System.Drawing.Size(221, 33);
+            this.cbox_blacklv.TabIndex = 22;
+            this.cbox_blacklv.Text = "Black Luminance";
+            this.cbox_blacklv.UseVisualStyleBackColor = true;
+            // 
+            // cbox_gamma
+            // 
+            this.cbox_gamma.AutoSize = true;
+            this.cbox_gamma.Location = new System.Drawing.Point(8, 276);
+            this.cbox_gamma.Name = "cbox_gamma";
+            this.cbox_gamma.Size = new System.Drawing.Size(123, 33);
+            this.cbox_gamma.TabIndex = 21;
+            this.cbox_gamma.Text = "Gamma";
+            this.cbox_gamma.UseVisualStyleBackColor = true;
+            // 
+            // cbox_mura_black0
+            // 
+            this.cbox_mura_black0.AutoSize = true;
+            this.cbox_mura_black0.Location = new System.Drawing.Point(249, 3);
+            this.cbox_mura_black0.Name = "cbox_mura_black0";
+            this.cbox_mura_black0.Size = new System.Drawing.Size(200, 33);
+            this.cbox_mura_black0.TabIndex = 20;
+            this.cbox_mura_black0.Text = "Mura at black 0";
+            this.cbox_mura_black0.UseVisualStyleBackColor = true;
+            // 
+            // cbox_white_mura
+            // 
+            this.cbox_white_mura.AutoSize = true;
+            this.cbox_white_mura.Location = new System.Drawing.Point(250, 81);
+            this.cbox_white_mura.Name = "cbox_white_mura";
+            this.cbox_white_mura.Size = new System.Drawing.Size(226, 33);
+            this.cbox_white_mura.TabIndex = 19;
+            this.cbox_white_mura.Text = "Mura at white 255";
+            this.cbox_white_mura.UseVisualStyleBackColor = true;
+            // 
+            // cbox_mura_grey127
+            // 
+            this.cbox_mura_grey127.AutoSize = true;
+            this.cbox_mura_grey127.Location = new System.Drawing.Point(250, 42);
+            this.cbox_mura_grey127.Name = "cbox_mura_grey127";
+            this.cbox_mura_grey127.Size = new System.Drawing.Size(219, 33);
+            this.cbox_mura_grey127.TabIndex = 18;
+            this.cbox_mura_grey127.Text = "Mura at Gray 127";
+            this.cbox_mura_grey127.UseVisualStyleBackColor = true;
+            // 
+            // cbox_colorgamut
+            // 
+            this.cbox_colorgamut.AutoSize = true;
+            this.cbox_colorgamut.Location = new System.Drawing.Point(8, 237);
+            this.cbox_colorgamut.Name = "cbox_colorgamut";
+            this.cbox_colorgamut.Size = new System.Drawing.Size(219, 33);
+            this.cbox_colorgamut.TabIndex = 17;
+            this.cbox_colorgamut.Text = "CIE Color Gamut";
+            this.cbox_colorgamut.UseVisualStyleBackColor = true;
+            // 
+            // cbox_contrast
+            // 
+            this.cbox_contrast.AutoSize = true;
+            this.cbox_contrast.Location = new System.Drawing.Point(8, 81);
+            this.cbox_contrast.Name = "cbox_contrast";
+            this.cbox_contrast.Size = new System.Drawing.Size(128, 33);
+            this.cbox_contrast.TabIndex = 16;
+            this.cbox_contrast.Text = "Contrast";
+            this.cbox_contrast.UseVisualStyleBackColor = true;
+            // 
+            // cbox_whitelv
+            // 
+            this.cbox_whitelv.AutoSize = true;
+            this.cbox_whitelv.Location = new System.Drawing.Point(8, 3);
+            this.cbox_whitelv.Name = "cbox_whitelv";
+            this.cbox_whitelv.Size = new System.Drawing.Size(223, 33);
+            this.cbox_whitelv.TabIndex = 15;
+            this.cbox_whitelv.Text = "White Luminance";
+            this.cbox_whitelv.UseVisualStyleBackColor = true;
+            // 
+            // btn_start
+            // 
+            this.btn_start.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_start.Location = new System.Drawing.Point(182, 283);
+            this.btn_start.Name = "btn_start";
+            this.btn_start.Size = new System.Drawing.Size(256, 81);
+            this.btn_start.TabIndex = 14;
+            this.btn_start.Text = "Start";
+            this.btn_start.UseVisualStyleBackColor = true;
+            this.btn_start.Click += new System.EventHandler(this.btn_start_Click);
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.Transparent;
+            this.panel5.Location = new System.Drawing.Point(518, 918);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(911, 86);
+            this.panel5.TabIndex = 11;
             // 
             // panel4
             // 
@@ -659,17 +853,6 @@ namespace Colorimeter_Config_GUI
             this.label15.Size = new System.Drawing.Size(186, 29);
             this.label15.TabIndex = 15;
             this.label15.Text = "DUT Connected";
-            // 
-            // btn_start
-            // 
-            this.btn_start.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_start.Location = new System.Drawing.Point(182, 283);
-            this.btn_start.Name = "btn_start";
-            this.btn_start.Size = new System.Drawing.Size(256, 81);
-            this.btn_start.TabIndex = 14;
-            this.btn_start.Text = "Start";
-            this.btn_start.UseVisualStyleBackColor = true;
-            this.btn_start.Click += new System.EventHandler(this.btn_start_Click);
             // 
             // tbox_sn
             // 
@@ -1025,191 +1208,22 @@ namespace Colorimeter_Config_GUI
             this.pictureBox_processed.TabIndex = 1;
             this.pictureBox_processed.TabStop = false;
             // 
-            // panel6
+            // picturebox_test_update
             // 
-            this.panel6.Controls.Add(this.cbox_blue);
-            this.panel6.Controls.Add(this.cbox_green);
-            this.panel6.Controls.Add(this.cbox_red);
-            this.panel6.Controls.Add(this.cbox_blacklv);
-            this.panel6.Controls.Add(this.cbox_gamma);
-            this.panel6.Controls.Add(this.cbox_mura_black0);
-            this.panel6.Controls.Add(this.cbox_white_mura);
-            this.panel6.Controls.Add(this.cbox_mura_grey127);
-            this.panel6.Controls.Add(this.cbox_colorgamut);
-            this.panel6.Controls.Add(this.cbox_contrast);
-            this.panel6.Controls.Add(this.cbox_whitelv);
-            this.panel6.Controls.Add(this.btn_start);
-            this.panel6.Location = new System.Drawing.Point(17, 547);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(494, 370);
-            this.panel6.TabIndex = 15;
-            // 
-            // cbox_whitelv
-            // 
-            this.cbox_whitelv.AutoSize = true;
-            this.cbox_whitelv.Location = new System.Drawing.Point(8, 3);
-            this.cbox_whitelv.Name = "cbox_whitelv";
-            this.cbox_whitelv.Size = new System.Drawing.Size(223, 33);
-            this.cbox_whitelv.TabIndex = 15;
-            this.cbox_whitelv.Text = "White Luminance";
-            this.cbox_whitelv.UseVisualStyleBackColor = true;
-            // 
-            // cbox_contrast
-            // 
-            this.cbox_contrast.AutoSize = true;
-            this.cbox_contrast.Location = new System.Drawing.Point(8, 81);
-            this.cbox_contrast.Name = "cbox_contrast";
-            this.cbox_contrast.Size = new System.Drawing.Size(128, 33);
-            this.cbox_contrast.TabIndex = 16;
-            this.cbox_contrast.Text = "Contrast";
-            this.cbox_contrast.UseVisualStyleBackColor = true;
-            // 
-            // cbox_colorgamut
-            // 
-            this.cbox_colorgamut.AutoSize = true;
-            this.cbox_colorgamut.Location = new System.Drawing.Point(8, 237);
-            this.cbox_colorgamut.Name = "cbox_colorgamut";
-            this.cbox_colorgamut.Size = new System.Drawing.Size(219, 33);
-            this.cbox_colorgamut.TabIndex = 17;
-            this.cbox_colorgamut.Text = "CIE Color Gamut";
-            this.cbox_colorgamut.UseVisualStyleBackColor = true;
-            // 
-            // cbox_mura_grey127
-            // 
-            this.cbox_mura_grey127.AutoSize = true;
-            this.cbox_mura_grey127.Location = new System.Drawing.Point(250, 42);
-            this.cbox_mura_grey127.Name = "cbox_mura_grey127";
-            this.cbox_mura_grey127.Size = new System.Drawing.Size(219, 33);
-            this.cbox_mura_grey127.TabIndex = 18;
-            this.cbox_mura_grey127.Text = "Mura at Gray 127";
-            this.cbox_mura_grey127.UseVisualStyleBackColor = true;
-            // 
-            // cbox_white_mura
-            // 
-            this.cbox_white_mura.AutoSize = true;
-            this.cbox_white_mura.Location = new System.Drawing.Point(250, 81);
-            this.cbox_white_mura.Name = "cbox_white_mura";
-            this.cbox_white_mura.Size = new System.Drawing.Size(226, 33);
-            this.cbox_white_mura.TabIndex = 19;
-            this.cbox_white_mura.Text = "Mura at white 255";
-            this.cbox_white_mura.UseVisualStyleBackColor = true;
-            // 
-            // cbox_mura_black0
-            // 
-            this.cbox_mura_black0.AutoSize = true;
-            this.cbox_mura_black0.Location = new System.Drawing.Point(249, 3);
-            this.cbox_mura_black0.Name = "cbox_mura_black0";
-            this.cbox_mura_black0.Size = new System.Drawing.Size(200, 33);
-            this.cbox_mura_black0.TabIndex = 20;
-            this.cbox_mura_black0.Text = "Mura at black 0";
-            this.cbox_mura_black0.UseVisualStyleBackColor = true;
-            // 
-            // cbox_gamma
-            // 
-            this.cbox_gamma.AutoSize = true;
-            this.cbox_gamma.Location = new System.Drawing.Point(8, 276);
-            this.cbox_gamma.Name = "cbox_gamma";
-            this.cbox_gamma.Size = new System.Drawing.Size(123, 33);
-            this.cbox_gamma.TabIndex = 21;
-            this.cbox_gamma.Text = "Gamma";
-            this.cbox_gamma.UseVisualStyleBackColor = true;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(18, 515);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(142, 29);
-            this.label17.TabIndex = 16;
-            this.label17.Text = "Test_Items";
-            // 
-            // cbox_blacklv
-            // 
-            this.cbox_blacklv.AutoSize = true;
-            this.cbox_blacklv.Location = new System.Drawing.Point(8, 42);
-            this.cbox_blacklv.Name = "cbox_blacklv";
-            this.cbox_blacklv.Size = new System.Drawing.Size(221, 33);
-            this.cbox_blacklv.TabIndex = 22;
-            this.cbox_blacklv.Text = "Black Luminance";
-            this.cbox_blacklv.UseVisualStyleBackColor = true;
-            // 
-            // cbox_red
-            // 
-            this.cbox_red.AutoSize = true;
-            this.cbox_red.Location = new System.Drawing.Point(8, 120);
-            this.cbox_red.Name = "cbox_red";
-            this.cbox_red.Size = new System.Drawing.Size(128, 33);
-            this.cbox_red.TabIndex = 23;
-            this.cbox_red.Text = "Red xyY";
-            this.cbox_red.UseVisualStyleBackColor = true;
-            // 
-            // cbox_green
-            // 
-            this.cbox_green.AutoSize = true;
-            this.cbox_green.Location = new System.Drawing.Point(8, 159);
-            this.cbox_green.Name = "cbox_green";
-            this.cbox_green.Size = new System.Drawing.Size(150, 33);
-            this.cbox_green.TabIndex = 24;
-            this.cbox_green.Text = "Green xyY";
-            this.cbox_green.UseVisualStyleBackColor = true;
-            // 
-            // cbox_blue
-            // 
-            this.cbox_blue.AutoSize = true;
-            this.cbox_blue.Location = new System.Drawing.Point(8, 198);
-            this.cbox_blue.Name = "cbox_blue";
-            this.cbox_blue.Size = new System.Drawing.Size(132, 33);
-            this.cbox_blue.TabIndex = 25;
-            this.cbox_blue.Text = "Blue xyY";
-            this.cbox_blue.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(17, 379);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(138, 29);
-            this.label6.TabIndex = 17;
-            this.label6.Text = "Test Mode";
-            // 
-            // panel7
-            // 
-            this.panel7.Controls.Add(this.rbtn_auto);
-            this.panel7.Controls.Add(this.rbtn_manual);
-            this.panel7.Location = new System.Drawing.Point(14, 407);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(496, 105);
-            this.panel7.TabIndex = 18;
-            // 
-            // rbtn_manual
-            // 
-            this.rbtn_manual.AutoSize = true;
-            this.rbtn_manual.Checked = true;
-            this.rbtn_manual.Location = new System.Drawing.Point(22, 34);
-            this.rbtn_manual.Name = "rbtn_manual";
-            this.rbtn_manual.Size = new System.Drawing.Size(116, 33);
-            this.rbtn_manual.TabIndex = 0;
-            this.rbtn_manual.TabStop = true;
-            this.rbtn_manual.Text = "Manual";
-            this.rbtn_manual.UseVisualStyleBackColor = true;
-            // 
-            // rbtn_auto
-            // 
-            this.rbtn_auto.AutoSize = true;
-            this.rbtn_auto.Location = new System.Drawing.Point(252, 34);
-            this.rbtn_auto.Name = "rbtn_auto";
-            this.rbtn_auto.Size = new System.Drawing.Size(143, 33);
-            this.rbtn_auto.TabIndex = 1;
-            this.rbtn_auto.Text = "Automatic";
-            this.rbtn_auto.UseVisualStyleBackColor = true;
+            this.picturebox_test_update.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picturebox_test_update.Location = new System.Drawing.Point(518, 17);
+            this.picturebox_test_update.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.picturebox_test_update.Name = "picturebox_test_update";
+            this.picturebox_test_update.Size = new System.Drawing.Size(900, 900);
+            this.picturebox_test_update.TabIndex = 19;
+            this.picturebox_test_update.TabStop = false;
+            this.picturebox_test_update.Visible = false;
             // 
             // Form_Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1433, 1129);
+            this.ClientSize = new System.Drawing.Size(1517, 1142);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label1);
@@ -1241,6 +1255,10 @@ namespace Colorimeter_Config_GUI
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_audit)).EndInit();
             this.Tab_Test.ResumeLayout(false);
             this.Tab_Test.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -1257,10 +1275,7 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_raw)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_processed)).EndInit();
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picturebox_test_update)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1369,6 +1384,7 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.RadioButton rbtn_auto;
         private System.Windows.Forms.RadioButton rbtn_manual;
+        private System.Windows.Forms.PictureBox picturebox_test_update;
     }
 }
 
