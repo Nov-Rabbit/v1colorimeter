@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+F:\v1colorimeter-b4e72959e52425efc6d299b503c06ac6ea3e0895\src\x2displaytest\bin\x64\Debug\FlyCapture2SimpleGUI_CSharpd.exe.config
+F:\v1colorimeter-b4e72959e52425efc6d299b503c06ac6ea3e0895\src\x2displaytest\obj\x64\Debug\FlyCapture2SimpleGUI_CSharpd.exe
+F:\v1colorimeter-b4e72959e52425efc6d299b503c06ac6ea3e0895\src\x2displaytest\obj\x64\Debug\FlyCapture2SimpleGUI_CSharpd.pdb
+>>>>>>> cy/v1_evolution
 F:\v1colorimeter\src\x2displaytest\bin\x64\Debug\FlyCapture2SimpleGUI_CSharpd.exe.config
 F:\v1colorimeter\src\x2displaytest\bin\x64\Debug\FlyCapture2SimpleGUI_CSharpd.exe
 F:\v1colorimeter\src\x2displaytest\bin\x64\Debug\FlyCapture2SimpleGUI_CSharpd.pdb
