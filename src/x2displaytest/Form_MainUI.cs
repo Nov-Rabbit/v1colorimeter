@@ -64,9 +64,12 @@ namespace Colorimeter_Config_GUI
         string rawdirectory = System.IO.Directory.GetCurrentDirectory() + "\\raw\\";       // raw test logs including important test images.
         string summarydirectory = System.IO.Directory.GetCurrentDirectory() + "\\log\\summary\\"; // summary logs. 
 
-
         //dut setup
         DUTclass.hodor dut = new DUTclass.hodor();
+
+        //log setup
+        string str_DateTime = string.Format("{0:yyyyMMdd}" + "{0:HHmmss}", DateTime.Now, DateTime.Now);
+
         public Form_Config()
         {
             InitializeComponent();
@@ -536,8 +539,10 @@ namespace Colorimeter_Config_GUI
             GetDisplayCorner(processbmp, out displaycornerPoints);
 
             // Show the cropped test image in the UI;
-
-            Bitmap updateimg = croppingimage(m_processedImage.bitmap, displaycornerPoints);
+            // Bitmap srcimg = m_processedImage.bitmap;
+            m_processedImage.bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp");
+            Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp", true)); 
+            Bitmap updateimg = croppingimage(srcimg, displaycornerPoints);
 
             refreshtestimage(updateimg);
 
@@ -606,7 +611,7 @@ namespace Colorimeter_Config_GUI
                 Points.Add(new System.Drawing.Point(point.X, point.Y));
             }
             g.DrawPolygon(new Pen(Color.Red, 15.0f), Points.ToArray());
-            srcimg.Save(tempdirectory + tbox_sn.Text + "_cropping.bmp");
+            srcimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropping.bmp");
             g.Dispose();
             return srcimg;
         }
@@ -619,7 +624,7 @@ namespace Colorimeter_Config_GUI
 
             //Create cropped display image
             Bitmap des = filter.Apply(src);
-            des.Save(tempdirectory + tbox_sn.Text + "_cropped.bmp");
+            des.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
             return des;
         }
 
@@ -764,7 +769,7 @@ namespace Colorimeter_Config_GUI
                         Graphics g = Graphics.FromImage(m);
                         g.DrawPolygon(new Pen(Color.Red, 5.0f), Points.ToArray());
 
-                        m.Save(tempdirectory + tbox_sn.Text + "_cropping.bmp");
+                        m.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropping.bmp");
 
                         g.Dispose();
                     }
