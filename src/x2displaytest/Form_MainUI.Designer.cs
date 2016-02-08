@@ -92,28 +92,44 @@ namespace Colorimeter_Config_GUI
             this.label10 = new System.Windows.Forms.Label();
             this.tbox_ccdtemp = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.picturebox_test = new System.Windows.Forms.PictureBox();
             this.Tabs = new System.Windows.Forms.TabControl();
             this.tab_Analysis = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbox_data = new System.Windows.Forms.CheckBox();
+            this.cbox_image = new System.Windows.Forms.CheckBox();
+            this.gbox_process = new System.Windows.Forms.GroupBox();
+            this.rbtn_worstzone = new System.Windows.Forms.RadioButton();
+            this.rbtn_16ptuniformity = new System.Windows.Forms.RadioButton();
+            this.rbtn_9ptuniformity = new System.Windows.Forms.RadioButton();
+            this.rbtn_corner = new System.Windows.Forms.RadioButton();
+            this.btn_process = new System.Windows.Forms.Button();
+            this.btn_save = new System.Windows.Forms.Button();
             this.gbox_sourcefile = new System.Windows.Forms.GroupBox();
             this.rbtn_colorimeter = new System.Windows.Forms.RadioButton();
             this.rbtn_loadfile = new System.Windows.Forms.RadioButton();
+            this.btn_load = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.picturebox_raw = new System.Windows.Forms.PictureBox();
             this.pictureBox_processed = new System.Windows.Forms.PictureBox();
-            this.btn_load = new System.Windows.Forms.Button();
-            this.btn_save = new System.Windows.Forms.Button();
-            this.btn_process = new System.Windows.Forms.Button();
-            this.gbox_process = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cbox_image = new System.Windows.Forms.CheckBox();
-            this.cbox_data = new System.Windows.Forms.CheckBox();
-            this.rbtn_corner = new System.Windows.Forms.RadioButton();
-            this.rbtn_9ptuniformity = new System.Windows.Forms.RadioButton();
-            this.rbtn_16ptuniformity = new System.Windows.Forms.RadioButton();
-            this.rbtn_worstzone = new System.Windows.Forms.RadioButton();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.cbox_whitelv = new System.Windows.Forms.CheckBox();
+            this.cbox_contrast = new System.Windows.Forms.CheckBox();
+            this.cbox_colorgamut = new System.Windows.Forms.CheckBox();
+            this.cbox_mura_grey127 = new System.Windows.Forms.CheckBox();
+            this.cbox_white_mura = new System.Windows.Forms.CheckBox();
+            this.cbox_mura_black0 = new System.Windows.Forms.CheckBox();
+            this.cbox_gamma = new System.Windows.Forms.CheckBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.cbox_blacklv = new System.Windows.Forms.CheckBox();
+            this.cbox_red = new System.Windows.Forms.CheckBox();
+            this.cbox_green = new System.Windows.Forms.CheckBox();
+            this.cbox_blue = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.rbtn_manual = new System.Windows.Forms.RadioButton();
+            this.rbtn_auto = new System.Windows.Forms.RadioButton();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -124,18 +140,19 @@ namespace Colorimeter_Config_GUI
             this.Panel_Audit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_audit)).BeginInit();
             this.Tab_Test.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_test)).BeginInit();
             this.Tabs.SuspendLayout();
             this.tab_Analysis.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.gbox_process.SuspendLayout();
             this.gbox_sourcefile.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_raw)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_processed)).BeginInit();
-            this.gbox_process.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.panel6.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -530,11 +547,17 @@ namespace Colorimeter_Config_GUI
             // 
             // Tab_Test
             // 
+            this.Tab_Test.Controls.Add(this.label8);
+            this.Tab_Test.Controls.Add(this.panel7);
+            this.Tab_Test.Controls.Add(this.tbox_errorcode);
+            this.Tab_Test.Controls.Add(this.textBox2);
+            this.Tab_Test.Controls.Add(this.label6);
+            this.Tab_Test.Controls.Add(this.label17);
+            this.Tab_Test.Controls.Add(this.panel6);
             this.Tab_Test.Controls.Add(this.panel5);
             this.Tab_Test.Controls.Add(this.panel4);
             this.Tab_Test.Controls.Add(this.label5);
             this.Tab_Test.Controls.Add(this.panel3);
-            this.Tab_Test.Controls.Add(this.label6);
             this.Tab_Test.Controls.Add(this.label4);
             this.Tab_Test.Controls.Add(this.picturebox_test);
             this.Tab_Test.Location = new System.Drawing.Point(4, 38);
@@ -548,20 +571,17 @@ namespace Colorimeter_Config_GUI
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.Transparent;
-            this.panel5.Controls.Add(this.tbox_errorcode);
-            this.panel5.Controls.Add(this.label8);
-            this.panel5.Controls.Add(this.textBox2);
-            this.panel5.Location = new System.Drawing.Point(14, 555);
+            this.panel5.Location = new System.Drawing.Point(518, 918);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(497, 362);
+            this.panel5.Size = new System.Drawing.Size(911, 86);
             this.panel5.TabIndex = 11;
             // 
             // tbox_errorcode
             // 
-            this.tbox_errorcode.Location = new System.Drawing.Point(161, 177);
+            this.tbox_errorcode.Location = new System.Drawing.Point(399, 955);
             this.tbox_errorcode.Name = "tbox_errorcode";
             this.tbox_errorcode.ReadOnly = true;
-            this.tbox_errorcode.Size = new System.Drawing.Size(182, 35);
+            this.tbox_errorcode.Size = new System.Drawing.Size(87, 35);
             this.tbox_errorcode.TabIndex = 13;
             this.tbox_errorcode.Visible = false;
             // 
@@ -569,7 +589,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(5, 177);
+            this.label8.Location = new System.Drawing.Point(378, 923);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(132, 29);
             this.label8.TabIndex = 12;
@@ -578,11 +598,11 @@ namespace Colorimeter_Config_GUI
             // 
             // textBox2
             // 
-            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(98, 20);
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Location = new System.Drawing.Point(83, 928);
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(282, 116);
+            this.textBox2.Size = new System.Drawing.Size(282, 62);
             this.textBox2.TabIndex = 0;
             this.textBox2.Visible = false;
             // 
@@ -593,12 +613,11 @@ namespace Colorimeter_Config_GUI
             this.panel4.Controls.Add(this.label16);
             this.panel4.Controls.Add(this.tbox_dut_connect);
             this.panel4.Controls.Add(this.label15);
-            this.panel4.Controls.Add(this.btn_start);
             this.panel4.Controls.Add(this.tbox_sn);
             this.panel4.Controls.Add(this.label7);
             this.panel4.Location = new System.Drawing.Point(14, 226);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(497, 283);
+            this.panel4.Size = new System.Drawing.Size(497, 150);
             this.panel4.TabIndex = 11;
             // 
             // tbox_shopfloor
@@ -609,6 +628,7 @@ namespace Colorimeter_Config_GUI
             this.tbox_shopfloor.ReadOnly = true;
             this.tbox_shopfloor.Size = new System.Drawing.Size(170, 35);
             this.tbox_shopfloor.TabIndex = 23;
+            this.tbox_shopfloor.Text = "TBD";
             // 
             // label16
             // 
@@ -628,6 +648,7 @@ namespace Colorimeter_Config_GUI
             this.tbox_dut_connect.ReadOnly = true;
             this.tbox_dut_connect.Size = new System.Drawing.Size(170, 35);
             this.tbox_dut_connect.TabIndex = 21;
+            this.tbox_dut_connect.Text = "TBD";
             // 
             // label15
             // 
@@ -642,7 +663,7 @@ namespace Colorimeter_Config_GUI
             // btn_start
             // 
             this.btn_start.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_start.Location = new System.Drawing.Point(108, 174);
+            this.btn_start.Location = new System.Drawing.Point(182, 283);
             this.btn_start.Name = "btn_start";
             this.btn_start.Size = new System.Drawing.Size(256, 81);
             this.btn_start.TabIndex = 14;
@@ -661,7 +682,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(5, 97);
+            this.label7.Location = new System.Drawing.Point(6, 97);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(47, 29);
             this.label7.TabIndex = 12;
@@ -695,17 +716,18 @@ namespace Colorimeter_Config_GUI
             // tbox_colorimeterstatus
             // 
             this.tbox_colorimeterstatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.tbox_colorimeterstatus.Location = new System.Drawing.Point(270, 92);
+            this.tbox_colorimeterstatus.Location = new System.Drawing.Point(270, 89);
             this.tbox_colorimeterstatus.Name = "tbox_colorimeterstatus";
             this.tbox_colorimeterstatus.ReadOnly = true;
             this.tbox_colorimeterstatus.Size = new System.Drawing.Size(170, 35);
             this.tbox_colorimeterstatus.TabIndex = 20;
+            this.tbox_colorimeterstatus.Text = "TBD";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(5, 98);
+            this.label14.Location = new System.Drawing.Point(6, 92);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(212, 29);
             this.label14.TabIndex = 19;
@@ -723,7 +745,7 @@ namespace Colorimeter_Config_GUI
             // tbox_uptime
             // 
             this.tbox_uptime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.tbox_uptime.Location = new System.Drawing.Point(270, 51);
+            this.tbox_uptime.Location = new System.Drawing.Point(271, 45);
             this.tbox_uptime.Name = "tbox_uptime";
             this.tbox_uptime.ReadOnly = true;
             this.tbox_uptime.Size = new System.Drawing.Size(170, 35);
@@ -733,7 +755,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(5, 51);
+            this.label10.Location = new System.Drawing.Point(6, 51);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(106, 29);
             this.label10.TabIndex = 16;
@@ -757,16 +779,6 @@ namespace Colorimeter_Config_GUI
             this.label9.Size = new System.Drawing.Size(249, 29);
             this.label9.TabIndex = 14;
             this.label9.Text = "CCD Temperature (C)";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(14, 523);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(146, 29);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "Test Result";
             // 
             // label4
             // 
@@ -819,6 +831,121 @@ namespace Colorimeter_Config_GUI
             this.tab_Analysis.Text = "Analysis";
             this.tab_Analysis.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.cbox_data);
+            this.groupBox1.Controls.Add(this.cbox_image);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(1134, 691);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(283, 214);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Save Items";
+            // 
+            // cbox_data
+            // 
+            this.cbox_data.AutoSize = true;
+            this.cbox_data.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbox_data.Location = new System.Drawing.Point(23, 86);
+            this.cbox_data.Name = "cbox_data";
+            this.cbox_data.Size = new System.Drawing.Size(88, 33);
+            this.cbox_data.TabIndex = 1;
+            this.cbox_data.Text = "Data";
+            this.cbox_data.UseVisualStyleBackColor = true;
+            // 
+            // cbox_image
+            // 
+            this.cbox_image.AutoSize = true;
+            this.cbox_image.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbox_image.Location = new System.Drawing.Point(23, 44);
+            this.cbox_image.Name = "cbox_image";
+            this.cbox_image.Size = new System.Drawing.Size(106, 33);
+            this.cbox_image.TabIndex = 0;
+            this.cbox_image.Text = "Image";
+            this.cbox_image.UseVisualStyleBackColor = true;
+            // 
+            // gbox_process
+            // 
+            this.gbox_process.Controls.Add(this.rbtn_worstzone);
+            this.gbox_process.Controls.Add(this.rbtn_16ptuniformity);
+            this.gbox_process.Controls.Add(this.rbtn_9ptuniformity);
+            this.gbox_process.Controls.Add(this.rbtn_corner);
+            this.gbox_process.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbox_process.Location = new System.Drawing.Point(403, 691);
+            this.gbox_process.Name = "gbox_process";
+            this.gbox_process.Size = new System.Drawing.Size(698, 214);
+            this.gbox_process.TabIndex = 12;
+            this.gbox_process.TabStop = false;
+            this.gbox_process.Text = "Processing Items";
+            // 
+            // rbtn_worstzone
+            // 
+            this.rbtn_worstzone.AutoSize = true;
+            this.rbtn_worstzone.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_worstzone.Location = new System.Drawing.Point(23, 163);
+            this.rbtn_worstzone.Name = "rbtn_worstzone";
+            this.rbtn_worstzone.Size = new System.Drawing.Size(171, 33);
+            this.rbtn_worstzone.TabIndex = 3;
+            this.rbtn_worstzone.TabStop = true;
+            this.rbtn_worstzone.Text = "Worst Zone";
+            this.rbtn_worstzone.UseVisualStyleBackColor = true;
+            // 
+            // rbtn_16ptuniformity
+            // 
+            this.rbtn_16ptuniformity.AutoSize = true;
+            this.rbtn_16ptuniformity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_16ptuniformity.Location = new System.Drawing.Point(23, 124);
+            this.rbtn_16ptuniformity.Name = "rbtn_16ptuniformity";
+            this.rbtn_16ptuniformity.Size = new System.Drawing.Size(221, 33);
+            this.rbtn_16ptuniformity.TabIndex = 2;
+            this.rbtn_16ptuniformity.TabStop = true;
+            this.rbtn_16ptuniformity.Text = "16-pt Uniformity";
+            this.rbtn_16ptuniformity.UseVisualStyleBackColor = true;
+            // 
+            // rbtn_9ptuniformity
+            // 
+            this.rbtn_9ptuniformity.AutoSize = true;
+            this.rbtn_9ptuniformity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_9ptuniformity.Location = new System.Drawing.Point(23, 85);
+            this.rbtn_9ptuniformity.Name = "rbtn_9ptuniformity";
+            this.rbtn_9ptuniformity.Size = new System.Drawing.Size(207, 33);
+            this.rbtn_9ptuniformity.TabIndex = 1;
+            this.rbtn_9ptuniformity.TabStop = true;
+            this.rbtn_9ptuniformity.Text = "9-pt Uniformity";
+            this.rbtn_9ptuniformity.UseVisualStyleBackColor = true;
+            // 
+            // rbtn_corner
+            // 
+            this.rbtn_corner.AutoSize = true;
+            this.rbtn_corner.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_corner.Location = new System.Drawing.Point(23, 43);
+            this.rbtn_corner.Name = "rbtn_corner";
+            this.rbtn_corner.Size = new System.Drawing.Size(240, 33);
+            this.rbtn_corner.TabIndex = 0;
+            this.rbtn_corner.TabStop = true;
+            this.rbtn_corner.Text = "Corner Extraction";
+            this.rbtn_corner.UseVisualStyleBackColor = true;
+            // 
+            // btn_process
+            // 
+            this.btn_process.Location = new System.Drawing.Point(627, 921);
+            this.btn_process.Name = "btn_process";
+            this.btn_process.Size = new System.Drawing.Size(177, 54);
+            this.btn_process.TabIndex = 9;
+            this.btn_process.Text = "Process";
+            this.btn_process.UseVisualStyleBackColor = true;
+            this.btn_process.Click += new System.EventHandler(this.btn_process_Click);
+            // 
+            // btn_save
+            // 
+            this.btn_save.Location = new System.Drawing.Point(1210, 921);
+            this.btn_save.Name = "btn_save";
+            this.btn_save.Size = new System.Drawing.Size(189, 54);
+            this.btn_save.TabIndex = 8;
+            this.btn_save.Text = "Save";
+            this.btn_save.UseVisualStyleBackColor = true;
+            // 
             // gbox_sourcefile
             // 
             this.gbox_sourcefile.Controls.Add(this.rbtn_colorimeter);
@@ -852,6 +979,16 @@ namespace Colorimeter_Config_GUI
             this.rbtn_loadfile.TabIndex = 1;
             this.rbtn_loadfile.Text = "Load File";
             // 
+            // btn_load
+            // 
+            this.btn_load.Location = new System.Drawing.Point(69, 921);
+            this.btn_load.Name = "btn_load";
+            this.btn_load.Size = new System.Drawing.Size(180, 54);
+            this.btn_load.TabIndex = 2;
+            this.btn_load.Text = "Load";
+            this.btn_load.UseVisualStyleBackColor = true;
+            this.btn_load.Click += new System.EventHandler(this.btn_openrawfile_Click);
+            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
@@ -864,7 +1001,7 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 86.39761F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.60239F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 669F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1414, 669);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -888,130 +1025,185 @@ namespace Colorimeter_Config_GUI
             this.pictureBox_processed.TabIndex = 1;
             this.pictureBox_processed.TabStop = false;
             // 
-            // btn_load
+            // panel6
             // 
-            this.btn_load.Location = new System.Drawing.Point(69, 921);
-            this.btn_load.Name = "btn_load";
-            this.btn_load.Size = new System.Drawing.Size(180, 54);
-            this.btn_load.TabIndex = 2;
-            this.btn_load.Text = "Load";
-            this.btn_load.UseVisualStyleBackColor = true;
-            this.btn_load.Click += new System.EventHandler(this.btn_openrawfile_Click);
+            this.panel6.Controls.Add(this.cbox_blue);
+            this.panel6.Controls.Add(this.cbox_green);
+            this.panel6.Controls.Add(this.cbox_red);
+            this.panel6.Controls.Add(this.cbox_blacklv);
+            this.panel6.Controls.Add(this.cbox_gamma);
+            this.panel6.Controls.Add(this.cbox_mura_black0);
+            this.panel6.Controls.Add(this.cbox_white_mura);
+            this.panel6.Controls.Add(this.cbox_mura_grey127);
+            this.panel6.Controls.Add(this.cbox_colorgamut);
+            this.panel6.Controls.Add(this.cbox_contrast);
+            this.panel6.Controls.Add(this.cbox_whitelv);
+            this.panel6.Controls.Add(this.btn_start);
+            this.panel6.Location = new System.Drawing.Point(17, 547);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(494, 370);
+            this.panel6.TabIndex = 15;
             // 
-            // btn_save
+            // cbox_whitelv
             // 
-            this.btn_save.Location = new System.Drawing.Point(1210, 921);
-            this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(189, 54);
-            this.btn_save.TabIndex = 8;
-            this.btn_save.Text = "Save";
-            this.btn_save.UseVisualStyleBackColor = true;
+            this.cbox_whitelv.AutoSize = true;
+            this.cbox_whitelv.Location = new System.Drawing.Point(8, 3);
+            this.cbox_whitelv.Name = "cbox_whitelv";
+            this.cbox_whitelv.Size = new System.Drawing.Size(223, 33);
+            this.cbox_whitelv.TabIndex = 15;
+            this.cbox_whitelv.Text = "White Luminance";
+            this.cbox_whitelv.UseVisualStyleBackColor = true;
             // 
-            // btn_process
+            // cbox_contrast
             // 
-            this.btn_process.Location = new System.Drawing.Point(627, 921);
-            this.btn_process.Name = "btn_process";
-            this.btn_process.Size = new System.Drawing.Size(177, 54);
-            this.btn_process.TabIndex = 9;
-            this.btn_process.Text = "Process";
-            this.btn_process.UseVisualStyleBackColor = true;
-            this.btn_process.Click += new System.EventHandler(this.btn_process_Click);
+            this.cbox_contrast.AutoSize = true;
+            this.cbox_contrast.Location = new System.Drawing.Point(8, 81);
+            this.cbox_contrast.Name = "cbox_contrast";
+            this.cbox_contrast.Size = new System.Drawing.Size(128, 33);
+            this.cbox_contrast.TabIndex = 16;
+            this.cbox_contrast.Text = "Contrast";
+            this.cbox_contrast.UseVisualStyleBackColor = true;
             // 
-            // gbox_process
+            // cbox_colorgamut
             // 
-            this.gbox_process.Controls.Add(this.rbtn_worstzone);
-            this.gbox_process.Controls.Add(this.rbtn_16ptuniformity);
-            this.gbox_process.Controls.Add(this.rbtn_9ptuniformity);
-            this.gbox_process.Controls.Add(this.rbtn_corner);
-            this.gbox_process.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbox_process.Location = new System.Drawing.Point(403, 691);
-            this.gbox_process.Name = "gbox_process";
-            this.gbox_process.Size = new System.Drawing.Size(698, 214);
-            this.gbox_process.TabIndex = 12;
-            this.gbox_process.TabStop = false;
-            this.gbox_process.Text = "Processing Items";
+            this.cbox_colorgamut.AutoSize = true;
+            this.cbox_colorgamut.Location = new System.Drawing.Point(8, 237);
+            this.cbox_colorgamut.Name = "cbox_colorgamut";
+            this.cbox_colorgamut.Size = new System.Drawing.Size(219, 33);
+            this.cbox_colorgamut.TabIndex = 17;
+            this.cbox_colorgamut.Text = "CIE Color Gamut";
+            this.cbox_colorgamut.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // cbox_mura_grey127
             // 
-            this.groupBox1.Controls.Add(this.cbox_data);
-            this.groupBox1.Controls.Add(this.cbox_image);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(1134, 691);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(283, 214);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Save Items";
+            this.cbox_mura_grey127.AutoSize = true;
+            this.cbox_mura_grey127.Location = new System.Drawing.Point(250, 42);
+            this.cbox_mura_grey127.Name = "cbox_mura_grey127";
+            this.cbox_mura_grey127.Size = new System.Drawing.Size(219, 33);
+            this.cbox_mura_grey127.TabIndex = 18;
+            this.cbox_mura_grey127.Text = "Mura at Gray 127";
+            this.cbox_mura_grey127.UseVisualStyleBackColor = true;
             // 
-            // cbox_image
+            // cbox_white_mura
             // 
-            this.cbox_image.AutoSize = true;
-            this.cbox_image.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbox_image.Location = new System.Drawing.Point(23, 44);
-            this.cbox_image.Name = "cbox_image";
-            this.cbox_image.Size = new System.Drawing.Size(106, 33);
-            this.cbox_image.TabIndex = 0;
-            this.cbox_image.Text = "Image";
-            this.cbox_image.UseVisualStyleBackColor = true;
+            this.cbox_white_mura.AutoSize = true;
+            this.cbox_white_mura.Location = new System.Drawing.Point(250, 81);
+            this.cbox_white_mura.Name = "cbox_white_mura";
+            this.cbox_white_mura.Size = new System.Drawing.Size(226, 33);
+            this.cbox_white_mura.TabIndex = 19;
+            this.cbox_white_mura.Text = "Mura at white 255";
+            this.cbox_white_mura.UseVisualStyleBackColor = true;
             // 
-            // cbox_data
+            // cbox_mura_black0
             // 
-            this.cbox_data.AutoSize = true;
-            this.cbox_data.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbox_data.Location = new System.Drawing.Point(23, 86);
-            this.cbox_data.Name = "cbox_data";
-            this.cbox_data.Size = new System.Drawing.Size(88, 33);
-            this.cbox_data.TabIndex = 1;
-            this.cbox_data.Text = "Data";
-            this.cbox_data.UseVisualStyleBackColor = true;
+            this.cbox_mura_black0.AutoSize = true;
+            this.cbox_mura_black0.Location = new System.Drawing.Point(249, 3);
+            this.cbox_mura_black0.Name = "cbox_mura_black0";
+            this.cbox_mura_black0.Size = new System.Drawing.Size(200, 33);
+            this.cbox_mura_black0.TabIndex = 20;
+            this.cbox_mura_black0.Text = "Mura at black 0";
+            this.cbox_mura_black0.UseVisualStyleBackColor = true;
             // 
-            // rbtn_corner
+            // cbox_gamma
             // 
-            this.rbtn_corner.AutoSize = true;
-            this.rbtn_corner.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtn_corner.Location = new System.Drawing.Point(23, 43);
-            this.rbtn_corner.Name = "rbtn_corner";
-            this.rbtn_corner.Size = new System.Drawing.Size(240, 33);
-            this.rbtn_corner.TabIndex = 0;
-            this.rbtn_corner.TabStop = true;
-            this.rbtn_corner.Text = "Corner Extraction";
-            this.rbtn_corner.UseVisualStyleBackColor = true;
+            this.cbox_gamma.AutoSize = true;
+            this.cbox_gamma.Location = new System.Drawing.Point(8, 276);
+            this.cbox_gamma.Name = "cbox_gamma";
+            this.cbox_gamma.Size = new System.Drawing.Size(123, 33);
+            this.cbox_gamma.TabIndex = 21;
+            this.cbox_gamma.Text = "Gamma";
+            this.cbox_gamma.UseVisualStyleBackColor = true;
             // 
-            // rbtn_9ptuniformity
+            // label17
             // 
-            this.rbtn_9ptuniformity.AutoSize = true;
-            this.rbtn_9ptuniformity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtn_9ptuniformity.Location = new System.Drawing.Point(23, 85);
-            this.rbtn_9ptuniformity.Name = "rbtn_9ptuniformity";
-            this.rbtn_9ptuniformity.Size = new System.Drawing.Size(207, 33);
-            this.rbtn_9ptuniformity.TabIndex = 1;
-            this.rbtn_9ptuniformity.TabStop = true;
-            this.rbtn_9ptuniformity.Text = "9-pt Uniformity";
-            this.rbtn_9ptuniformity.UseVisualStyleBackColor = true;
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(18, 515);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(142, 29);
+            this.label17.TabIndex = 16;
+            this.label17.Text = "Test_Items";
             // 
-            // rbtn_16ptuniformity
+            // cbox_blacklv
             // 
-            this.rbtn_16ptuniformity.AutoSize = true;
-            this.rbtn_16ptuniformity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtn_16ptuniformity.Location = new System.Drawing.Point(23, 124);
-            this.rbtn_16ptuniformity.Name = "rbtn_16ptuniformity";
-            this.rbtn_16ptuniformity.Size = new System.Drawing.Size(221, 33);
-            this.rbtn_16ptuniformity.TabIndex = 2;
-            this.rbtn_16ptuniformity.TabStop = true;
-            this.rbtn_16ptuniformity.Text = "16-pt Uniformity";
-            this.rbtn_16ptuniformity.UseVisualStyleBackColor = true;
+            this.cbox_blacklv.AutoSize = true;
+            this.cbox_blacklv.Location = new System.Drawing.Point(8, 42);
+            this.cbox_blacklv.Name = "cbox_blacklv";
+            this.cbox_blacklv.Size = new System.Drawing.Size(221, 33);
+            this.cbox_blacklv.TabIndex = 22;
+            this.cbox_blacklv.Text = "Black Luminance";
+            this.cbox_blacklv.UseVisualStyleBackColor = true;
             // 
-            // rbtn_worstzone
+            // cbox_red
             // 
-            this.rbtn_worstzone.AutoSize = true;
-            this.rbtn_worstzone.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtn_worstzone.Location = new System.Drawing.Point(23, 163);
-            this.rbtn_worstzone.Name = "rbtn_worstzone";
-            this.rbtn_worstzone.Size = new System.Drawing.Size(171, 33);
-            this.rbtn_worstzone.TabIndex = 3;
-            this.rbtn_worstzone.TabStop = true;
-            this.rbtn_worstzone.Text = "Worst Zone";
-            this.rbtn_worstzone.UseVisualStyleBackColor = true;
+            this.cbox_red.AutoSize = true;
+            this.cbox_red.Location = new System.Drawing.Point(8, 120);
+            this.cbox_red.Name = "cbox_red";
+            this.cbox_red.Size = new System.Drawing.Size(128, 33);
+            this.cbox_red.TabIndex = 23;
+            this.cbox_red.Text = "Red xyY";
+            this.cbox_red.UseVisualStyleBackColor = true;
+            // 
+            // cbox_green
+            // 
+            this.cbox_green.AutoSize = true;
+            this.cbox_green.Location = new System.Drawing.Point(8, 159);
+            this.cbox_green.Name = "cbox_green";
+            this.cbox_green.Size = new System.Drawing.Size(150, 33);
+            this.cbox_green.TabIndex = 24;
+            this.cbox_green.Text = "Green xyY";
+            this.cbox_green.UseVisualStyleBackColor = true;
+            // 
+            // cbox_blue
+            // 
+            this.cbox_blue.AutoSize = true;
+            this.cbox_blue.Location = new System.Drawing.Point(8, 198);
+            this.cbox_blue.Name = "cbox_blue";
+            this.cbox_blue.Size = new System.Drawing.Size(132, 33);
+            this.cbox_blue.TabIndex = 25;
+            this.cbox_blue.Text = "Blue xyY";
+            this.cbox_blue.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(17, 379);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(138, 29);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "Test Mode";
+            // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.rbtn_auto);
+            this.panel7.Controls.Add(this.rbtn_manual);
+            this.panel7.Location = new System.Drawing.Point(14, 407);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(496, 105);
+            this.panel7.TabIndex = 18;
+            // 
+            // rbtn_manual
+            // 
+            this.rbtn_manual.AutoSize = true;
+            this.rbtn_manual.Checked = true;
+            this.rbtn_manual.Location = new System.Drawing.Point(22, 34);
+            this.rbtn_manual.Name = "rbtn_manual";
+            this.rbtn_manual.Size = new System.Drawing.Size(116, 33);
+            this.rbtn_manual.TabIndex = 0;
+            this.rbtn_manual.TabStop = true;
+            this.rbtn_manual.Text = "Manual";
+            this.rbtn_manual.UseVisualStyleBackColor = true;
+            // 
+            // rbtn_auto
+            // 
+            this.rbtn_auto.AutoSize = true;
+            this.rbtn_auto.Location = new System.Drawing.Point(252, 34);
+            this.rbtn_auto.Name = "rbtn_auto";
+            this.rbtn_auto.Size = new System.Drawing.Size(143, 33);
+            this.rbtn_auto.TabIndex = 1;
+            this.rbtn_auto.Text = "Automatic";
+            this.rbtn_auto.UseVisualStyleBackColor = true;
             // 
             // Form_Config
             // 
@@ -1049,8 +1241,6 @@ namespace Colorimeter_Config_GUI
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_audit)).EndInit();
             this.Tab_Test.ResumeLayout(false);
             this.Tab_Test.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -1058,15 +1248,19 @@ namespace Colorimeter_Config_GUI
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_test)).EndInit();
             this.Tabs.ResumeLayout(false);
             this.tab_Analysis.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.gbox_process.ResumeLayout(false);
+            this.gbox_process.PerformLayout();
             this.gbox_sourcefile.ResumeLayout(false);
             this.gbox_sourcefile.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picturebox_raw)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_processed)).EndInit();
-            this.gbox_process.ResumeLayout(false);
-            this.gbox_process.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1130,7 +1324,6 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox tbox_ccdtemp;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox picturebox_test;
         private System.Windows.Forms.TabControl Tabs;
@@ -1159,6 +1352,23 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.RadioButton rbtn_9ptuniformity;
         private System.Windows.Forms.RadioButton rbtn_16ptuniformity;
         private System.Windows.Forms.RadioButton rbtn_worstzone;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.CheckBox cbox_mura_black0;
+        private System.Windows.Forms.CheckBox cbox_white_mura;
+        private System.Windows.Forms.CheckBox cbox_mura_grey127;
+        private System.Windows.Forms.CheckBox cbox_colorgamut;
+        private System.Windows.Forms.CheckBox cbox_contrast;
+        private System.Windows.Forms.CheckBox cbox_whitelv;
+        private System.Windows.Forms.CheckBox cbox_gamma;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.CheckBox cbox_blacklv;
+        private System.Windows.Forms.CheckBox cbox_blue;
+        private System.Windows.Forms.CheckBox cbox_green;
+        private System.Windows.Forms.CheckBox cbox_red;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.RadioButton rbtn_auto;
+        private System.Windows.Forms.RadioButton rbtn_manual;
     }
 }
 
