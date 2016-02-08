@@ -54,6 +54,7 @@ namespace Colorimeter_Config_GUI
 
         //test setup
         private bool isdemomode = false; //Demo mode can only be used for analysis tab.
+        private bool istestimagelock = false; // Lock the picturebox_test or not
         DateTime timezero = DateTime.Now;
 
         //log setup
@@ -241,9 +242,12 @@ namespace Colorimeter_Config_GUI
             UpdateStatusBar();
             UpdateCCDTemperature();
             UpdateUpTime();
-            picturebox_test.Image = m_processedImage.bitmap;
-            picturebox_test.Invalidate();
-
+            if (!istestimagelock)
+            {
+                picturebox_test.Image = m_processedImage.bitmap;
+                picturebox_test.Invalidate();
+            }
+            
         }
 
         private void UpdateStatusBar()
@@ -631,26 +635,27 @@ namespace Colorimeter_Config_GUI
         private void refreshtestimage(Bitmap srcimg)
         {
             //need add command to create picturetbox automatically
+
+            /*
                 picturebox_test_update.Visible = true;
                 picturebox_test_update.Image = srcimg;
                 picturebox_test_update.Show();
                 picturebox_test_update.Update();
                 picturebox_test_update.Invalidate();
                 picturebox_test_update.Show();
-
-            /*
+            */
+         
            if (picturebox_test.Image != null)
            {
                picturebox_test.Image.Dispose();
            }
-           picturebox_test.Image = updateimg;
-           picturebox_test.Update();
-           picturebox_test.Refresh();
-           picturebox_test.Show();
-            */
+           picturebox_test.Image = srcimg;
+           this.Refresh();
+           istestimagelock = true;
+           
+  
             // need dispose control picturebox
         }
-
 
 
 // analysis related
