@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-
+using System.Xml;
 using System.Diagnostics;
 
 using FlyCapture2Managed;
@@ -57,20 +57,22 @@ namespace Colorimeter_Config_GUI
         private bool istestimagelock = false; // Lock the picturebox_test or not
         DateTime timezero = DateTime.Now;
         int systemidletime = 2500; // in millisecond
+        private double blobsize = 1 ; // setup the basic blobsize to be 1mm by 1mm. 
 
         //log setup
-        string currentdirectory = System.IO.Directory.GetCurrentDirectory();             // current working folder
-        string tempdirectory = System.IO.Directory.GetCurrentDirectory() + "\\temp\\";     // temprary folder. Will clean after one test iteration
-        string logdirectory = System.IO.Directory.GetCurrentDirectory()  + "\\log\\";      // facrtory test logs. Pass/fail.
-        string debugdirectory = System.IO.Directory.GetCurrentDirectory() + "\\debug\\";   // factory test station debug logs 
-        string rawdirectory = System.IO.Directory.GetCurrentDirectory() + "\\raw\\";       // raw test logs including important test images.
-        string summarydirectory = System.IO.Directory.GetCurrentDirectory() + "\\log\\summary\\"; // summary logs. 
-
+        static string str_DateTime = string.Format("{0:yyyyMMdd}" + "{0:HHmmss}", DateTime.Now, DateTime.Now);
+        static string currentdirectory = System.IO.Directory.GetCurrentDirectory();             // current working folder
+        static string tempdirectory = System.IO.Directory.GetCurrentDirectory() + "\\temp\\";     // temprary folder. Will clean after one test iteration
+        static string logdirectory = System.IO.Directory.GetCurrentDirectory()  + "\\log\\";      // facrtory test logs. Pass/fail.
+        static string debugdirectory = System.IO.Directory.GetCurrentDirectory() + "\\debug\\";   // factory test station debug logs 
+        static string rawdirectory = System.IO.Directory.GetCurrentDirectory() + "\\raw\\";       // raw test logs including important test images.
+        static string summarydirectory = System.IO.Directory.GetCurrentDirectory() + "\\log\\summary\\"; // summary logs. 
+        static string configdirectory = System.IO.Directory.GetCurrentDirectory() + "\\config\\";  //store xml config document after colorimeter configuration
+        static string configxml = configdirectory  + str_DateTime + ".xml";
         //dut setup
         DUTclass.hodor dut = new DUTclass.hodor();
 
-        //log setup
-        string str_DateTime = string.Format("{0:yyyyMMdd}" + "{0:HHmmss}", DateTime.Now, DateTime.Now);
+
 
         public Form_Config()
         {
@@ -168,46 +170,46 @@ namespace Colorimeter_Config_GUI
             Hide();
 
 
-                CameraSelectionDialog camSlnDlg = new CameraSelectionDialog();
-                bool retVal = camSlnDlg.ShowModal();
-                if (retVal && ! isdemomode) 
+            CameraSelectionDialog camSlnDlg = new CameraSelectionDialog();
+            bool retVal = camSlnDlg.ShowModal();
+            if (retVal && !isdemomode)
+            {
+                try
                 {
-                    try
+                    ManagedPGRGuid[] selectedGuids = camSlnDlg.GetSelectedCameraGuids();
+                    ManagedPGRGuid guidToUse = selectedGuids[0];
+
+                    ManagedBusManager busMgr = new ManagedBusManager();
+                    InterfaceType ifType = busMgr.GetInterfaceTypeFromGuid(guidToUse);
+
+                    if (ifType == InterfaceType.GigE)
                     {
-                        ManagedPGRGuid[] selectedGuids = camSlnDlg.GetSelectedCameraGuids();
-                        ManagedPGRGuid guidToUse = selectedGuids[0];
-
-                        ManagedBusManager busMgr = new ManagedBusManager();
-                        InterfaceType ifType = busMgr.GetInterfaceTypeFromGuid(guidToUse);
-
-                        if (ifType == InterfaceType.GigE)
-                        {
-                            m_camera = new ManagedGigECamera();
-                        }
-                        else
-                        {
-                            m_camera = new ManagedCamera();
-                        }
+                        m_camera = new ManagedGigECamera();
+                    }
+                    else
+                    {
+                        m_camera = new ManagedCamera();
+                    }
 
                     // Connect to the first selected GUID
-                        m_camera.Connect(guidToUse);
+                    m_camera.Connect(guidToUse);
 
-                        m_camCtlDlg.Connect(m_camera);
+                    m_camCtlDlg.Connect(m_camera);
 
-                        CameraInfo camInfo = m_camera.GetCameraInfo();
-                        camInfo.vendorName = "MicroTest";
-                        camInfo.modelName = "v1";
-                        UpdateFormCaption(camInfo);
+                    CameraInfo camInfo = m_camera.GetCameraInfo();
+                    camInfo.vendorName = "MicroTest";
+                    camInfo.modelName = "v1";
+                    UpdateFormCaption(camInfo);
 
                     // Set embedded timestamp to on
-                        EmbeddedImageInfo embeddedInfo = m_camera.GetEmbeddedImageInfo();
-                        embeddedInfo.timestamp.onOff = true;
-                        tbox_uptime.Text = embeddedInfo.timestamp.ToString();
-                        m_camera.SetEmbeddedImageInfo(embeddedInfo);
-                        m_camera.StartCapture();
-                        m_grabImages = true;
-                        StartGrabLoop();
-                    }
+                    EmbeddedImageInfo embeddedInfo = m_camera.GetEmbeddedImageInfo();
+                    embeddedInfo.timestamp.onOff = true;
+                    tbox_uptime.Text = embeddedInfo.timestamp.ToString();
+                    m_camera.SetEmbeddedImageInfo(embeddedInfo);
+                    m_camera.StartCapture();
+                    m_grabImages = true;
+                    StartGrabLoop();
+                }
 
                 catch (FC2Exception ex)
                 {
@@ -220,18 +222,18 @@ namespace Colorimeter_Config_GUI
                 toolStripButtonStart.Enabled = false;
                 toolStripButtonStop.Enabled = true;
             }
-                else if (isdemomode)
-                {
-                    Tabs.SelectedTab = tab_Analysis;
-                    MessageBox.Show("Demo Mode with no Colorimeter. Only for Analysis", "Remind");
-                }
+            else if (isdemomode)
+            {
+                Tabs.SelectedTab = tab_Analysis;
+                MessageBox.Show("Demo Mode with no Colorimeter. Only for Analysis", "Remind");
+            }
 
-                else
-                {
-                    Environment.ExitCode = -1;
-                    Application.Exit();
-                    return;
-                }
+            else
+            {
+                Environment.ExitCode = -1;
+                Application.Exit();
+                return;
+            }
 
             Show();
             tbox_sn.Focus();
@@ -521,7 +523,6 @@ namespace Colorimeter_Config_GUI
             {
                 MessageBox.Show("SN format is wrong");
             }
-
             else
             {
                 btn_start.Enabled = false;
@@ -529,7 +530,7 @@ namespace Colorimeter_Config_GUI
 
                 displaytest(m_processedImage);
 
- 
+
             }
         }
 
@@ -560,6 +561,8 @@ namespace Colorimeter_Config_GUI
             refreshtestimage(updateimg);
             Thread.Sleep(TimeSpan.FromMilliseconds(systemidletime));
             // divide into the data array of interests
+
+
 
             // load pass/fail time 
 
@@ -611,7 +614,7 @@ namespace Colorimeter_Config_GUI
 
         }
 
-
+        
 
         private Bitmap croppingimage(Bitmap srcimg, List<IntPoint> cornerPoints)
         {
@@ -631,7 +634,7 @@ namespace Colorimeter_Config_GUI
         private Bitmap croppedimage(Bitmap src)
         {
             //Create crop filter
-            AForge.Imaging.Filters.SimpleQuadrilateralTransformation filter = new AForge.Imaging.Filters.SimpleQuadrilateralTransformation(displaycornerPoints, dut.widthinuipixel, dut.heightinuipixel);
+            AForge.Imaging.Filters.SimpleQuadrilateralTransformation filter = new AForge.Imaging.Filters.SimpleQuadrilateralTransformation(displaycornerPoints);
 
             //Create cropped display image
             Bitmap des = filter.Apply(src);
@@ -730,6 +733,58 @@ namespace Colorimeter_Config_GUI
                 Debug.WriteLine("Error: " + ex.Message);
                 return;
             }
+
+        }
+
+//  Configuration Related.
+        // After finish the colorimeter calibration, the specs needs to be writtern to XML format.
+
+        //define a list of the parameters to be configurated by size/lv/color/flatfield calibration. 
+        //write all of them in the xml spec document.
+
+
+        private void btn_storeconfig_Click(object sender, EventArgs e)
+        {
+            if (rbtn_hodor.Checked)
+            {
+                DUTclass.hodor dut = new DUTclass.hodor();
+            }
+            else if (rbtn_bran.Checked)
+            {
+                DUTclass.bran dut = new DUTclass.bran();
+            }
+            else
+            {
+                MessageBox.Show("Please select display model. By default: Hodor");
+                DUTclass.hodor dut = new DUTclass.hodor(); 
+            }
+
+            double sizecoeff = 1; //temp flag
+            writeConfigFile(configxml, sizecoeff);
+
+        }
+
+        private void writeConfigFile(string configxmldoc, double sizecoeff)
+        {
+            XmlTextWriter newWriter = new XmlTextWriter(configxmldoc, System.Text.Encoding.UTF8);
+            newWriter.Formatting = Formatting.Indented;
+
+            // start document and add root element
+            newWriter.WriteStartDocument();
+            newWriter.WriteStartElement("x2DisplaytestSpecification");
+            
+            newWriter.WriteElementString("SizeCoeff", sizecoeff.ToString());
+
+            newWriter.WriteEndElement();
+            newWriter.WriteEndDocument();
+            newWriter.Flush();
+            newWriter.Close();
+        }
+
+        private void Btn_Size_Click(object sender, EventArgs e)
+        {
+
+            // pick and draw UI, return the size coefficient to normalize the display area/ ccd area/ UI area.
 
         }
 
