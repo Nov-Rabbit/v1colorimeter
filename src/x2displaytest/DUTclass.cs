@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace DUTclass
 {
@@ -10,7 +11,7 @@ namespace DUTclass
         public static void spec()
         {
             string panelvendor = "Innolux";
-            double width  = 293.472; // Unit: mm
+            double width = 293.472; // Unit: mm
             double height = 165.078;
             double pixelpitch = 0.15285;
             double contrast_min = 500;
@@ -39,14 +40,37 @@ namespace DUTclass
             double crosstalk = 4; // maximum cross talk value allowed, 4%
         }
 
-        // User set value
-        public virtual string serialnumber {get; set;} // to be assigned
+        public int ui_width = 960;
+        public int ui_height = 540;
 
-        // from configuration size calibration
-        int widthincampixel; // obtained from size calibration 
-        int heightincampixel; // obtained from size calibration
-        public int widthinuipixel = 540; // calculated by width in camera pixel and picturebox pixel
-        public int heightinuipixel = 270; // calculated by width in camera pixel and picturebox pixel
+        //assuming 1mm resolution
+        public int bin_width = 293;
+        public int bin_height = 165;
+        // below are the manual mode. need customer to provide the command line to drive units to auto mode.
+        public void setwhite()
+        {
+            MessageBox.Show("Send CMD to Set White State");
+        }
+
+        public void setblack()
+        {
+            MessageBox.Show("Send CMD to Set Black State");
+        }
+
+        public void setred()
+        {
+            MessageBox.Show("Send CMD to Set Red State");
+        }
+
+        public void setgreen()
+        {
+            MessageBox.Show("Send CMD to Set Green State");
+        }
+
+        public void setblue()
+        {
+            MessageBox.Show("Send CMD to Set Blue State");
+        }
 
     }
 
@@ -84,15 +108,29 @@ namespace DUTclass
             double crosstalk = 4; // maximum cross talk value allowed, 4%
         }
 
-        // User set value
-        public virtual string serialnumber { get; set; } // to be assigned
+        public void setwhite()
+        {
+            MessageBox.Show("Send CMD to Set White State");
+        }
 
-        // from configuration size calibration
-        int widthincampixel; // obtained from size calibration 
-        int heightincampixel; // obtained from size calibration
-        public int widthinuipixel = 540; // calculated by width in camera pixel and picturebox pixel
-        public int heightinuipixel = 270; // calculated by width in camera pixel and picturebox pixel
+        public void setblack()
+        {
+            MessageBox.Show("Send CMD to Set Black State");
+        }
+
+        public void setred()
+        {
+            MessageBox.Show("Send CMD to Set Red State");
+        }
+
+        public void setgreen()
+        {
+            MessageBox.Show("Send CMD to Set Green State");
+        }
+
+        public void setblue()
+        {
+            MessageBox.Show("Send CMD to Set Blue State");
+        }
     }
-    
-
 }
