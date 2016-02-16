@@ -38,12 +38,12 @@ namespace Colorimeter_Config_GUI
             set { zonesize = value; }
         }
 
-        private float[, ,] XYZlocal; // XYZ tristimulus value matrix in this zone
+        private double[, ,] XYZlocal; // XYZ tristimulus value matrix in this zone
         private List<IntPoint> Points = new List<IntPoint>();
         System.Drawing.Point pp, pp1, pp2, pp3, pp4 = new System.Drawing.Point();
 
         // get the local zone XYZ matrix by inputting the predefined zone. 
-        public float[, ,] XYZlocalzone(int Location, int zonesize, float[, ,] XYZ)
+        public double[, ,] XYZlocalzone(int Location, int zonesize, double[, ,] XYZ)
         {
             mLocation = Location;
             int[] xy_index = zoneindex(mLocation, zonesize, XYZ);
@@ -53,10 +53,10 @@ namespace Colorimeter_Config_GUI
 
         // get the local XYZ matrix by inputting the starting and endding xy cooordinate in mm 
         // same as the XYZ raw in this study.
-        private float[,,] cropXYZ(int x_start, int x_end, int y_start, int y_end, float[, ,] XYZ)
+        private double[,,] cropXYZ(int x_start, int x_end, int y_start, int y_end, double[, ,] XYZ)
         {
 
-            float[, ,] XYZlocal = new float[x_end - x_start, y_end - y_start, XYZ.GetLength(2)];
+            double[, ,] XYZlocal = new double[x_end - x_start, y_end - y_start, XYZ.GetLength(2)];
 
             for (int k = 0; k < XYZ.GetLength(2); k++)
             {
@@ -73,7 +73,7 @@ namespace Colorimeter_Config_GUI
         }
 
         // derive the xy coordinate in mm from the predefined zone location and zonesize.
-        private int[] zoneindex(int Location, int zonesize, float[, ,] XYZ)
+        private int[] zoneindex(int Location, int zonesize, double[, ,] XYZ)
         {
             int w = XYZ.GetLength(0);
             int h = XYZ.GetLength(1);
@@ -123,7 +123,7 @@ namespace Colorimeter_Config_GUI
 
         // derive the point coordinate in pixel from the predefined zone location and zonesize.
         // will be used for UI drawing if needed
-        private List<IntPoint> zonecorners(int Location, int zonesize, float[, ,] XYZ)
+        private List<IntPoint> zonecorners(int Location, int zonesize, double[, ,] XYZ)
         {
             int w = XYZ.GetLength(0);
             int h = XYZ.GetLength(1);

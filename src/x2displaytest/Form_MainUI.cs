@@ -55,6 +55,7 @@ namespace Colorimeter_Config_GUI
 
         //dut setup
         DUTclass.hodor dut = new DUTclass.hodor();
+        imagingpipeline ip = new imagingpipeline();
         
         //log setup
         string str_DateTime = string.Format("{0:yyyyMMdd}" + "{0:HHmmss}", DateTime.Now, DateTime.Now);
@@ -66,10 +67,10 @@ namespace Colorimeter_Config_GUI
         double whitemura, blackmura; // mura at white and black state
 
         // test data
-        float[,] CIE_Y, CIE_x, CIE_y;  //CIE 1931 x, y
-        float[, ,] RGB, XYZ;
+        double[,] CIE_Y, CIE_x, CIE_y;  //CIE 1931 x, y
+        double[, ,] RGB, XYZ;
         int zonesize = 10; // 10mm for now. 
-        float[, ,] XYZzone; // used to represent the zone size XYZ array
+        double[, ,] XYZzone; // used to represent the zone size XYZ array
         private bool pf;  //final pass/fail
         
         public Form_Config()
@@ -166,7 +167,6 @@ namespace Colorimeter_Config_GUI
         private void Form1_Load(object sender, EventArgs e)
         {
             Hide();
-
 
                 CameraSelectionDialog camSlnDlg = new CameraSelectionDialog();
                 bool retVal = camSlnDlg.ShowModal();
@@ -439,35 +439,17 @@ namespace Colorimeter_Config_GUI
 
         // test prerequisite
 
-        private bool checkDUT()
-        {
-            // check DUT is inserted into fixture or not
-            if (true)
-            {
-                tbox_dut_connect.Text = "DUT connected";
-                tbox_dut_connect.BackColor = Color.Green;
-                return true;
-            }
-            else
-            {
-                tbox_dut_connect.Text = "No DUT";
-                tbox_dut_connect.BackColor = Color.Red;
-                MessageBox.Show("DUT Not Detected", "Warning");
-                return false;
-            }
-
-        }
 
         private bool checksnformat()
         {
-            if (tbox_sn.Text.Length == 6) //fake condition. More input is needed from Square
+            if (tbox_sn.Text.Length == 16) //fake condition. More input is needed from Square
             {
                 
                 return true;
             }
             else
             {
-                MessageBox.Show("Please type in 6 digit SN");
+                MessageBox.Show("Please type in 16 digit SN");
                 return false;
             }
         }
@@ -505,8 +487,11 @@ namespace Colorimeter_Config_GUI
             {
                 MessageBox.Show("Reset Colorimeter");
             }
-            else if (!checkDUT())
+                
+            else if (!dut.checkDUT())
             {
+                tbox_dut_connect.Text = "No DUT";
+                tbox_dut_connect.BackColor = Color.Red;
                 MessageBox.Show("Please insert DUT");
             }
             else if (!checkshopfloor())
@@ -524,6 +509,9 @@ namespace Colorimeter_Config_GUI
 
             else
             {
+                tbox_dut_connect.Text = "DUT connected";
+                tbox_dut_connect.BackColor = Color.Green;
+
                 btn_start.Enabled = false;
                 btn_start.BackColor = Color.LightBlue;
 
@@ -561,16 +549,14 @@ namespace Colorimeter_Config_GUI
                     tbox_pf.BackColor = Color.Red;
                     tbox_pf.Text = "Fail";
                 }
-
- 
             }
         }
-
-       private float[, ,] bmp2rgb(Bitmap processedBitmap)
+        /*
+       private double[, ,] bmp2rgb(Bitmap processedBitmap)
        {
             int h = processedBitmap.Height;
             int w = processedBitmap.Width;
-            float[, ,] rgbstr = new float[w, h, 3];
+            double[, ,] rgbstr = new double[w, h, 3];
 
             for (int i = 0; i < w; i++)
             {
@@ -586,14 +572,94 @@ namespace Colorimeter_Config_GUI
 
        }
        
-       private float[, ,] rgb2xyz(float[, ,] rgbstr)
+       private double[, ,] rgb2xyz(double[, ,] rgbstr)
        {
+           int w = rgbstr.GetLength(0);
+           int h = rgbstr.GetLength(1);
+           double [, ,] xyzstr = new double[w,h,3];
+           var ccm = new[,]
+               {
+                    {0.5767309, 0.2973769, 0.0270343},
+                    {0.1855540, 0.6273491, 0.0706872},
+                    {0.1881852, 0.0752741, 0.9911085}
+               };
            
-           float [ , , ] xyzstr = rgbstr;
-           // need correct CCM.
-           return xyzstr;
+
+           for (int i = 0; i < w; i++)
+            {
+                for (int j = 0; j < h; j++)
+                {
+                    double[] rgb = new double[] {rgbstr[i,j,0], rgbstr[i,j,1], rgbstr[i,j, 2]};
+                    double[] xyz = MultiplyVector(ccm, rgb);
+                    xyzstr[i, j, 0] = xyz[0];
+                    xyzstr[i, j, 1] = xyz[1];
+                    xyzstr[i, j, 2] = xyz[2];
+                }
+           }
+
+          return xyzstr;
        }
 
+       private double[,] MultiplyMatrix(double[,] A, double[,] B)
+       {
+           int rA = A.GetLength(0);
+           int cA = A.GetLength(1);
+           int rB = B.GetLength(0);
+           int cB = B.GetLength(1);
+           double temp = 0;
+           double[,] kHasil = new double[rA, cB];
+           if (cA != rB)
+           {
+               Console.WriteLine("matrik can't be multiplied !!");
+               return null;
+           }
+           else
+           {
+               for (int i = 0; i < rA; i++)
+               {
+                   for (int j = 0; j < cB; j++)
+                   {
+                       temp = 0;
+                       for (int k = 0; k < cA; k++)
+                       {
+                           temp += A[i, k] * B[k, j];
+                       }
+                       kHasil[i, j] = temp;
+                   }
+               }
+               return kHasil;
+           }
+       }
+
+       private double[ ] MultiplyVector(double[,] A, double[] B)
+       {
+           int rA = A.GetLength(0);
+           int cA = A.GetLength(1);
+           int rB = B.GetLength(0);
+           double temp = 0;
+           double[] kHasil = new double[rA];
+           if (cA != rB)
+           {
+               Console.WriteLine("matrik can't be multiplied !!");
+               return null;
+           }
+           else
+           {
+               for (int i = 0; i < rA; i++)
+               {
+                       temp = 0;
+                       for (int k = 0; k < cA; k++)
+                       {
+                           temp += A[i, k] * B[k];
+                       }
+                       kHasil[i] = temp;
+ 
+               }
+               return kHasil;
+           }
+       }
+
+        */
         private bool displaytest(List<IntPoint> displaycornerPoints)
         {
 
@@ -606,12 +672,12 @@ namespace Colorimeter_Config_GUI
             Bitmap cropimg = croppedimage(srcimg);
             Bitmap binimg = new Bitmap(cropimg, new Size(dut.bin_width, dut.bin_height));
             binimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white_bin.bmp");
-
-            RGB = bmp2rgb(binimg);
-            XYZ = rgb2xyz(RGB);
+            
+            RGB = ip.bmp2rgb(binimg);
+            XYZ = ip.rgb2xyz(RGB);
 
            // byte[] imgdata = System.IO.File.ReadAllBytes(@"D:\v1colorimeter\src\x2displaytest\bin\Debug\temp\12345620160210135726_cropped.bmp");
-            imagingpipeline ip = new imagingpipeline();
+            
 
             whitelv = ip.getlv(XYZ);
             cbox_white_lv.Checked = true;
@@ -757,7 +823,6 @@ namespace Colorimeter_Config_GUI
            }
 
         }
-
 
 // analysis related
         private void btn_openrawfile_Click(object sender, EventArgs e)
@@ -912,7 +977,7 @@ namespace Colorimeter_Config_GUI
             Bitmap myBitmap = new Bitmap(@"D:\v1colorimeter\src\x2displaytest\bin\Debug\temp\12345620160209232604_cropped.bmp");
             int height = myBitmap.Height;
             int width = myBitmap.Width;
-            float[, ,] rgbstr = new float[width, height, 3];
+            double[, ,] rgbstr = new double[width, height, 3];
 
             for (int i = 0; i < width; i++)
             {
@@ -924,12 +989,12 @@ namespace Colorimeter_Config_GUI
                 }
 
             }
-            XYZ = rgb2xyz(rgbstr);
+            XYZ = ip.rgb2xyz(rgbstr);
 
-            float sum = 0;
-            float mean = 0;
-            float w = XYZ.GetLength(0);
-            float h = XYZ.GetLength(1);
+            double sum = 0;
+            double mean = 0;
+            double w = XYZ.GetLength(0);
+            double h = XYZ.GetLength(1);
 
             for (int r = 0; r < w; r++)
             {

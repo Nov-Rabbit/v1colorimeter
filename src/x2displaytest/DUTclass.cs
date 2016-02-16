@@ -56,6 +56,13 @@ namespace DUTclass
         public int bin_width = 293;
         public int bin_height = 165;
         // below are the manual mode. need customer to provide the command line to drive units to auto mode.
+        public bool checkDUT()
+        {
+            // check DUT is inserted into fixture or not
+            return true;
+
+        }
+
         public void setwhite()
         {
             MessageBox.Show("Send CMD to Set White State");
@@ -117,6 +124,13 @@ namespace DUTclass
             double crosstalk = 4; // maximum cross talk value allowed, 4%
         }
 
+        public bool checkDUT()
+        {
+            // check DUT is inserted into fixture or not
+            
+                return true;
+
+        }
         public void setwhite()
         {
             MessageBox.Show("Send CMD to Set White State");

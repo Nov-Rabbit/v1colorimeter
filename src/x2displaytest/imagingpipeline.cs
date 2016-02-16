@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace Colorimeter_Config_GUI
 {
@@ -18,10 +19,10 @@ namespace Colorimeter_Config_GUI
     {
 
         // get average Y from input XYZ matrix
-        public float getlv(float[, ,] XYZ)
+        public double getlv(double[, ,] XYZ)
         {
-            float sum = 0;
-            float mean = 0;
+            double sum = 0;
+            double mean = 0;
             float w = XYZ.GetLength(0);
             float h = XYZ.GetLength(1);
 
@@ -38,11 +39,11 @@ namespace Colorimeter_Config_GUI
         }
 
         // get the uniformity by 5 zones.
-        public float getuniformity(float[, ,] XYZ)
+        public double getuniformity(double[, ,] XYZ)
         {
             zoneresult zr = new zoneresult();
-            float[, ,] XYZ1, XYZ2, XYZ3, XYZ4, XYZ5;
-            float lv1, lv2, lv3, lv4, lv5;
+            double[, ,] XYZ1, XYZ2, XYZ3, XYZ4, XYZ5;
+            double lv1, lv2, lv3, lv4, lv5;
 
             XYZ1 = zr.XYZlocalzone(1, 10, XYZ);
             lv1 = getlv(XYZ1);
@@ -55,17 +56,126 @@ namespace Colorimeter_Config_GUI
             XYZ5 = zr.XYZlocalzone(5, 10, XYZ);
             lv5 = getlv(XYZ5);
 
-            float lvmin = new float[]{lv1, lv2, lv3, lv4, lv5}.Min();
-            float lvmax = new float[]{lv1, lv2, lv3, lv4, lv5}.Max();
-            float unif = lvmin /lvmax;
+            double lvmin = new double[]{lv1, lv2, lv3, lv4, lv5}.Min();
+            double lvmax = new double[]{lv1, lv2, lv3, lv4, lv5}.Max();
+            double unif = lvmin /lvmax;
             return unif;
 
         }
 
-        public float getmura(float[, ,] XYZ)
+        public double getmura(double[, ,] XYZ)
         {
-            float muraresult = 1;
+            double muraresult = 1;
             return muraresult;
         }
+        
+        public double[, ,] bmp2rgb(Bitmap processedBitmap)
+        {
+            int h = processedBitmap.Height;
+            int w = processedBitmap.Width;
+            double[, ,] rgbstr = new double[w, h, 3];
+
+            for (int i = 0; i < w; i++)
+            {
+                for (int j = 0; j < h; j++)
+                {
+                    rgbstr[i, j, 0] = processedBitmap.GetPixel(i, j).R;
+                    rgbstr[i, j, 1] = processedBitmap.GetPixel(i, j).G;
+                    rgbstr[i, j, 2] = processedBitmap.GetPixel(i, j).B;
+                }
+
+            }
+            return rgbstr;
+
+        }
+
+        public double[, ,] rgb2xyz(double[, ,] rgbstr)
+        {
+            int w = rgbstr.GetLength(0);
+            int h = rgbstr.GetLength(1);
+            double[, ,] xyzstr = new double[w, h, 3];
+            var ccm = new[,]
+               {
+                    {0.5767309, 0.2973769, 0.0270343},
+                    {0.1855540, 0.6273491, 0.0706872},
+                    {0.1881852, 0.0752741, 0.9911085}
+               };
+
+
+            for (int i = 0; i < w; i++)
+            {
+                for (int j = 0; j < h; j++)
+                {
+                    double[] rgb = new double[] { rgbstr[i, j, 0], rgbstr[i, j, 1], rgbstr[i, j, 2] };
+                    double[] xyz = MultiplyVector(ccm, rgb);
+                    xyzstr[i, j, 0] = xyz[0];
+                    xyzstr[i, j, 1] = xyz[1];
+                    xyzstr[i, j, 2] = xyz[2];
+                }
+            }
+
+            return xyzstr;
+        }
+
+        private double[,] MultiplyMatrix(double[,] A, double[,] B)
+        {
+            int rA = A.GetLength(0);
+            int cA = A.GetLength(1);
+            int rB = B.GetLength(0);
+            int cB = B.GetLength(1);
+            double temp = 0;
+            double[,] kHasil = new double[rA, cB];
+            if (cA != rB)
+            {
+                Console.WriteLine("matrik can't be multiplied !!");
+                return null;
+            }
+            else
+            {
+                for (int i = 0; i < rA; i++)
+                {
+                    for (int j = 0; j < cB; j++)
+                    {
+                        temp = 0;
+                        for (int k = 0; k < cA; k++)
+                        {
+                            temp += A[i, k] * B[k, j];
+                        }
+                        kHasil[i, j] = temp;
+                    }
+                }
+                return kHasil;
+            }
+        }
+
+        private double[] MultiplyVector(double[,] A, double[] B)
+        {
+            int rA = A.GetLength(0);
+            int cA = A.GetLength(1);
+            int rB = B.GetLength(0);
+            double temp = 0;
+            double[] kHasil = new double[rA];
+            if (cA != rB)
+            {
+                Console.WriteLine("matrik can't be multiplied !!");
+                return null;
+            }
+            else
+            {
+                for (int i = 0; i < rA; i++)
+                {
+                    temp = 0;
+                    for (int k = 0; k < cA; k++)
+                    {
+                        temp += A[i, k] * B[k];
+                    }
+                    kHasil[i] = temp;
+
+                }
+                return kHasil;
+            }
+        }
+
+
     }
 }
