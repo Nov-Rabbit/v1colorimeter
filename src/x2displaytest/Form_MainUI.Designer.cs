@@ -91,7 +91,7 @@ namespace Colorimeter_Config_GUI
             this.rbtn_auto = new System.Windows.Forms.RadioButton();
             this.rbtn_manual = new System.Windows.Forms.RadioButton();
             this.tbox_errorcode = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tbox_pf = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.tbox_shopfloor = new System.Windows.Forms.TextBox();
@@ -117,6 +117,7 @@ namespace Colorimeter_Config_GUI
             this.cbox_data = new System.Windows.Forms.CheckBox();
             this.cbox_image = new System.Windows.Forms.CheckBox();
             this.gbox_process = new System.Windows.Forms.GroupBox();
+            this.rbtn_5zone = new System.Windows.Forms.RadioButton();
             this.rbtn_cropping = new System.Windows.Forms.RadioButton();
             this.rbtn_worstzone = new System.Windows.Forms.RadioButton();
             this.rbtn_16ptuniformity = new System.Windows.Forms.RadioButton();
@@ -131,7 +132,16 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.picturebox_raw = new System.Windows.Forms.PictureBox();
             this.pictureBox_processed = new System.Windows.Forms.PictureBox();
-            this.btn_data = new System.Windows.Forms.Button();
+            this.tbox_whitelv = new System.Windows.Forms.TextBox();
+            this.tbox_whiteunif = new System.Windows.Forms.TextBox();
+            this.tbox_blacklv = new System.Windows.Forms.TextBox();
+            this.tbox_blackunif = new System.Windows.Forms.TextBox();
+            this.tbox_red = new System.Windows.Forms.TextBox();
+            this.tbox_green = new System.Windows.Forms.TextBox();
+            this.tbox_blue = new System.Windows.Forms.TextBox();
+            this.tbox_gamut = new System.Windows.Forms.TextBox();
+            this.tbox_whitemura = new System.Windows.Forms.TextBox();
+            this.tbox_blackmura = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -211,7 +221,7 @@ namespace Colorimeter_Config_GUI
             this.toolStripStatusLabelImageSize,
             this.toolStripStatusLabelFrameRate,
             this.toolStripStatusLabelTimestamp});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 960);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1179);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
             this.statusStrip1.Size = new System.Drawing.Size(1672, 42);
@@ -561,6 +571,16 @@ namespace Colorimeter_Config_GUI
             // 
             // Tab_Test
             // 
+            this.Tab_Test.Controls.Add(this.tbox_blackmura);
+            this.Tab_Test.Controls.Add(this.tbox_whitemura);
+            this.Tab_Test.Controls.Add(this.tbox_gamut);
+            this.Tab_Test.Controls.Add(this.tbox_blue);
+            this.Tab_Test.Controls.Add(this.tbox_green);
+            this.Tab_Test.Controls.Add(this.tbox_red);
+            this.Tab_Test.Controls.Add(this.tbox_blackunif);
+            this.Tab_Test.Controls.Add(this.tbox_blacklv);
+            this.Tab_Test.Controls.Add(this.tbox_whiteunif);
+            this.Tab_Test.Controls.Add(this.tbox_whitelv);
             this.Tab_Test.Controls.Add(this.checkBox1);
             this.Tab_Test.Controls.Add(this.cbox_blue);
             this.Tab_Test.Controls.Add(this.cbox_green);
@@ -578,7 +598,7 @@ namespace Colorimeter_Config_GUI
             this.Tab_Test.Controls.Add(this.tbox_sn);
             this.Tab_Test.Controls.Add(this.panel7);
             this.Tab_Test.Controls.Add(this.tbox_errorcode);
-            this.Tab_Test.Controls.Add(this.textBox2);
+            this.Tab_Test.Controls.Add(this.tbox_pf);
             this.Tab_Test.Controls.Add(this.label6);
             this.Tab_Test.Controls.Add(this.panel4);
             this.Tab_Test.Controls.Add(this.label5);
@@ -647,7 +667,7 @@ namespace Colorimeter_Config_GUI
             // cbox_black_uniformity
             // 
             this.cbox_black_uniformity.AutoSize = true;
-            this.cbox_black_uniformity.Location = new System.Drawing.Point(24, 687);
+            this.cbox_black_uniformity.Location = new System.Drawing.Point(23, 687);
             this.cbox_black_uniformity.Name = "cbox_black_uniformity";
             this.cbox_black_uniformity.Size = new System.Drawing.Size(211, 33);
             this.cbox_black_uniformity.TabIndex = 28;
@@ -786,15 +806,15 @@ namespace Colorimeter_Config_GUI
             this.tbox_errorcode.TabIndex = 13;
             this.tbox_errorcode.Visible = false;
             // 
-            // textBox2
+            // tbox_pf
             // 
-            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(122, 928);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(243, 62);
-            this.textBox2.TabIndex = 0;
-            this.textBox2.Visible = false;
+            this.tbox_pf.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_pf.Location = new System.Drawing.Point(122, 928);
+            this.tbox_pf.Name = "tbox_pf";
+            this.tbox_pf.ReadOnly = true;
+            this.tbox_pf.Size = new System.Drawing.Size(243, 62);
+            this.tbox_pf.TabIndex = 0;
+            this.tbox_pf.Visible = false;
             // 
             // label6
             // 
@@ -998,7 +1018,6 @@ namespace Colorimeter_Config_GUI
             // 
             // tab_Analysis
             // 
-            this.tab_Analysis.Controls.Add(this.btn_data);
             this.tab_Analysis.Controls.Add(this.btn_savedata);
             this.tab_Analysis.Controls.Add(this.groupBox1);
             this.tab_Analysis.Controls.Add(this.gbox_process);
@@ -1061,6 +1080,7 @@ namespace Colorimeter_Config_GUI
             // 
             // gbox_process
             // 
+            this.gbox_process.Controls.Add(this.rbtn_5zone);
             this.gbox_process.Controls.Add(this.rbtn_cropping);
             this.gbox_process.Controls.Add(this.rbtn_worstzone);
             this.gbox_process.Controls.Add(this.rbtn_16ptuniformity);
@@ -1073,6 +1093,18 @@ namespace Colorimeter_Config_GUI
             this.gbox_process.TabIndex = 12;
             this.gbox_process.TabStop = false;
             this.gbox_process.Text = "Processing Items";
+            // 
+            // rbtn_5zone
+            // 
+            this.rbtn_5zone.AutoSize = true;
+            this.rbtn_5zone.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtn_5zone.Location = new System.Drawing.Point(269, 82);
+            this.rbtn_5zone.Name = "rbtn_5zone";
+            this.rbtn_5zone.Size = new System.Drawing.Size(180, 33);
+            this.rbtn_5zone.TabIndex = 5;
+            this.rbtn_5zone.TabStop = true;
+            this.rbtn_5zone.Text = "output5zone";
+            this.rbtn_5zone.UseVisualStyleBackColor = true;
             // 
             // rbtn_cropping
             // 
@@ -1158,7 +1190,7 @@ namespace Colorimeter_Config_GUI
             this.gbox_sourcefile.Controls.Add(this.rbtn_colorimeter);
             this.gbox_sourcefile.Controls.Add(this.rbtn_loadfile);
             this.gbox_sourcefile.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbox_sourcefile.Location = new System.Drawing.Point(8, 691);
+            this.gbox_sourcefile.Location = new System.Drawing.Point(6, 681);
             this.gbox_sourcefile.Name = "gbox_sourcefile";
             this.gbox_sourcefile.Size = new System.Drawing.Size(373, 214);
             this.gbox_sourcefile.TabIndex = 6;
@@ -1232,21 +1264,91 @@ namespace Colorimeter_Config_GUI
             this.pictureBox_processed.TabIndex = 1;
             this.pictureBox_processed.TabStop = false;
             // 
-            // btn_data
+            // tbox_whitelv
             // 
-            this.btn_data.Location = new System.Drawing.Point(1157, 691);
-            this.btn_data.Name = "btn_data";
-            this.btn_data.Size = new System.Drawing.Size(231, 71);
-            this.btn_data.TabIndex = 15;
-            this.btn_data.Text = "btn_data";
-            this.btn_data.UseVisualStyleBackColor = true;
-            this.btn_data.Click += new System.EventHandler(this.btn_data_Click);
+            this.tbox_whitelv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_whitelv.Location = new System.Drawing.Point(257, 558);
+            this.tbox_whitelv.Name = "tbox_whitelv";
+            this.tbox_whitelv.Size = new System.Drawing.Size(177, 30);
+            this.tbox_whitelv.TabIndex = 34;
+            // 
+            // tbox_whiteunif
+            // 
+            this.tbox_whiteunif.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_whiteunif.Location = new System.Drawing.Point(257, 590);
+            this.tbox_whiteunif.Name = "tbox_whiteunif";
+            this.tbox_whiteunif.Size = new System.Drawing.Size(177, 30);
+            this.tbox_whiteunif.TabIndex = 35;
+            // 
+            // tbox_blacklv
+            // 
+            this.tbox_blacklv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_blacklv.Location = new System.Drawing.Point(257, 659);
+            this.tbox_blacklv.Name = "tbox_blacklv";
+            this.tbox_blacklv.Size = new System.Drawing.Size(177, 30);
+            this.tbox_blacklv.TabIndex = 36;
+            // 
+            // tbox_blackunif
+            // 
+            this.tbox_blackunif.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_blackunif.Location = new System.Drawing.Point(257, 689);
+            this.tbox_blackunif.Name = "tbox_blackunif";
+            this.tbox_blackunif.Size = new System.Drawing.Size(177, 30);
+            this.tbox_blackunif.TabIndex = 37;
+            // 
+            // tbox_red
+            // 
+            this.tbox_red.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_red.Location = new System.Drawing.Point(257, 752);
+            this.tbox_red.Name = "tbox_red";
+            this.tbox_red.Size = new System.Drawing.Size(177, 30);
+            this.tbox_red.TabIndex = 38;
+            // 
+            // tbox_green
+            // 
+            this.tbox_green.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_green.Location = new System.Drawing.Point(257, 785);
+            this.tbox_green.Name = "tbox_green";
+            this.tbox_green.Size = new System.Drawing.Size(177, 30);
+            this.tbox_green.TabIndex = 39;
+            // 
+            // tbox_blue
+            // 
+            this.tbox_blue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_blue.Location = new System.Drawing.Point(257, 815);
+            this.tbox_blue.Name = "tbox_blue";
+            this.tbox_blue.Size = new System.Drawing.Size(177, 30);
+            this.tbox_blue.TabIndex = 40;
+            // 
+            // tbox_gamut
+            // 
+            this.tbox_gamut.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_gamut.Location = new System.Drawing.Point(257, 851);
+            this.tbox_gamut.Name = "tbox_gamut";
+            this.tbox_gamut.Size = new System.Drawing.Size(177, 30);
+            this.tbox_gamut.TabIndex = 41;
+            // 
+            // tbox_whitemura
+            // 
+            this.tbox_whitemura.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_whitemura.Location = new System.Drawing.Point(257, 626);
+            this.tbox_whitemura.Name = "tbox_whitemura";
+            this.tbox_whitemura.Size = new System.Drawing.Size(177, 30);
+            this.tbox_whitemura.TabIndex = 42;
+            // 
+            // tbox_blackmura
+            // 
+            this.tbox_blackmura.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_blackmura.Location = new System.Drawing.Point(257, 720);
+            this.tbox_blackmura.Name = "tbox_blackmura";
+            this.tbox_blackmura.Size = new System.Drawing.Size(177, 30);
+            this.tbox_blackmura.TabIndex = 43;
             // 
             // Form_Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1672, 1002);
+            this.ClientSize = new System.Drawing.Size(1672, 1221);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label1);
@@ -1345,7 +1447,7 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.TabPage Tab_Test;
         private System.Windows.Forms.TextBox tbox_errorcode;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tbox_pf;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.TextBox tbox_sn;
         private System.Windows.Forms.Label label5;
@@ -1405,7 +1507,17 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.CheckBox cbox_white_uniformity;
         private System.Windows.Forms.CheckBox cbox_white_lv;
         private System.Windows.Forms.Button btn_savedata;
-        private System.Windows.Forms.Button btn_data;
+        private System.Windows.Forms.RadioButton rbtn_5zone;
+        private System.Windows.Forms.TextBox tbox_gamut;
+        private System.Windows.Forms.TextBox tbox_blue;
+        private System.Windows.Forms.TextBox tbox_green;
+        private System.Windows.Forms.TextBox tbox_red;
+        private System.Windows.Forms.TextBox tbox_blackunif;
+        private System.Windows.Forms.TextBox tbox_blacklv;
+        private System.Windows.Forms.TextBox tbox_whiteunif;
+        private System.Windows.Forms.TextBox tbox_whitelv;
+        private System.Windows.Forms.TextBox tbox_blackmura;
+        private System.Windows.Forms.TextBox tbox_whitemura;
     }
 }
 

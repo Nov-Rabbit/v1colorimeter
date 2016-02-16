@@ -181,7 +181,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="displaytest.cs" />
     <Compile Include="DUTclass.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Form_MainUI.cs">
@@ -190,8 +189,10 @@
     <Compile Include="Form_MainUI.Designer.cs">
       <DependentUpon>Form_MainUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="imagingpipeline.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="zoneresult.cs" />
     <EmbeddedResource Include="Form_MainUI.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Form_MainUI.cs</DependentUpon>

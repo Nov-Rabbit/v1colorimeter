@@ -1,18 +1,5 @@
 //=============================================================================
-// Copyright © 2016 Microtest Inc. All Rights Reserved.
-//
-// This software is the confidential and proprietary information of Microtest, Inc.
-// ("Confidential Information").  You shall not
-// disclose such Confidential Information and shall use it only in
-// accordance with the terms of the license agreement you entered into
-// with PGR.
-//
-// PGR MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
-// SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-// PURPOSE, OR NON-INFRINGEMENT. PGR SHALL NOT BE LIABLE FOR ANY DAMAGES
-// SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
-// THIS SOFTWARE OR ITS DERIVATIVES.
+// Main UI function. Start from Program.cs and enter Form1_load 
 //=============================================================================
 using System;
 using System.Collections.Generic;
@@ -53,7 +40,7 @@ namespace Colorimeter_Config_GUI
         private List<IntPoint> flagPoints, displaycornerPoints;
 
         //test setup
-        private bool isdemomode = true; //Demo mode can only be used for analysis tab.
+        private bool isdemomode = false; //Demo mode can only be used for analysis tab.
         private bool istestimagelock = false; // Lock the picturebox_test or not
         DateTime timezero = DateTime.Now;
         int systemidletime = 1500; // in millisecond
@@ -81,7 +68,9 @@ namespace Colorimeter_Config_GUI
         // test data
         float[,] CIE_Y, CIE_x, CIE_y;  //CIE 1931 x, y
         float[, ,] RGB, XYZ;
-
+        int zonesize = 10; // 10mm for now. 
+        float[, ,] XYZzone; // used to represent the zone size XYZ array
+        private bool pf;  //final pass/fail
         
         public Form_Config()
         {
@@ -550,17 +539,28 @@ namespace Colorimeter_Config_GUI
                 Bitmap updateimg = croppingimage(srcimg, displaycornerPoints);
 
                 // show cropping image
-                refreshtestimage(updateimg);
+                refreshtestimage(updateimg, picturebox_test);
                 Thread.Sleep(TimeSpan.FromMilliseconds(systemidletime));
 
                 // show cropped image
                 updateimg = croppedimage(m_processedImage.bitmap);
                 picturebox_test.Width = updateimg.Width;
                 picturebox_test.Height = updateimg.Height;
-                refreshtestimage(updateimg);
+                refreshtestimage(updateimg, picturebox_test);
                 Thread.Sleep(TimeSpan.FromMilliseconds(systemidletime));
 
-                displaytest(displaycornerPoints);
+                pf = displaytest(displaycornerPoints);
+                tbox_pf.Visible = true;
+                if (pf)
+                {
+                    tbox_pf.BackColor = Color.Green;
+                    tbox_pf.Text = "Pass";
+                }
+                else
+                {
+                    tbox_pf.BackColor = Color.Red;
+                    tbox_pf.Text = "Fail";
+                }
 
  
             }
@@ -598,13 +598,6 @@ namespace Colorimeter_Config_GUI
         {
 
             // set display to desired pattern following test sequence
-            m_camera.StopCapture();
-            dut.setwhite();
-            
-            m_camera.StartCapture();
-
-            m_camera.RetrieveBuffer(m_rawImage);
-            m_rawImage.Convert(FlyCapture2Managed.PixelFormat.PixelFormatBgr, m_processedImage);
 
             m_processedImage.bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white.bmp");
 
@@ -612,29 +605,35 @@ namespace Colorimeter_Config_GUI
             Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_white.bmp", true));
             Bitmap cropimg = croppedimage(srcimg);
             Bitmap binimg = new Bitmap(cropimg, new Size(dut.bin_width, dut.bin_height));
-            
+            binimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white_bin.bmp");
+
             RGB = bmp2rgb(binimg);
             XYZ = rgb2xyz(RGB);
 
            // byte[] imgdata = System.IO.File.ReadAllBytes(@"D:\v1colorimeter\src\x2displaytest\bin\Debug\temp\12345620160210135726_cropped.bmp");
+            imagingpipeline ip = new imagingpipeline();
 
-            whitelv = getlv(XYZ);
+            whitelv = ip.getlv(XYZ);
             cbox_white_lv.Checked = true;
-
-            whiteuniformity5 = getuniformity()[0];
-            whiteuniformity13 = getuniformity()[1];
+            tbox_whitelv.Text = whitelv.ToString(); 
+            
+            whiteuniformity5 = ip.getuniformity(XYZ);
             cbox_white_uniformity.Checked = true;
+            double whiteuniformity5_percentage = whiteuniformity5 * 100;
+            tbox_whiteunif.Text = whiteuniformity5_percentage.ToString();
 
-            whitemura = getmura();
+            whitemura = ip.getmura(XYZ);
             cbox_white_mura.Checked = true;
+            tbox_whitemura.Text = whitemura.ToString();
 
             m_camera.StopCapture(); 
+
+            /*
             dut.setblack();
             m_camera.StartCapture();
             
             m_camera.RetrieveBuffer(m_rawImage);
             m_rawImage.Convert(FlyCapture2Managed.PixelFormat.PixelFormatBgr, m_processedImage);
-
 
             m_processedImage.bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_black.bmp");
 
@@ -646,61 +645,25 @@ namespace Colorimeter_Config_GUI
             RGB = bmp2rgb(binimg);
             XYZ = rgb2xyz(RGB);
 
-            blacklv = getlv(XYZ);
+            blacklv = ip.getlv(XYZ);
             cbox_black_lv.Checked = true;
+            tbox_blacklv.Text = blacklv.ToString();
 
-            blackmura = getmura();
+            blackmura = ip.getmura(XYZ);
             cbox_black_mura.Checked = true;
+            tbox_blackmura.Text = blackmura.ToString();
 
             m_camera.StopCapture();
             dut.setred();
-            m_camera.StartCapture();
-            
-
-            // Colorimeter to grab image 
-
-
-            // divide into the data array of interests
-
-            // load pass/fail time 
+            // will develop the color patterns later
+            */
+            // load pass/fail item
 
             // decide the test item pass or fail
 
             return true;
         }
         
-        private float getlv(float[ , , ] XYZ)
-        {
-            float sum = 0;
-            float mean = 0;
-            float w = XYZ.GetLength(0);
-            float h = XYZ.GetLength(1);
-
-            for (int r = 0; r < w; r++)
-            {
-                for (int c = 0; c < h; c++)
-                {
-                    sum += XYZ[r,c, 2];
-                }
-
-            }
-            mean = sum / (w * h);
-            return mean;
-        }
-
-        private double[] getuniformity()
-        {
-            double unif5 = 1;
-            double unif13 = 1;
-            double[] unif = new double[]{unif5, unif13};
-            return unif;
-        }
-
-        private double getmura()
-        {
-            double mura = 1;
-            return mura;
-        }
 
 
         // crop the bitmap with display rectangle inside and get 4 points list
@@ -777,16 +740,22 @@ namespace Colorimeter_Config_GUI
             return des;
         }
 
-        private void refreshtestimage(Bitmap srcimg)
+        private void refreshtestimage(Bitmap srcimg, PictureBox picturebox_flag)
         {
           // istestimagelock = false;
-           if (picturebox_test.Image != null)
+
+            if (picturebox_flag.Image != null)
+            {
+                picturebox_flag.Image.Dispose();
+            }
+            picturebox_flag.Image = srcimg;
+            this.Refresh();
+
+           if (picturebox_flag == picturebox_test)
            {
-               picturebox_test.Image.Dispose();
+               istestimagelock = true;
            }
-           picturebox_test.Image = srcimg;
-           this.Refresh();
-           istestimagelock = true;
+
         }
 
 
@@ -827,7 +796,47 @@ namespace Colorimeter_Config_GUI
                 return;
             }
         }
- 
+
+        private void GetDisplayCornerfrombmp( Bitmap processbmp, out List<IntPoint> displaycornerPoints)
+        {
+            BlobCounter bbc = new BlobCounter();
+            bbc.FilterBlobs = true;
+            bbc.MinHeight = 5;
+            bbc.MinWidth = 5;
+
+            bbc.ProcessImage(processbmp);
+
+            Blob[] blobs = bbc.GetObjectsInformation();
+            SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
+
+            foreach (var blob in blobs)
+            {
+                List<IntPoint> edgePoints = bbc.GetBlobsEdgePoints(blob);
+                List<IntPoint> cornerPoints;
+
+
+                // use the shape checker to extract the corner points
+                if (shapeChecker.IsQuadrilateral(edgePoints, out cornerPoints))
+                {
+                    // only do things if the corners from a rectangle 
+                    if (shapeChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
+                    {
+                        flagPoints = cornerPoints;
+                        continue;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cannot Find the Display");
+                        flagPoints = null;
+                        //                       picturebox_test.Image = m;
+                        continue;
+                    }
+                }
+
+            }
+            displaycornerPoints = flagPoints;
+
+        }
 
         private void btn_process_Click(object sender, EventArgs e)
         {
@@ -849,13 +858,18 @@ namespace Colorimeter_Config_GUI
                 }
                 else if (rbtn_cropping.Checked)
                 {
-                    Bitmap rawimg = new Bitmap(picturebox_raw.Image);
-                    Bitmap desimage = croppingimage(rawimg, displaycornerPoints);
-                    pictureBox_processed.Image = desimage;
-                    this.Refresh();
 
-                    pictureBox_processed.Show();
-                    
+                    Bitmap rawimg = new Bitmap(picturebox_raw.Image);
+                    GetDisplayCornerfrombmp(rawimg, out displaycornerPoints);
+                    Bitmap desimage = croppingimage(rawimg, displaycornerPoints);
+                    refreshtestimage(desimage, pictureBox_processed);
+                    Thread.Sleep(systemidletime);
+                    Bitmap cropimage = croppedimage(rawimg);
+                    refreshtestimage(cropimage, pictureBox_processed);
+                }
+                else if (rbtn_5zone.Checked)
+                {
+                    // load cropped bin image
 
                 }
                     
@@ -890,7 +904,7 @@ namespace Colorimeter_Config_GUI
             }
             return byteArray;
         }
-
+        
         private void btn_savedata_Click(object sender, EventArgs e)
         {
             byte[] imgdata = System.IO.File.ReadAllBytes(@"D:\v1colorimeter\src\x2displaytest\bin\Debug\temp\12345620160209232604_cropped.bmp");
@@ -928,23 +942,7 @@ namespace Colorimeter_Config_GUI
             mean = sum / (w * h);
 
             
-            getunif(XYZ);
-
             
-        }
-
-        private double getunif(float [, ,] XYZ)
-        {
-            
-
-            double unif5 = 1;
-
-            return unif5;
-        }
-
-        private void btn_data_Click(object sender, EventArgs e)
-        {
-           
         }
 
 

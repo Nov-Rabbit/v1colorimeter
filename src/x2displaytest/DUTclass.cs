@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using FlyCapture2Managed;
+using FlyCapture2Managed.Gui;
+
+using AForge;
+using AForge.Imaging;
+using AForge.Math;
+using AForge.Math.Geometry;
 
 namespace DUTclass
 {
     public class hodor
     {
+        private ManagedImage m_dislayImage;
+
         public static void spec()
         {
             string panelvendor = "Innolux";
