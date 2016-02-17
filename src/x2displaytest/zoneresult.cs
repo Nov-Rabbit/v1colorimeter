@@ -123,7 +123,7 @@ namespace Colorimeter_Config_GUI
 
         // derive the point coordinate in pixel from the predefined zone location and zonesize.
         // will be used for UI drawing if needed
-        private List<IntPoint> zonecorners(int Location, int zonesize, double[, ,] XYZ)
+        public List<IntPoint> zonecorners(int Location, int zonesize, double[, ,] XYZ)
         {
             int w = XYZ.GetLength(0);
             int h = XYZ.GetLength(1);
@@ -186,7 +186,7 @@ namespace Colorimeter_Config_GUI
                 pp2.X = pp.X + zonesize / 2;
                 pp2.Y = pp.Y - zonesize / 2;
                 pp3.X = pp.X + zonesize / 2;
-                pp3.Y = pp.X + zonesize / 2;
+                pp3.Y = pp.Y + zonesize / 2;
                 pp4.X = pp.X - zonesize / 2;
                 pp4.Y = pp.Y + zonesize / 2;
             }

@@ -72,6 +72,16 @@ namespace Colorimeter_Config_GUI
             this.label12 = new System.Windows.Forms.Label();
             this.picturebox_audit = new System.Windows.Forms.PictureBox();
             this.Tab_Test = new System.Windows.Forms.TabPage();
+            this.tbox_blackmura = new System.Windows.Forms.TextBox();
+            this.tbox_whitemura = new System.Windows.Forms.TextBox();
+            this.tbox_gamut = new System.Windows.Forms.TextBox();
+            this.tbox_blue = new System.Windows.Forms.TextBox();
+            this.tbox_green = new System.Windows.Forms.TextBox();
+            this.tbox_red = new System.Windows.Forms.TextBox();
+            this.tbox_blackunif = new System.Windows.Forms.TextBox();
+            this.tbox_blacklv = new System.Windows.Forms.TextBox();
+            this.tbox_whiteunif = new System.Windows.Forms.TextBox();
+            this.tbox_whitelv = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.cbox_blue = new System.Windows.Forms.CheckBox();
             this.cbox_green = new System.Windows.Forms.CheckBox();
@@ -132,16 +142,6 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.picturebox_raw = new System.Windows.Forms.PictureBox();
             this.pictureBox_processed = new System.Windows.Forms.PictureBox();
-            this.tbox_whitelv = new System.Windows.Forms.TextBox();
-            this.tbox_whiteunif = new System.Windows.Forms.TextBox();
-            this.tbox_blacklv = new System.Windows.Forms.TextBox();
-            this.tbox_blackunif = new System.Windows.Forms.TextBox();
-            this.tbox_red = new System.Windows.Forms.TextBox();
-            this.tbox_green = new System.Windows.Forms.TextBox();
-            this.tbox_blue = new System.Windows.Forms.TextBox();
-            this.tbox_gamut = new System.Windows.Forms.TextBox();
-            this.tbox_whitemura = new System.Windows.Forms.TextBox();
-            this.tbox_blackmura = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -614,6 +614,86 @@ namespace Colorimeter_Config_GUI
             this.Tab_Test.Text = "Test";
             this.Tab_Test.UseVisualStyleBackColor = true;
             // 
+            // tbox_blackmura
+            // 
+            this.tbox_blackmura.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_blackmura.Location = new System.Drawing.Point(257, 720);
+            this.tbox_blackmura.Name = "tbox_blackmura";
+            this.tbox_blackmura.Size = new System.Drawing.Size(177, 30);
+            this.tbox_blackmura.TabIndex = 43;
+            // 
+            // tbox_whitemura
+            // 
+            this.tbox_whitemura.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_whitemura.Location = new System.Drawing.Point(257, 626);
+            this.tbox_whitemura.Name = "tbox_whitemura";
+            this.tbox_whitemura.Size = new System.Drawing.Size(177, 30);
+            this.tbox_whitemura.TabIndex = 42;
+            // 
+            // tbox_gamut
+            // 
+            this.tbox_gamut.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_gamut.Location = new System.Drawing.Point(257, 851);
+            this.tbox_gamut.Name = "tbox_gamut";
+            this.tbox_gamut.Size = new System.Drawing.Size(177, 30);
+            this.tbox_gamut.TabIndex = 41;
+            // 
+            // tbox_blue
+            // 
+            this.tbox_blue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_blue.Location = new System.Drawing.Point(257, 815);
+            this.tbox_blue.Name = "tbox_blue";
+            this.tbox_blue.Size = new System.Drawing.Size(177, 30);
+            this.tbox_blue.TabIndex = 40;
+            // 
+            // tbox_green
+            // 
+            this.tbox_green.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_green.Location = new System.Drawing.Point(257, 785);
+            this.tbox_green.Name = "tbox_green";
+            this.tbox_green.Size = new System.Drawing.Size(177, 30);
+            this.tbox_green.TabIndex = 39;
+            // 
+            // tbox_red
+            // 
+            this.tbox_red.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_red.Location = new System.Drawing.Point(257, 752);
+            this.tbox_red.Name = "tbox_red";
+            this.tbox_red.Size = new System.Drawing.Size(177, 30);
+            this.tbox_red.TabIndex = 38;
+            // 
+            // tbox_blackunif
+            // 
+            this.tbox_blackunif.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_blackunif.Location = new System.Drawing.Point(257, 689);
+            this.tbox_blackunif.Name = "tbox_blackunif";
+            this.tbox_blackunif.Size = new System.Drawing.Size(177, 30);
+            this.tbox_blackunif.TabIndex = 37;
+            // 
+            // tbox_blacklv
+            // 
+            this.tbox_blacklv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_blacklv.Location = new System.Drawing.Point(257, 659);
+            this.tbox_blacklv.Name = "tbox_blacklv";
+            this.tbox_blacklv.Size = new System.Drawing.Size(177, 30);
+            this.tbox_blacklv.TabIndex = 36;
+            // 
+            // tbox_whiteunif
+            // 
+            this.tbox_whiteunif.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_whiteunif.Location = new System.Drawing.Point(257, 590);
+            this.tbox_whiteunif.Name = "tbox_whiteunif";
+            this.tbox_whiteunif.Size = new System.Drawing.Size(177, 30);
+            this.tbox_whiteunif.TabIndex = 35;
+            // 
+            // tbox_whitelv
+            // 
+            this.tbox_whitelv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbox_whitelv.Location = new System.Drawing.Point(257, 558);
+            this.tbox_whitelv.Name = "tbox_whitelv";
+            this.tbox_whitelv.Size = new System.Drawing.Size(177, 30);
+            this.tbox_whitelv.TabIndex = 34;
+            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
@@ -997,7 +1077,7 @@ namespace Colorimeter_Config_GUI
             this.picturebox_test.Location = new System.Drawing.Point(518, 17);
             this.picturebox_test.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.picturebox_test.Name = "picturebox_test";
-            this.picturebox_test.Size = new System.Drawing.Size(960, 960);
+            this.picturebox_test.Size = new System.Drawing.Size(1150, 960);
             this.picturebox_test.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picturebox_test.TabIndex = 6;
             this.picturebox_test.TabStop = false;
@@ -1263,86 +1343,6 @@ namespace Colorimeter_Config_GUI
             this.pictureBox_processed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox_processed.TabIndex = 1;
             this.pictureBox_processed.TabStop = false;
-            // 
-            // tbox_whitelv
-            // 
-            this.tbox_whitelv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbox_whitelv.Location = new System.Drawing.Point(257, 558);
-            this.tbox_whitelv.Name = "tbox_whitelv";
-            this.tbox_whitelv.Size = new System.Drawing.Size(177, 30);
-            this.tbox_whitelv.TabIndex = 34;
-            // 
-            // tbox_whiteunif
-            // 
-            this.tbox_whiteunif.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbox_whiteunif.Location = new System.Drawing.Point(257, 590);
-            this.tbox_whiteunif.Name = "tbox_whiteunif";
-            this.tbox_whiteunif.Size = new System.Drawing.Size(177, 30);
-            this.tbox_whiteunif.TabIndex = 35;
-            // 
-            // tbox_blacklv
-            // 
-            this.tbox_blacklv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbox_blacklv.Location = new System.Drawing.Point(257, 659);
-            this.tbox_blacklv.Name = "tbox_blacklv";
-            this.tbox_blacklv.Size = new System.Drawing.Size(177, 30);
-            this.tbox_blacklv.TabIndex = 36;
-            // 
-            // tbox_blackunif
-            // 
-            this.tbox_blackunif.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbox_blackunif.Location = new System.Drawing.Point(257, 689);
-            this.tbox_blackunif.Name = "tbox_blackunif";
-            this.tbox_blackunif.Size = new System.Drawing.Size(177, 30);
-            this.tbox_blackunif.TabIndex = 37;
-            // 
-            // tbox_red
-            // 
-            this.tbox_red.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbox_red.Location = new System.Drawing.Point(257, 752);
-            this.tbox_red.Name = "tbox_red";
-            this.tbox_red.Size = new System.Drawing.Size(177, 30);
-            this.tbox_red.TabIndex = 38;
-            // 
-            // tbox_green
-            // 
-            this.tbox_green.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbox_green.Location = new System.Drawing.Point(257, 785);
-            this.tbox_green.Name = "tbox_green";
-            this.tbox_green.Size = new System.Drawing.Size(177, 30);
-            this.tbox_green.TabIndex = 39;
-            // 
-            // tbox_blue
-            // 
-            this.tbox_blue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbox_blue.Location = new System.Drawing.Point(257, 815);
-            this.tbox_blue.Name = "tbox_blue";
-            this.tbox_blue.Size = new System.Drawing.Size(177, 30);
-            this.tbox_blue.TabIndex = 40;
-            // 
-            // tbox_gamut
-            // 
-            this.tbox_gamut.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbox_gamut.Location = new System.Drawing.Point(257, 851);
-            this.tbox_gamut.Name = "tbox_gamut";
-            this.tbox_gamut.Size = new System.Drawing.Size(177, 30);
-            this.tbox_gamut.TabIndex = 41;
-            // 
-            // tbox_whitemura
-            // 
-            this.tbox_whitemura.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbox_whitemura.Location = new System.Drawing.Point(257, 626);
-            this.tbox_whitemura.Name = "tbox_whitemura";
-            this.tbox_whitemura.Size = new System.Drawing.Size(177, 30);
-            this.tbox_whitemura.TabIndex = 42;
-            // 
-            // tbox_blackmura
-            // 
-            this.tbox_blackmura.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbox_blackmura.Location = new System.Drawing.Point(257, 720);
-            this.tbox_blackmura.Name = "tbox_blackmura";
-            this.tbox_blackmura.Size = new System.Drawing.Size(177, 30);
-            this.tbox_blackmura.TabIndex = 43;
             // 
             // Form_Config
             // 

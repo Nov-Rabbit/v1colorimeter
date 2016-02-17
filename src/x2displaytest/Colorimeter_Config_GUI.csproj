@@ -192,6 +192,7 @@
     <Compile Include="imagingpipeline.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="testlog.cs" />
     <Compile Include="zoneresult.cs" />
     <EmbeddedResource Include="Form_MainUI.resx">
       <SubType>Designer</SubType>

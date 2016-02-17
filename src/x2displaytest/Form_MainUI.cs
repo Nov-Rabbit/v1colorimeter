@@ -516,8 +516,7 @@ namespace Colorimeter_Config_GUI
                 btn_start.BackColor = Color.LightBlue;
 
                 GetDisplayCorner(m_processedImage, out displaycornerPoints);
-
-
+ 
                 // Show the cropped test image in the UI;
                 // Bitmap srcimg = m_processedImage.bitmap;
                 m_processedImage.bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp");
@@ -528,14 +527,12 @@ namespace Colorimeter_Config_GUI
 
                 // show cropping image
                 refreshtestimage(updateimg, picturebox_test);
-                Thread.Sleep(TimeSpan.FromMilliseconds(systemidletime));
 
                 // show cropped image
                 updateimg = croppedimage(m_processedImage.bitmap);
                 picturebox_test.Width = updateimg.Width;
                 picturebox_test.Height = updateimg.Height;
                 refreshtestimage(updateimg, picturebox_test);
-                Thread.Sleep(TimeSpan.FromMilliseconds(systemidletime));
 
                 pf = displaytest(displaycornerPoints);
                 tbox_pf.Visible = true;
@@ -551,115 +548,7 @@ namespace Colorimeter_Config_GUI
                 }
             }
         }
-        /*
-       private double[, ,] bmp2rgb(Bitmap processedBitmap)
-       {
-            int h = processedBitmap.Height;
-            int w = processedBitmap.Width;
-            double[, ,] rgbstr = new double[w, h, 3];
 
-            for (int i = 0; i < w; i++)
-            {
-                for (int j = 0; j < h; j++)
-                {
-                    rgbstr[i, j, 0] = processedBitmap.GetPixel(i, j).R;
-                    rgbstr[i, j, 1] = processedBitmap.GetPixel(i, j).G;
-                    rgbstr[i, j, 2] = processedBitmap.GetPixel(i, j).B;
-                }
-
-            }
-            return rgbstr;
-
-       }
-       
-       private double[, ,] rgb2xyz(double[, ,] rgbstr)
-       {
-           int w = rgbstr.GetLength(0);
-           int h = rgbstr.GetLength(1);
-           double [, ,] xyzstr = new double[w,h,3];
-           var ccm = new[,]
-               {
-                    {0.5767309, 0.2973769, 0.0270343},
-                    {0.1855540, 0.6273491, 0.0706872},
-                    {0.1881852, 0.0752741, 0.9911085}
-               };
-           
-
-           for (int i = 0; i < w; i++)
-            {
-                for (int j = 0; j < h; j++)
-                {
-                    double[] rgb = new double[] {rgbstr[i,j,0], rgbstr[i,j,1], rgbstr[i,j, 2]};
-                    double[] xyz = MultiplyVector(ccm, rgb);
-                    xyzstr[i, j, 0] = xyz[0];
-                    xyzstr[i, j, 1] = xyz[1];
-                    xyzstr[i, j, 2] = xyz[2];
-                }
-           }
-
-          return xyzstr;
-       }
-
-       private double[,] MultiplyMatrix(double[,] A, double[,] B)
-       {
-           int rA = A.GetLength(0);
-           int cA = A.GetLength(1);
-           int rB = B.GetLength(0);
-           int cB = B.GetLength(1);
-           double temp = 0;
-           double[,] kHasil = new double[rA, cB];
-           if (cA != rB)
-           {
-               Console.WriteLine("matrik can't be multiplied !!");
-               return null;
-           }
-           else
-           {
-               for (int i = 0; i < rA; i++)
-               {
-                   for (int j = 0; j < cB; j++)
-                   {
-                       temp = 0;
-                       for (int k = 0; k < cA; k++)
-                       {
-                           temp += A[i, k] * B[k, j];
-                       }
-                       kHasil[i, j] = temp;
-                   }
-               }
-               return kHasil;
-           }
-       }
-
-       private double[ ] MultiplyVector(double[,] A, double[] B)
-       {
-           int rA = A.GetLength(0);
-           int cA = A.GetLength(1);
-           int rB = B.GetLength(0);
-           double temp = 0;
-           double[] kHasil = new double[rA];
-           if (cA != rB)
-           {
-               Console.WriteLine("matrik can't be multiplied !!");
-               return null;
-           }
-           else
-           {
-               for (int i = 0; i < rA; i++)
-               {
-                       temp = 0;
-                       for (int k = 0; k < cA; k++)
-                       {
-                           temp += A[i, k] * B[k];
-                       }
-                       kHasil[i] = temp;
- 
-               }
-               return kHasil;
-           }
-       }
-
-        */
         private bool displaytest(List<IntPoint> displaycornerPoints)
         {
 
@@ -687,6 +576,22 @@ namespace Colorimeter_Config_GUI
             cbox_white_uniformity.Checked = true;
             double whiteuniformity5_percentage = whiteuniformity5 * 100;
             tbox_whiteunif.Text = whiteuniformity5_percentage.ToString();
+            zoneresult zr = new zoneresult();
+
+            Graphics g = Graphics.FromImage(binimg);
+            for (int i = 1; i < 6; i++)
+            {
+                // get corner coordinates
+                flagPoints.Clear();
+                flagPoints = zr.zonecorners(i, zonesize, XYZ);
+                // zone image
+                g = zoneingimage(g, flagPoints);
+                binimg.Save(tempdirectory + i.ToString() + "_white_bin_zone.bmp");
+            }
+
+            binimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white_bin_zone1-5.bmp");
+            refreshtestimage(binimg, picturebox_test);
+            g.Dispose();
 
             whitemura = ip.getmura(XYZ);
             cbox_white_mura.Checked = true;
@@ -793,7 +698,19 @@ namespace Colorimeter_Config_GUI
             g.Dispose();
             return srcimg;
         }
-        
+
+        private Graphics zoneingimage(Graphics g, List<IntPoint> cornerPoints)
+        {
+            
+            List<System.Drawing.Point> Points = new List<System.Drawing.Point>();
+            foreach (var point in cornerPoints)
+            {
+                Points.Add(new System.Drawing.Point(point.X, point.Y));
+            }
+            g.DrawPolygon(new Pen(Color.Red, 1.0f), Points.ToArray());
+            return g;
+        }
+
         // crop the source image to the new crop bmp, returned and stored also in the temp folder
         private Bitmap croppedimage(Bitmap src)
         {
@@ -815,6 +732,8 @@ namespace Colorimeter_Config_GUI
                 picturebox_flag.Image.Dispose();
             }
             picturebox_flag.Image = srcimg;
+            picturebox_flag.SizeMode = PictureBoxSizeMode.StretchImage;
+
             this.Refresh();
 
            if (picturebox_flag == picturebox_test)
@@ -822,6 +741,7 @@ namespace Colorimeter_Config_GUI
                istestimagelock = true;
            }
 
+           Thread.Sleep(TimeSpan.FromMilliseconds(systemidletime));
         }
 
 // analysis related
@@ -928,7 +848,6 @@ namespace Colorimeter_Config_GUI
                     GetDisplayCornerfrombmp(rawimg, out displaycornerPoints);
                     Bitmap desimage = croppingimage(rawimg, displaycornerPoints);
                     refreshtestimage(desimage, pictureBox_processed);
-                    Thread.Sleep(systemidletime);
                     Bitmap cropimage = croppedimage(rawimg);
                     refreshtestimage(cropimage, pictureBox_processed);
                 }
