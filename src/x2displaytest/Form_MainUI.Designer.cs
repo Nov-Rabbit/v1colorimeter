@@ -176,7 +176,7 @@ namespace Colorimeter_Config_GUI
             this.toolStrip1.Location = new System.Drawing.Point(0, 53);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(2);
-            this.toolStrip1.Size = new System.Drawing.Size(1672, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1727, 27);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -221,10 +221,10 @@ namespace Colorimeter_Config_GUI
             this.toolStripStatusLabelImageSize,
             this.toolStripStatusLabelFrameRate,
             this.toolStripStatusLabelTimestamp});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1179);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1167);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1672, 42);
+            this.statusStrip1.Size = new System.Drawing.Size(1727, 42);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -254,7 +254,7 @@ namespace Colorimeter_Config_GUI
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(12, 6, 3, 6);
-            this.menuStrip1.Size = new System.Drawing.Size(1672, 53);
+            this.menuStrip1.Size = new System.Drawing.Size(1727, 53);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1348,7 +1348,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1672, 1221);
+            this.ClientSize = new System.Drawing.Size(1727, 1209);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label1);

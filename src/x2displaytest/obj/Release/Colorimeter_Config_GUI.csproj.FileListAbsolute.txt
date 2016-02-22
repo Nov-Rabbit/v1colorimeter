@@ -1,0 +1,1 @@
+D:\v1colorimeter\src\x2displaytest\bin\Release\Colorimeter_Config_GUI.exe.config

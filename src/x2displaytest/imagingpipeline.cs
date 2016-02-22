@@ -12,11 +12,69 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Windows.Forms;
+using AForge;
+using AForge.Imaging;
+using AForge.Math;
+using AForge.Math.Geometry;
 
 namespace Colorimeter_Config_GUI
 {
     class imagingpipeline
     {
+        private List<IntPoint> flagPoints;
+
+        public Bitmap croppedimage(Bitmap src, List<IntPoint> displaycornerPoints, int width, int height)
+        {
+            //Create crop filter
+            AForge.Imaging.Filters.SimpleQuadrilateralTransformation filter = new AForge.Imaging.Filters.SimpleQuadrilateralTransformation(displaycornerPoints, width, height);
+            //Create cropped display image
+            Bitmap des = filter.Apply(src);
+            
+            return des;
+        }
+
+
+        public void GetDisplayCornerfrombmp(Bitmap processbmp, out List<IntPoint> displaycornerPoints)
+        {
+            BlobCounter bbc = new BlobCounter();
+            bbc.FilterBlobs = true;
+            bbc.MinHeight = 5;
+            bbc.MinWidth = 5;
+
+            bbc.ProcessImage(processbmp);
+
+            Blob[] blobs = bbc.GetObjectsInformation();
+            SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
+
+            foreach (var blob in blobs)
+            {
+                List<IntPoint> edgePoints = bbc.GetBlobsEdgePoints(blob);
+                List<IntPoint> cornerPoints;
+
+
+                // use the shape checker to extract the corner points
+                if (shapeChecker.IsQuadrilateral(edgePoints, out cornerPoints))
+                {
+                    // only do things if the corners from a rectangle 
+                    if (shapeChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
+                    {
+                        flagPoints = cornerPoints;
+                        continue;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cannot Find the Display");
+                        flagPoints = null;
+                        //                       picturebox_test.Image = m;
+                        continue;
+                    }
+                }
+
+            }
+            displaycornerPoints = flagPoints;
+
+        }
 
         // get average Y from input XYZ matrix
         public double getlv(double[, ,] XYZ)

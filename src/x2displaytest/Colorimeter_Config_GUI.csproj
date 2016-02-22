@@ -181,6 +181,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="colorimeter.cs" />
     <Compile Include="DUTclass.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Form_MainUI.cs">

@@ -57,6 +57,9 @@ namespace Colorimeter_Config_GUI
         DUTclass.hodor dut = new DUTclass.hodor();
         imagingpipeline ip = new imagingpipeline();
         
+        //colorimeter setup
+        private bool useSoftwareTrigger = true;
+
         //log setup
         string str_DateTime = string.Format("{0:yyyyMMdd}" + "{0:HHmmss}", DateTime.Now, DateTime.Now);
 
@@ -178,16 +181,7 @@ namespace Colorimeter_Config_GUI
                         ManagedPGRGuid guidToUse = selectedGuids[0];
 
                         ManagedBusManager busMgr = new ManagedBusManager();
-                        InterfaceType ifType = busMgr.GetInterfaceTypeFromGuid(guidToUse);
-
-                        if (ifType == InterfaceType.GigE)
-                        {
-                            m_camera = new ManagedGigECamera();
-                        }
-                        else
-                        {
-                            m_camera = new ManagedCamera();
-                        }
+                        m_camera = new ManagedCamera();
 
                     // Connect to the first selected GUID
                         m_camera.Connect(guidToUse);
@@ -529,7 +523,9 @@ namespace Colorimeter_Config_GUI
                 refreshtestimage(updateimg, picturebox_test);
 
                 // show cropped image
-                updateimg = croppedimage(m_processedImage.bitmap);
+                updateimg = ip.croppedimage(m_processedImage.bitmap, displaycornerPoints, dut.ui_width, dut.ui_height);
+                updateimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
+
                 picturebox_test.Width = updateimg.Width;
                 picturebox_test.Height = updateimg.Height;
                 refreshtestimage(updateimg, picturebox_test);
@@ -558,7 +554,9 @@ namespace Colorimeter_Config_GUI
 
             //need save bmp outside as file format and reload so that 
             Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_white.bmp", true));
-            Bitmap cropimg = croppedimage(srcimg);
+            Bitmap cropimg = ip.croppedimage(srcimg, displaycornerPoints, dut.ui_width, dut.ui_height);
+            cropimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
+            
             Bitmap binimg = new Bitmap(cropimg, new Size(dut.bin_width, dut.bin_height));
             binimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white_bin.bmp");
             
@@ -597,7 +595,8 @@ namespace Colorimeter_Config_GUI
             cbox_white_mura.Checked = true;
             tbox_whitemura.Text = whitemura.ToString();
 
-            m_camera.StopCapture(); 
+            
+
 
             /*
             dut.setblack();
@@ -660,7 +659,7 @@ namespace Colorimeter_Config_GUI
             {
                 List<IntPoint> edgePoints = bbc.GetBlobsEdgePoints(blob);
                 List<IntPoint> cornerPoints;
-
+                int count = 0;
 
                 // use the shape checker to extract the corner points
                 if (shapeChecker.IsQuadrilateral(edgePoints, out cornerPoints))
@@ -676,7 +675,20 @@ namespace Colorimeter_Config_GUI
                         MessageBox.Show("Cannot Find the Display");
                         flagPoints = null;
  //                       picturebox_test.Image = m;
-                        continue;
+                        count++;
+                        if (count < 3)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cannot Find the Display for 3 times. Quit Program");
+                            Debug.WriteLine("Failed to found display");
+                            Environment.ExitCode = -1;
+                            Application.Exit();
+                   
+                            
+                        }
                     }
                 }
                 
@@ -712,16 +724,6 @@ namespace Colorimeter_Config_GUI
         }
 
         // crop the source image to the new crop bmp, returned and stored also in the temp folder
-        private Bitmap croppedimage(Bitmap src)
-        {
-            //Create crop filter
-            AForge.Imaging.Filters.SimpleQuadrilateralTransformation filter = new AForge.Imaging.Filters.SimpleQuadrilateralTransformation(displaycornerPoints, dut.ui_width, dut.ui_height);
-
-            //Create cropped display image
-            Bitmap des = filter.Apply(src);
-            des.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
-            return des;
-        }
 
         private void refreshtestimage(Bitmap srcimg, PictureBox picturebox_flag)
         {
@@ -743,6 +745,8 @@ namespace Colorimeter_Config_GUI
 
            Thread.Sleep(TimeSpan.FromMilliseconds(systemidletime));
         }
+
+
 
 // analysis related
         private void btn_openrawfile_Click(object sender, EventArgs e)
@@ -782,47 +786,6 @@ namespace Colorimeter_Config_GUI
             }
         }
 
-        private void GetDisplayCornerfrombmp( Bitmap processbmp, out List<IntPoint> displaycornerPoints)
-        {
-            BlobCounter bbc = new BlobCounter();
-            bbc.FilterBlobs = true;
-            bbc.MinHeight = 5;
-            bbc.MinWidth = 5;
-
-            bbc.ProcessImage(processbmp);
-
-            Blob[] blobs = bbc.GetObjectsInformation();
-            SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
-
-            foreach (var blob in blobs)
-            {
-                List<IntPoint> edgePoints = bbc.GetBlobsEdgePoints(blob);
-                List<IntPoint> cornerPoints;
-
-
-                // use the shape checker to extract the corner points
-                if (shapeChecker.IsQuadrilateral(edgePoints, out cornerPoints))
-                {
-                    // only do things if the corners from a rectangle 
-                    if (shapeChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
-                    {
-                        flagPoints = cornerPoints;
-                        continue;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Cannot Find the Display");
-                        flagPoints = null;
-                        //                       picturebox_test.Image = m;
-                        continue;
-                    }
-                }
-
-            }
-            displaycornerPoints = flagPoints;
-
-        }
-
         private void btn_process_Click(object sender, EventArgs e)
         {
             try
@@ -845,10 +808,10 @@ namespace Colorimeter_Config_GUI
                 {
 
                     Bitmap rawimg = new Bitmap(picturebox_raw.Image);
-                    GetDisplayCornerfrombmp(rawimg, out displaycornerPoints);
+                    ip.GetDisplayCornerfrombmp(rawimg, out displaycornerPoints);
                     Bitmap desimage = croppingimage(rawimg, displaycornerPoints);
                     refreshtestimage(desimage, pictureBox_processed);
-                    Bitmap cropimage = croppedimage(rawimg);
+                    Bitmap cropimage = ip.croppedimage(rawimg, displaycornerPoints, dut.ui_width, dut.ui_height);
                     refreshtestimage(cropimage, pictureBox_processed);
                 }
                 else if (rbtn_5zone.Checked)
