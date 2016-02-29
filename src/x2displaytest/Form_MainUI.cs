@@ -1,28 +1,13 @@
 //=============================================================================
-// Copyright © 2015 Point Grey Research, Inc. All Rights Reserved.
-//
-// This software is the confidential and proprietary information of Point
-// Grey Research, Inc. ("Confidential Information").  You shall not
-// disclose such Confidential Information and shall use it only in
-// accordance with the terms of the license agreement you entered into
-// with PGR.
-//
-// PGR MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
-// SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-// PURPOSE, OR NON-INFRINGEMENT. PGR SHALL NOT BE LIABLE FOR ANY DAMAGES
-// SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
-// THIS SOFTWARE OR ITS DERIVATIVES.
+// Main UI function. Start from Program.cs and enter Form1_load 
 //=============================================================================
-//=============================================================================
-// $Id: Form1.cs,v 1.4 2011-02-03 23:34:52 soowei Exp $
-//=============================================================================
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -32,11 +17,20 @@ using System.Diagnostics;
 using FlyCapture2Managed;
 using FlyCapture2Managed.Gui;
 
+using AForge;
+using AForge.Imaging;
+using AForge.Math;
+
+using DUTclass;
+
 namespace Colorimeter_Config_GUI
 {
-
     public partial class Form_Config : Form
     {
+        //colorimeter parameters
+        private Colorimeter m_colorimeter;
+        private bool m_flagExit;
+
         private FlyCapture2Managed.Gui.CameraControlDialog m_camCtlDlg;
         private ManagedCameraBase m_camera = null;
         private ManagedImage m_rawImage;
@@ -44,10 +38,46 @@ namespace Colorimeter_Config_GUI
         private bool m_grabImages;
         private AutoResetEvent m_grabThreadExited;
         private BackgroundWorker m_grabThread;
-        private Graphics g;
-        private bool mdraw = false;
-        private Color mcolor = Color.Red;
+        private List<IntPoint> flagPoints, displaycornerPoints;
+        
+        
+        //test setup
+        private bool isdemomode = false; //Demo mode can only be used for analysis tab.
+        private bool istestimagelock = false; // Lock the picturebox_test or not
+        DateTime timezero = DateTime.Now;
+        int systemidletime = 1500; // in millisecond
 
+        //log setup
+        string currentdirectory = System.IO.Directory.GetCurrentDirectory();             // current working folder
+        string tempdirectory = System.IO.Directory.GetCurrentDirectory() + "\\temp\\";     // temprary folder. Will clean after one test iteration
+        string logdirectory = System.IO.Directory.GetCurrentDirectory()  + "\\log\\";      // facrtory test logs. Pass/fail.
+        string debugdirectory = System.IO.Directory.GetCurrentDirectory() + "\\debug\\";   // factory test station debug logs 
+        string rawdirectory = System.IO.Directory.GetCurrentDirectory() + "\\raw\\";       // raw test logs including important test images.
+        string summarydirectory = System.IO.Directory.GetCurrentDirectory() + "\\log\\summary\\"; // summary logs. 
+
+        //dut setup
+        DUTclass.hodor dut = new DUTclass.hodor();
+        imagingpipeline ip = new imagingpipeline();
+        
+        //colorimeter setup
+        private bool useSoftwareTrigger = true;
+
+        //log setup
+        string str_DateTime = string.Format("{0:yyyyMMdd}" + "{0:HHmmss}", DateTime.Now, DateTime.Now);
+
+        //test items
+        double whitelv, blacklv, contrast; // luminance of white, black and contrast 
+        double whiteuniformity5, whiteuniformity13; // uniformity of white state, 5 pt and 13 pt standard
+        double wx, wy, rx, ry, gx, gy, bx, by, gamutarea; // color tristimulus values of RGB at CIE1931
+        double whitemura, blackmura; // mura at white and black state
+
+        // test data
+        double[,] CIE_Y, CIE_x, CIE_y;  //CIE 1931 x, y
+        double[, ,] RGB, XYZ;
+        int zonesize = 10; // 10mm for now. 
+        double[, ,] XYZzone; // used to represent the zone size XYZ array
+        private bool pf;  //final pass/fail
+        
         public Form_Config()
         {
             InitializeComponent();
@@ -55,79 +85,135 @@ namespace Colorimeter_Config_GUI
             m_processedImage = new ManagedImage();
             m_camCtlDlg = new CameraControlDialog();
             m_grabThreadExited = new AutoResetEvent(false);
-            
+            Form.CheckForIllegalCrossThreadCalls = false;
         }
 
-        private void UpdateTestUI(object sender, ProgressChangedEventArgs e)
+
+        // colorimeter status
+
+        private double UpdateUpTime()
         {
-            String statusString;
 
-            double ccd_temp = m_camera.GetProperty(PropertyType.Temperature).valueA / 10 - 273.15;
+            TimeSpan uptime = DateTime.Now.Subtract(timezero);
 
-            try
-            {
-                statusString = String.Format(ccd_temp.ToString());
-            }
-            catch
-            {
-                statusString = "N/A";
-            }
-            tbox_ccdtemp.Text = statusString;
-            tbox_ccdtemp.Refresh();
-
-            TimeStamp timestamp;
-            lock (this)
-            {
-                timestamp = m_rawImage.timeStamp;
-            }
-
-            TimeSpan cam_ontime = TimeSpan.FromSeconds(timestamp.cycleSeconds);
-            statusString = String.Format("{0:D2}h:{1:D2}m.{2:D2}s",
-                cam_ontime.Hours, cam_ontime.Minutes, cam_ontime.Seconds);
+            string statusString = String.Format("{0:D2}h:{1:D2}m:{2:D2}s",
+                uptime.Hours, uptime.Minutes, uptime.Seconds);
 
             tbox_uptime.Text = statusString;
             tbox_uptime.Refresh();
-            picturebox_test.Image = m_processedImage.bitmap;
-            picturebox_test.Invalidate();
+
+            return uptime.Hours;
+
         }
 
-        private void UpdateAuditUI(object sender, ProgressChangedEventArgs e)
+        private double UpdateCCDTemperature()
         {
-            picturebox_audit.Image = m_processedImage.bitmap;
-            picturebox_audit.Invalidate();
+            String statusString;
+            try
+            {
+                double ccd_temp = m_colorimeter.Temperature;
+
+                try
+                {
+                    statusString = String.Format(ccd_temp.ToString());
+                }
+                catch
+                {
+                    statusString = "N/A";
+                }
+                tbox_ccdtemp.Text = statusString;
+                tbox_ccdtemp.Refresh();
+                return ccd_temp;
+            }
+            catch (FC2Exception ex)
+            {
+                Debug.WriteLine("Failed to load form successfully: " + ex.Message);
+                Environment.ExitCode = -1;
+                Application.Exit();
+                return 0.0;
+            }
+
+
         }
 
-        private void UpdateConfigUI(object sender, ProgressChangedEventArgs e)
+        private bool colorimeterstatus()
         {
-            picturebox_config.Image = m_processedImage.bitmap;
-            picturebox_config.Invalidate();
+            double CCDTemperature = UpdateCCDTemperature();
+            double UpTime = UpdateUpTime();
 
+            if (CCDTemperature < 20 && UpTime < 24)
+            {
+                tbox_colorimeterstatus.Text = "OK";
+                tbox_colorimeterstatus.BackColor = Color.Green;
+                return true;
+            }
+            else if (CCDTemperature < 50 && UpTime < 24)
+            {
+                tbox_colorimeterstatus.Text = "Warm CCD";
+                tbox_colorimeterstatus.BackColor = Color.LightYellow;
+                colorimeter_cooling_on();
+                return true;
+            
+            }
+            else
+            {
+                tbox_colorimeterstatus.Text = "Fail";
+                tbox_colorimeterstatus.BackColor = Color.Red;
+                MessageBox.Show("Reset Colorimeter");
+                return false;
+            }
         }
 
+        private void colorimeter_cooling_on()
+        {
+            // Fan is on and cooling of CCD is on.
+        }
+        // UI related
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            if (!isdemomode)
+            {
+                m_colorimeter = new Colorimeter();
+
+                if (!m_colorimeter.Connect())
+                {
+                    MessageBox.Show("No camera.");
+                    Application.Exit();
+                    return;
+                }
+
+                new Action(delegate() {
+                    while (!m_flagExit) {
+                        UpdateCCDTemperature();
+                        UpdateUpTime();
+                        UpdateStatusBar();
+                        colorimeterstatus();
+                        System.Threading.Thread.Sleep(100);
+                    }
+                }).BeginInvoke(null, null);
+            }
+            else
+            {
+                Tabs.SelectedTab = tab_Analysis;
+                MessageBox.Show("Demo Mode with no Colorimeter. Only for Analysis", "Remind");
+            }
+
+            Show();
+            tbox_sn.Focus();
+        }
 
         private void UpdateUI(object sender, ProgressChangedEventArgs e)
         {
-            UpdateStatusBar();
-
-            if (Tabs.SelectedTab == Tabs.TabPages["Tab_Test"])
+            if (!istestimagelock)
             {
-                UpdateTestUI(null, null);
+                picturebox_test.Image = m_processedImage.bitmap;
+                picturebox_test.Invalidate();
             }
-            else if (Tabs.SelectedTab == Tabs.TabPages["Tab_Audit"])
-            {
-                UpdateAuditUI(null, null);
-            }
-            else if (Tabs.SelectedTab == Tabs.TabPages["Tab_Config"])
-            {
-                UpdateConfigUI(null, null);
-            }            
-            else
-            {
-                MessageBox.Show("Please select running mode", "Reminder");
-            }
-
+            
         }
-
 
         private void UpdateStatusBar()
         {
@@ -135,8 +221,8 @@ namespace Colorimeter_Config_GUI
 
             statusString = String.Format(
                 "Image size: {0} x {1}",
-                m_rawImage.cols,
-                m_rawImage.rows);
+                m_colorimeter.ImageSize.Width,
+                m_colorimeter.ImageSize.Height);
 
             toolStripStatusLabelImageSize.Text = statusString;
 
@@ -144,9 +230,9 @@ namespace Colorimeter_Config_GUI
             {
                 statusString = String.Format(
                 "Requested frame rate: {0}Hz",
-                m_camera.GetProperty(PropertyType.FrameRate).absValue);
+                m_colorimeter.FrameRate);
             }
-            catch (FC2Exception ex)
+            catch (FC2Exception ex) 
             {
                 statusString = "Requested frame rate: 0.00Hz";
             }
@@ -157,7 +243,7 @@ namespace Colorimeter_Config_GUI
 
             lock (this)
             {
-                timestamp = m_rawImage.timeStamp;
+                timestamp = m_colorimeter.TimeStamp;
             }
 
             statusString = String.Format(
@@ -169,82 +255,16 @@ namespace Colorimeter_Config_GUI
             toolStripStatusLabelTimestamp.Text = statusString;
             statusStrip1.Refresh();
 
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            Hide();
-            CameraSelectionDialog camSlnDlg = new CameraSelectionDialog();
-            bool retVal = camSlnDlg.ShowModal();
-            if (retVal)
-            {
-                try
-                {
-                    ManagedPGRGuid[] selectedGuids = camSlnDlg.GetSelectedCameraGuids();
-                    ManagedPGRGuid guidToUse = selectedGuids[0];
-
-                    ManagedBusManager busMgr = new ManagedBusManager();
-                    InterfaceType ifType = busMgr.GetInterfaceTypeFromGuid(guidToUse);
-
-                    if (ifType == InterfaceType.GigE)
-                    {
-                        m_camera = new ManagedGigECamera();
-                    }
-                    else
-                    {
-                        m_camera = new ManagedCamera();
-                    }
-
-                    // Connect to the first selected GUID
-                    m_camera.Connect(guidToUse);
-
-                    m_camCtlDlg.Connect(m_camera);
-
-                    CameraInfo camInfo = m_camera.GetCameraInfo();
-                    UpdateFormCaption(camInfo);
-
-                    // Set embedded timestamp to on
-                    EmbeddedImageInfo embeddedInfo = m_camera.GetEmbeddedImageInfo();
-                    embeddedInfo.timestamp.onOff = true;
-                    tbox_uptime.Text = embeddedInfo.timestamp.ToString();
-                    m_camera.SetEmbeddedImageInfo(embeddedInfo);
-
-                    m_camera.StartCapture();
-
-                    m_grabImages = true;
-
-                    StartGrabLoop();
-                }
-                catch (FC2Exception ex)
-                {
-                    Debug.WriteLine("Failed to load form successfully: " + ex.Message);
-                    Environment.ExitCode = -1;
-                    Application.Exit();
-                    return;
-                }
-
-                toolStripButtonStart.Enabled = false;
-                toolStripButtonStop.Enabled = true;
-            }
-            else
-            {
-                Environment.ExitCode = -1;
-                Application.Exit();
-                return;
-            }
-
-            Show();
         }
 
         private void UpdateFormCaption(CameraInfo camInfo)
         {
+
             String captionString = String.Format(
                 "X2 Display Test Station - {0} {1} ({2})",
                 camInfo.vendorName,
                 camInfo.modelName,
                 camInfo.serialNumber);
-
             this.Text = captionString;
         }
 
@@ -257,8 +277,10 @@ namespace Colorimeter_Config_GUI
         {
             try
             {
+                m_flagExit = true;
+                m_colorimeter.Disconnect();
                 toolStripButtonStop_Click(sender, e);
-                m_camera.Disconnect();
+                //m_camera.Disconnect();
             }
             catch (FC2Exception ex)
             {
@@ -272,38 +294,11 @@ namespace Colorimeter_Config_GUI
 
         private void StartGrabLoop()
         {
-            m_grabThread = new BackgroundWorker();
-            m_grabThread.ProgressChanged += new ProgressChangedEventHandler(UpdateUI);
-            m_grabThread.DoWork += new DoWorkEventHandler(GrabLoop);
-            m_grabThread.WorkerReportsProgress = true;
-            m_grabThread.RunWorkerAsync();
-        }
-
-        private void GrabLoop(object sender, DoWorkEventArgs e)
-        {
-            BackgroundWorker worker = sender as BackgroundWorker;
-
-            while (m_grabImages)
-            {
-                try
-                {
-                    m_camera.RetrieveBuffer(m_rawImage);
-                }
-                catch (FC2Exception ex)
-                {
-                    Debug.WriteLine("Error: " + ex.Message);
-                    continue;
-                }
-
-                lock (this)
-                {
-                    m_rawImage.Convert(PixelFormat.PixelFormatBgr, m_processedImage);
-                }
-
-                worker.ReportProgress(0);
-            }
-
-            m_grabThreadExited.Set();
+            //m_grabThread = new BackgroundWorker();
+            //m_grabThread.ProgressChanged += new ProgressChangedEventHandler(UpdateUI);
+            //m_grabThread.DoWork += new DoWorkEventHandler(GrabLoop);
+            //m_grabThread.WorkerReportsProgress = true;
+            //m_grabThread.RunWorkerAsync();
         }
 
         private void toolStripButtonStart_Click(object sender, EventArgs e)
@@ -324,7 +319,7 @@ namespace Colorimeter_Config_GUI
 
             try
             {
-                m_camera.StopCapture();
+                //m_camera.StopCapture();
             }
             catch (FC2Exception ex)
             {
@@ -362,72 +357,454 @@ namespace Colorimeter_Config_GUI
                 m_camCtlDlg.Disconnect();
                 m_camera.Disconnect();
             }
-            
+
             Form1_Load(sender, e);
         }
 
-        private void Size_Calibration_Btn_Click(object sender, EventArgs e)
+        private void realSizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Btn_Size.Enabled = false;
-            Btn_Size.BackColor = System.Drawing.Color.LightSteelBlue;
-            Btn_Color.Enabled = false;
-            Btn_FF.Enabled = false;
-            Btn_Lv.Enabled = false;
 
-            // pop out the message box.
-            object size_cal_msg = "Choose the DUT boundaries and type in dimension in mm";
-            object size_cal_title = "Size Calibration";
-            MessageBox.Show(size_cal_msg.ToString(), size_cal_title.ToString());
+            picturebox_test.SizeMode = PictureBoxSizeMode.Normal;
+            picturebox_test.Refresh();
+
+        }
+
+        private void stretchToFillToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            picturebox_test.SizeMode = PictureBoxSizeMode.StretchImage;
+            picturebox_test.Refresh();
+        }
+
+        // test prerequisite
+
+
+        private bool checksnformat()
+        {
+            if (tbox_sn.Text.Length == 16) //fake condition. More input is needed from Square
+            {
+                
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Please type in 16 digit SN");
+                return false;
+            }
+        }
+
+        private bool checkshopfloor()
+        {
+            bool flag = true;
+            int sfcHandle = 1;
+            const uint port = 1;
+
+            SFC.SFCInit();
+            //sfcHandle = SFC.ReportStatus(tbox_sn.Text, port);
+
+            if (sfcHandle == 1)
+            {
+                tbox_shopfloor.Text = "OK";
+                tbox_shopfloor.BackColor = Color.Green;
+            }
+            else
+            {
+                tbox_shopfloor.Text = "NG";
+                tbox_shopfloor.BackColor = Color.Red;
+            }
+
+            return flag;
+        }
+
+
+        // test related 
+        private bool istestmanual()
+        {
+            if (rbtn_manual.Checked)
+            {
+                return true;
+            }
+            else if (rbtn_auto.Checked)
+            {
+                return false;
+            }
+            else 
+            {
+                MessageBox.Show("Please check if DUT is in auto or manual mode");
+                return true;
+            }
+        }
+
+        
+        private void btn_start_Click(object sender, EventArgs e)
+        {
+            if (!dut.checkDUT())
+            {
+                tbox_dut_connect.Text = "No DUT";
+                tbox_dut_connect.BackColor = Color.Red;
+                MessageBox.Show("Please insert DUT");
+            }
+            else if (string.IsNullOrEmpty(tbox_sn.Text))
+            {
+                MessageBox.Show("Please type SN");
+            }
+            else if (!checksnformat())
+            {
+                MessageBox.Show("SN format is wrong");
+            }
+            else if (!checkshopfloor())
+            {
+                MessageBox.Show("Shopfloor system is not working");
+            }
+            else
+            {
+                tbox_dut_connect.Text = "DUT connected";
+                tbox_dut_connect.BackColor = Color.Green;
+
+                btn_start.Enabled = false;
+                btn_start.BackColor = Color.LightBlue;
+
+                try {
+                    Bitmap bitmap = m_colorimeter.GrabImage();
+
+                    this.refreshtestimage(bitmap, picturebox_test);
+                    ip.GetDisplayCornerfrombmp(bitmap, out displaycornerPoints);
+                    bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp");
+
+                    //need save bmp outside as file format and reload so that 
+                    Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp", true));
+                    Bitmap updateimg = croppingimage(srcimg, displaycornerPoints);
+
+                    // show cropping image
+                    refreshtestimage(updateimg, picturebox_test);
+
+                    // show cropped image
+                    updateimg = ip.croppedimage(bitmap, displaycornerPoints, dut.ui_width, dut.ui_height);
+                    updateimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
+
+                    picturebox_test.Width = updateimg.Width;
+                    picturebox_test.Height = updateimg.Height;
+                    refreshtestimage(updateimg, picturebox_test);
+
+                    pf = displaytest(displaycornerPoints);
+                    tbox_pf.Visible = true;
+                    if (pf)
+                    {
+                        tbox_pf.BackColor = Color.Green;
+                        tbox_pf.Text = "Pass";
+                    }
+                    else
+                    {
+                        tbox_pf.BackColor = Color.Red;
+                        tbox_pf.Text = "Fail";
+                    }
+                    //SFC.CreateResultFile(1, pf ? "PASS" : "FAIL");
+                }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private bool displaytest(List<IntPoint> displaycornerPoints)
+        {
+            // set display to desired pattern following test sequence
+            m_processedImage.bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white.bmp");
+
+            //need save bmp outside as file format and reload so that 
+            Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_white.bmp", true));
+            Bitmap cropimg = ip.croppedimage(srcimg, displaycornerPoints, dut.ui_width, dut.ui_height);
+            cropimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
             
-            // at cal mode, the picture freeze.
-            m_grabImages = false;
+            Bitmap binimg = new Bitmap(cropimg, new Size(dut.bin_width, dut.bin_height));
+            binimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white_bin.bmp");
+            
+            RGB = ip.bmp2rgb(binimg);
+            XYZ = ip.rgb2xyz(RGB);
+
+           // byte[] imgdata = System.IO.File.ReadAllBytes(@"D:\v1colorimeter\src\x2displaytest\bin\Debug\temp\12345620160210135726_cropped.bmp");
+            
+
+            whitelv = ip.getlv(XYZ);
+            cbox_white_lv.Checked = true;
+            tbox_whitelv.Text = whitelv.ToString();
+
+            //SFC.AddTestLog(1, 1, "luminance", "500", "0", whitelv.ToString(), "-");
+            
+            whiteuniformity5 = ip.getuniformity(XYZ);
+
+            cbox_white_uniformity.Checked = true;
+            double whiteuniformity5_percentage = whiteuniformity5 * 100;
+            tbox_whiteunif.Text = whiteuniformity5_percentage.ToString();
+            //SFC.AddTestLog(1, 1, "uniformity", "100", "0", whiteuniformity5_percentage.ToString(), "-");
+
+            zoneresult zr = new zoneresult();
+
+            Graphics g = Graphics.FromImage(binimg);
+            for (int i = 1; i < 6; i++)
+            {
+                // get corner coordinates
+                
+                
+                flagPoints = zr.zonecorners(i, zonesize, XYZ);
+                // zone image
+                g = zoneingimage(g, flagPoints);
+                binimg.Save(tempdirectory + i.ToString() + "_white_bin_zone.bmp");
+                flagPoints.Clear();
+            }
+
+            binimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white_bin_zone1-5.bmp");
+            refreshtestimage(binimg, picturebox_test);
+            g.Dispose();
+
+            whitemura = ip.getmura(XYZ);
+            cbox_white_mura.Checked = true;
+            tbox_whitemura.Text = whitemura.ToString();
+
+            
+
+
+            /*
+            dut.setblack();
+            m_camera.StartCapture();
+            
+            m_camera.RetrieveBuffer(m_rawImage);
+            m_rawImage.Convert(FlyCapture2Managed.PixelFormat.PixelFormatBgr, m_processedImage);
+
+            m_processedImage.bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_black.bmp");
+
+            //need save bmp outside as file format and reload so that 
+            srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_black.bmp", true));
+            cropimg = croppedimage(srcimg);
+            binimg = new Bitmap(cropimg, new Size(dut.bin_width, dut.bin_height));
+
+            RGB = bmp2rgb(binimg);
+            XYZ = rgb2xyz(RGB);
+
+            blacklv = ip.getlv(XYZ);
+            cbox_black_lv.Checked = true;
+            tbox_blacklv.Text = blacklv.ToString();
+
+            blackmura = ip.getmura(XYZ);
+            cbox_black_mura.Checked = true;
+            tbox_blackmura.Text = blackmura.ToString();
+
             m_camera.StopCapture();
+            dut.setred();
+            // will develop the color patterns later
+            */
+            // load pass/fail item
 
-            // Mouse Down Event and Pick the Left Point
+            // decide the test item pass or fail
 
-            // Mouse pressed down to draw the horizontal line
-
-            // Mouse Up Evlent and Pick the Right Point
-
-            // Get the relative value and calculate the size paramter
-
+            return true;
         }
         
-        private void picturebox_config_MouseDown(object sender, MouseEventArgs e)
-        {
-            mdraw = true;
-            g = Graphics.FromImage(picturebox_config.Image);
-            Pen pen1 = new Pen(mcolor, 4);
 
-            Point mouseDownLocatoion = new Point(e.X, e.Y);
-            Point pointup = new Point(e.X, picturebox_config.Location.Y);
-            Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
-            g.DrawLine(pen1, pointup, pointdown);
-            g.Save();
-            picturebox_config.Image = picturebox_config.Image;
+        private Bitmap croppingimage(Bitmap srcimg, List<IntPoint> cornerPoints)
+        {
+            Graphics g = Graphics.FromImage(srcimg);
+            List<System.Drawing.Point> Points = new List<System.Drawing.Point>();
+            foreach (var point in cornerPoints)
+            {
+                Points.Add(new System.Drawing.Point(point.X, point.Y));
+            }
+            g.DrawPolygon(new Pen(Color.Red, 15.0f), Points.ToArray());
+            srcimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropping.bmp");
+            g.Dispose();
+            return srcimg;
         }
 
-        private void picturebox_config_MouseUp(object sender, MouseEventArgs e)
+        private Graphics zoneingimage(Graphics g, List<IntPoint> cornerPoints)
         {
-            mdraw = false;
-            Pen pen1 = new Pen(mcolor, 4);
+            
+            List<System.Drawing.Point> Points = new List<System.Drawing.Point>();
+            foreach (var point in cornerPoints)
+            {
+                Points.Add(new System.Drawing.Point(point.X, point.Y));
+            }
+            g.DrawPolygon(new Pen(Color.Red, 1.0f), Points.ToArray());
+            return g;
+        }
 
-            Point mouseUpLocatoion = new Point(e.X, e.Y);
-            Point pointup = new Point(e.X, picturebox_config.Location.Y);
-            Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
-            g.DrawLine(pen1, pointup, pointdown);
-            g.Save();
+        // crop the source image to the new crop bmp, returned and stored also in the temp folder
 
-            Point pointleft = new Point(picturebox_config.Location.X + picturebox_config.Size.Width/2 , e.Y);
-            Point pointright = new Point(e.X, e.Y);
-            g.DrawLine(pen1, pointleft, pointright);
-            g.Save();
-            picturebox_config.Image = picturebox_config.Image;
+        private void refreshtestimage(Bitmap srcimg, PictureBox picturebox_flag)
+        {
+          // istestimagelock = false;
 
+            if (picturebox_flag.Image != null)
+            {
+                picturebox_flag.Image.Dispose();
+            }
+            picturebox_flag.Image = srcimg;
+            picturebox_flag.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            this.Refresh();
+
+           if (picturebox_flag == picturebox_test)
+           {
+               istestimagelock = true;
+           }
+
+           Thread.Sleep(TimeSpan.FromMilliseconds(systemidletime));
         }
 
 
+
+         // analysis related
+        private void btn_openrawfile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rbtn_colorimeter.Checked)
+                {
+                    m_rawImage.Convert(FlyCapture2Managed.PixelFormat.PixelFormatBgr, m_processedImage);
+                    picturebox_raw.Image = m_processedImage.bitmap;
+                }
+                else if (rbtn_loadfile.Checked)
+                {
+
+                    OpenFileDialog ofd = new OpenFileDialog();
+                    ofd.Title = "Open Image";
+                    ofd.Filter = "bmp files (*.bmp) | *.bmp";
+                    if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        picturebox_raw.Refresh();
+                        picturebox_raw.Image = (Bitmap)System.Drawing.Image.FromFile(ofd.FileName);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please check Image Source");
+                    }
+                    ofd.Dispose();
+                }
+                Show();
+            }
+            catch (FC2Exception ex)
+            {
+                Debug.WriteLine("Error: " + ex.Message);
+                return;
+            }
+        }
+
+        private void btn_process_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                if (rbtn_corner.Checked)
+                {
+
+                }
+                else if (rbtn_9ptuniformity.Checked)
+                {
+                }
+                else if (rbtn_16ptuniformity.Checked)
+                {
+                }
+                else if (rbtn_worstzone.Checked)
+                {
+                }
+                else if (rbtn_cropping.Checked)
+                {
+
+                    Bitmap rawimg = new Bitmap(picturebox_raw.Image);
+
+                    ip.GetDisplayCornerfrombmp(rawimg, out displaycornerPoints);
+                    Bitmap desimage = croppingimage(rawimg, displaycornerPoints);
+                    refreshtestimage(desimage, pictureBox_processed);
+                    Bitmap cropimage = ip.croppedimage(rawimg, displaycornerPoints, dut.ui_width, dut.ui_height);
+                    refreshtestimage(cropimage, pictureBox_processed);
+                }
+                else if (rbtn_5zone.Checked)
+                {
+                    // load cropped bin image
+
+                }
+                    
+                else
+                {
+                    MessageBox.Show("Please check processing item");
+                }
+            }
+            catch (FC2Exception ex)
+            {
+                Debug.WriteLine("Error: " + ex.Message);
+                return;
+            }
+
+        }
+
+        private void btn_focus_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Adjust Colorimeter Focus");
+
+        }
+
+        public static byte[] ImageToByte2(System.Drawing.Image img)
+        {
+            byte[] byteArray = new byte[0];
+            using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
+            {
+                img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                stream.Close();
+
+                byteArray = stream.ToArray();
+            }
+            return byteArray;
+        }
+        
+        private void btn_savedata_Click(object sender, EventArgs e)
+        {
+            byte[] imgdata = System.IO.File.ReadAllBytes(@"c:\v1colorimeter\src\x2displaytest\bin\Debug\temp\12345620160209232604_cropped.bmp");
+
+            Bitmap myBitmap = new Bitmap(@"c:\v1colorimeter\src\x2displaytest\bin\Debug\temp\12345620160209232604_cropped.bmp");
+            int height = myBitmap.Height;
+            int width = myBitmap.Width;
+            double[, ,] rgbstr = new double[width, height, 3];
+
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    rgbstr[i, j, 0] = myBitmap.GetPixel(i, j).R;
+                    rgbstr[i, j, 1] = myBitmap.GetPixel(i, j).G;
+                    rgbstr[i, j, 2] = myBitmap.GetPixel(i, j).B;
+                }
+
+            }
+            XYZ = ip.rgb2xyz(rgbstr);
+
+            double sum = 0;
+            double mean = 0;
+            double w = XYZ.GetLength(0);
+            double h = XYZ.GetLength(1);
+
+            for (int r = 0; r < w; r++)
+            {
+                for (int c = 0; c < h; c++)
+                {
+                    sum += XYZ[r, c, 2];
+                }
+
+            }
+            mean = sum / (w * h);
+
+            
+            
+        }
 
     }
+
+    public class ColorimeterResult
+    {
+        public double Luminance { get; set; }
+        public double Uniformity5 { get; set; }
+        public double Mura { get; set; }
+        public double CIE1931xyY { get; set; }
+    }
+
 }
+
 
