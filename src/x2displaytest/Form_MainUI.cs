@@ -1,13 +1,32 @@
 //=============================================================================
+<<<<<<< HEAD
 // Main UI function. Start from Program.cs and enter Form1_load 
+=======
+// Copyright © 2015 Point Grey Research, Inc. All Rights Reserved.
+//
+// This software is the confidential and proprietary information of Point
+// Grey Research, Inc. ("Confidential Information").  You shall not
+// disclose such Confidential Information and shall use it only in
+// accordance with the terms of the license agreement you entered into
+// with PGR.
+//
+// PGR MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+// SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+// PURPOSE, OR NON-INFRINGEMENT. PGR SHALL NOT BE LIABLE FOR ANY DAMAGES
+// SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+// THIS SOFTWARE OR ITS DERIVATIVES.
+>>>>>>> 961b83a104008d987e15f872edda6c5dbc13b03f
 //=============================================================================
+//=============================================================================
+// $Id: Form1.cs,v 1.4 2011-02-03 23:34:52 soowei Exp $
+//=============================================================================
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -17,19 +36,11 @@ using System.Diagnostics;
 using FlyCapture2Managed;
 using FlyCapture2Managed.Gui;
 
-using AForge;
-using AForge.Imaging;
-using AForge.Math;
-using AForge.Math.Geometry;
-
-using DUTclass;
-
 namespace Colorimeter_Config_GUI
 {
 
     public partial class Form_Config : Form
     {
-        //colorimeter parameters
         private FlyCapture2Managed.Gui.CameraControlDialog m_camCtlDlg;
         private ManagedCameraBase m_camera = null;
         private ManagedImage m_rawImage;
@@ -37,8 +48,11 @@ namespace Colorimeter_Config_GUI
         private bool m_grabImages;
         private AutoResetEvent m_grabThreadExited;
         private BackgroundWorker m_grabThread;
-        private List<IntPoint> flagPoints, displaycornerPoints;
+        private Graphics g;
+        private bool mdraw = false;
+        private Color mcolor = Color.Red;
 
+<<<<<<< HEAD
         //test setup
         private bool isdemomode = false; //Demo mode can only be used for analysis tab.
         private bool istestimagelock = false; // Lock the picturebox_test or not
@@ -76,6 +90,8 @@ namespace Colorimeter_Config_GUI
         double[, ,] XYZzone; // used to represent the zone size XYZ array
         private bool pf;  //final pass/fail
         
+=======
+>>>>>>> 961b83a104008d987e15f872edda6c5dbc13b03f
         public Form_Config()
         {
             InitializeComponent();
@@ -86,75 +102,72 @@ namespace Colorimeter_Config_GUI
             
         }
 
-
-        // colorimeter status
-
-        private double UpdateUpTime()
+        private void UpdateTestUI(object sender, ProgressChangedEventArgs e)
         {
+            String statusString;
 
-            TimeSpan uptime = DateTime.Now.Subtract(timezero);
+            double ccd_temp = m_camera.GetProperty(PropertyType.Temperature).valueA / 10 - 273.15;
 
-            string statusString = String.Format("{0:D2}h:{1:D2}m.{2:D2}s",
-                uptime.Hours, uptime.Minutes, uptime.Seconds);
+            try
+            {
+                statusString = String.Format(ccd_temp.ToString());
+            }
+            catch
+            {
+                statusString = "N/A";
+            }
+            tbox_ccdtemp.Text = statusString;
+            tbox_ccdtemp.Refresh();
+
+            TimeStamp timestamp;
+            lock (this)
+            {
+                timestamp = m_rawImage.timeStamp;
+            }
+
+            TimeSpan cam_ontime = TimeSpan.FromSeconds(timestamp.cycleSeconds);
+            statusString = String.Format("{0:D2}h:{1:D2}m.{2:D2}s",
+                cam_ontime.Hours, cam_ontime.Minutes, cam_ontime.Seconds);
 
             tbox_uptime.Text = statusString;
             tbox_uptime.Refresh();
+            picturebox_test.Image = m_processedImage.bitmap;
+            picturebox_test.Invalidate();
+        }
 
-            return uptime.Hours;
+        private void UpdateAuditUI(object sender, ProgressChangedEventArgs e)
+        {
+            picturebox_audit.Image = m_processedImage.bitmap;
+            picturebox_audit.Invalidate();
+        }
+
+        private void UpdateConfigUI(object sender, ProgressChangedEventArgs e)
+        {
+            picturebox_config.Image = m_processedImage.bitmap;
+            picturebox_config.Invalidate();
 
         }
 
-        private double UpdateCCDTemperature()
+
+        private void UpdateUI(object sender, ProgressChangedEventArgs e)
         {
-            String statusString;
-            try
+            UpdateStatusBar();
+
+            if (Tabs.SelectedTab == Tabs.TabPages["Tab_Test"])
             {
-                double ccd_temp = m_camera.GetProperty(PropertyType.Temperature).valueA / 10 - 273.15;
-
-                try
-                {
-                    statusString = String.Format(ccd_temp.ToString());
-                }
-                catch
-                {
-                    statusString = "N/A";
-                }
-                tbox_ccdtemp.Text = statusString;
-                tbox_ccdtemp.Refresh();
-                return ccd_temp;
+                UpdateTestUI(null, null);
             }
-            catch (FC2Exception ex)
+            else if (Tabs.SelectedTab == Tabs.TabPages["Tab_Audit"])
             {
-                Debug.WriteLine("Failed to load form successfully: " + ex.Message);
-                Environment.ExitCode = -1;
-                Application.Exit();
-                return 0.0;
+                UpdateAuditUI(null, null);
             }
-
-
-        }
-
-        private bool colorimeterstatus()
-        {
-            double CCDTemperature = UpdateCCDTemperature();
-            double UpTime = UpdateUpTime();
-
-            if (CCDTemperature < 20 && UpTime < 24)
+            else if (Tabs.SelectedTab == Tabs.TabPages["Tab_Config"])
             {
-                tbox_colorimeterstatus.Text = "OK";
-                tbox_colorimeterstatus.BackColor = Color.Green;
-                return true;
-            }
-            else if (CCDTemperature < 50 && UpTime < 24)
-            {
-                tbox_colorimeterstatus.Text = "Warm CCD";
-                tbox_colorimeterstatus.BackColor = Color.LightYellow;
-                colorimeter_cooling_on();
-                return true;
-            
-            }
+                UpdateConfigUI(null, null);
+            }            
             else
             {
+<<<<<<< HEAD
                 tbox_colorimeterstatus.Text = "Fail";
                 tbox_colorimeterstatus.BackColor = Color.Red;
                 return false;
@@ -213,25 +226,14 @@ namespace Colorimeter_Config_GUI
 
                 toolStripButtonStart.Enabled = false;
                 toolStripButtonStop.Enabled = true;
+=======
+                MessageBox.Show("Please select running mode", "Reminder");
+>>>>>>> 961b83a104008d987e15f872edda6c5dbc13b03f
             }
-                else if (isdemomode)
-                {
-                    Tabs.SelectedTab = tab_Analysis;
-                    MessageBox.Show("Demo Mode with no Colorimeter. Only for Analysis", "Remind");
-                }
-
-                else
-                {
-                    Environment.ExitCode = -1;
-                    Application.Exit();
-                    return;
-                }
-
-            Show();
-            tbox_sn.Focus();
 
         }
 
+<<<<<<< HEAD
         private void UpdateUI(object sender, ProgressChangedEventArgs e)
         {
             UpdateStatusBar();
@@ -244,10 +246,11 @@ namespace Colorimeter_Config_GUI
             }
             
         }
+=======
+>>>>>>> 961b83a104008d987e15f872edda6c5dbc13b03f
 
         private void UpdateStatusBar()
         {
-
             String statusString;
 
             statusString = String.Format(
@@ -286,16 +289,82 @@ namespace Colorimeter_Config_GUI
             toolStripStatusLabelTimestamp.Text = statusString;
             statusStrip1.Refresh();
 
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Hide();
+            CameraSelectionDialog camSlnDlg = new CameraSelectionDialog();
+            bool retVal = camSlnDlg.ShowModal();
+            if (retVal)
+            {
+                try
+                {
+                    ManagedPGRGuid[] selectedGuids = camSlnDlg.GetSelectedCameraGuids();
+                    ManagedPGRGuid guidToUse = selectedGuids[0];
+
+                    ManagedBusManager busMgr = new ManagedBusManager();
+                    InterfaceType ifType = busMgr.GetInterfaceTypeFromGuid(guidToUse);
+
+                    if (ifType == InterfaceType.GigE)
+                    {
+                        m_camera = new ManagedGigECamera();
+                    }
+                    else
+                    {
+                        m_camera = new ManagedCamera();
+                    }
+
+                    // Connect to the first selected GUID
+                    m_camera.Connect(guidToUse);
+
+                    m_camCtlDlg.Connect(m_camera);
+
+                    CameraInfo camInfo = m_camera.GetCameraInfo();
+                    UpdateFormCaption(camInfo);
+
+                    // Set embedded timestamp to on
+                    EmbeddedImageInfo embeddedInfo = m_camera.GetEmbeddedImageInfo();
+                    embeddedInfo.timestamp.onOff = true;
+                    tbox_uptime.Text = embeddedInfo.timestamp.ToString();
+                    m_camera.SetEmbeddedImageInfo(embeddedInfo);
+
+                    m_camera.StartCapture();
+
+                    m_grabImages = true;
+
+                    StartGrabLoop();
+                }
+                catch (FC2Exception ex)
+                {
+                    Debug.WriteLine("Failed to load form successfully: " + ex.Message);
+                    Environment.ExitCode = -1;
+                    Application.Exit();
+                    return;
+                }
+
+                toolStripButtonStart.Enabled = false;
+                toolStripButtonStop.Enabled = true;
+            }
+            else
+            {
+                Environment.ExitCode = -1;
+                Application.Exit();
+                return;
+            }
+
+            Show();
         }
 
         private void UpdateFormCaption(CameraInfo camInfo)
         {
-
             String captionString = String.Format(
                 "X2 Display Test Station - {0} {1} ({2})",
                 camInfo.vendorName,
                 camInfo.modelName,
                 camInfo.serialNumber);
+
             this.Text = captionString;
         }
 
@@ -348,7 +417,7 @@ namespace Colorimeter_Config_GUI
 
                 lock (this)
                 {
-                    m_rawImage.Convert(FlyCapture2Managed.PixelFormat.PixelFormatBgr, m_processedImage);
+                    m_rawImage.Convert(PixelFormat.PixelFormatBgr, m_processedImage);
                 }
 
                 worker.ReportProgress(0);
@@ -413,13 +482,19 @@ namespace Colorimeter_Config_GUI
                 m_camCtlDlg.Disconnect();
                 m_camera.Disconnect();
             }
-
+            
             Form1_Load(sender, e);
         }
 
-        private void realSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void Size_Calibration_Btn_Click(object sender, EventArgs e)
         {
+            Btn_Size.Enabled = false;
+            Btn_Size.BackColor = System.Drawing.Color.LightSteelBlue;
+            Btn_Color.Enabled = false;
+            Btn_FF.Enabled = false;
+            Btn_Lv.Enabled = false;
 
+<<<<<<< HEAD
             picturebox_test.SizeMode = PictureBoxSizeMode.Normal;
             picturebox_test.Refresh();
 
@@ -651,10 +726,22 @@ namespace Colorimeter_Config_GUI
             bbc.MinWidth = 5;
 
             bbc.ProcessImage(processbmp);
+=======
+            // pop out the message box.
+            object size_cal_msg = "Choose the DUT boundaries and type in dimension in mm";
+            object size_cal_title = "Size Calibration";
+            MessageBox.Show(size_cal_msg.ToString(), size_cal_title.ToString());
+            
+            // at cal mode, the picture freeze.
+            m_grabImages = false;
+            m_camera.StopCapture();
 
-            Blob[] blobs = bbc.GetObjectsInformation();
-            SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
+            // Mouse Down Event and Pick the Left Point
+>>>>>>> 961b83a104008d987e15f872edda6c5dbc13b03f
 
+            // Mouse pressed down to draw the horizontal line
+
+<<<<<<< HEAD
             foreach (var blob in blobs)
             {
                 List<IntPoint> edgePoints = bbc.GetBlobsEdgePoints(blob);
@@ -830,9 +917,29 @@ namespace Colorimeter_Config_GUI
                 Debug.WriteLine("Error: " + ex.Message);
                 return;
             }
+=======
+            // Mouse Up Evlent and Pick the Right Point
+
+            // Get the relative value and calculate the size paramter
 
         }
+        
+        private void picturebox_config_MouseDown(object sender, MouseEventArgs e)
+        {
+            mdraw = true;
+            g = Graphics.FromImage(picturebox_config.Image);
+            Pen pen1 = new Pen(mcolor, 4);
+>>>>>>> 961b83a104008d987e15f872edda6c5dbc13b03f
 
+            Point mouseDownLocatoion = new Point(e.X, e.Y);
+            Point pointup = new Point(e.X, picturebox_config.Location.Y);
+            Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
+            g.DrawLine(pen1, pointup, pointdown);
+            g.Save();
+            picturebox_config.Image = picturebox_config.Image;
+        }
+
+<<<<<<< HEAD
         private void btn_focus_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Adjust Colorimeter Focus");
@@ -887,6 +994,24 @@ namespace Colorimeter_Config_GUI
 
             }
             mean = sum / (w * h);
+=======
+        private void picturebox_config_MouseUp(object sender, MouseEventArgs e)
+        {
+            mdraw = false;
+            Pen pen1 = new Pen(mcolor, 4);
+
+            Point mouseUpLocatoion = new Point(e.X, e.Y);
+            Point pointup = new Point(e.X, picturebox_config.Location.Y);
+            Point pointdown = new Point(e.X, picturebox_config.Location.Y + picturebox_config.Height);
+            g.DrawLine(pen1, pointup, pointdown);
+            g.Save();
+
+            Point pointleft = new Point(picturebox_config.Location.X + picturebox_config.Size.Width/2 , e.Y);
+            Point pointright = new Point(e.X, e.Y);
+            g.DrawLine(pen1, pointleft, pointright);
+            g.Save();
+            picturebox_config.Image = picturebox_config.Image;
+>>>>>>> 961b83a104008d987e15f872edda6c5dbc13b03f
 
             
             
@@ -896,5 +1021,4 @@ namespace Colorimeter_Config_GUI
 
     }
 }
-
 

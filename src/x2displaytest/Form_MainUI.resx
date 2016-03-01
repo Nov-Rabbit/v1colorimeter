@@ -164,6 +164,14 @@
     <value>226, 17</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+<<<<<<< HEAD
     <value>25</value>
+=======
+<<<<<<< HEAD:src/x2displaytest/Form_MainUI.resx
+    <value>76</value>
+=======
+    <value>61</value>
+>>>>>>> cy/v1_evolution:src/x2displaytest/Form_MainUI.resx
+>>>>>>> 961b83a104008d987e15f872edda6c5dbc13b03f
   </metadata>
 </root>
