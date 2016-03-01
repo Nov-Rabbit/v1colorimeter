@@ -181,9 +181,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="colorimeter.cs" />
+=======
+<<<<<<< HEAD:src/x2displaytest/Colorimeter_Config_GUI.csproj
+    <Compile Include="Audit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Config.cs" />
+    <Compile Include="Test.cs">
+      <SubType>Component</SubType>
+    </Compile>
+=======
+>>>>>>> 961b83a104008d987e15f872edda6c5dbc13b03f
     <Compile Include="DUTclass.cs" />
     <Compile Include="Config.cs" />
+>>>>>>> cy/v1_evolution:src/x2displaytest/Colorimeter_Config_GUI.csproj
     <Compile Include="Form_MainUI.cs">
       <SubType>Form</SubType>
     </Compile>
