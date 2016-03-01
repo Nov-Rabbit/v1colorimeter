@@ -15,7 +15,6 @@ namespace Colorimeter_Config_GUI
     public class Colorimeter
     {
         //private event DataChangeDelegate dataChange;
-
         private CameraControlDialog m_camCtlDlg;
         private ManagedCameraBase m_camera = null;
         private ManagedImage m_rawImage;
@@ -89,6 +88,9 @@ namespace Colorimeter_Config_GUI
         }
 
         private TimeStamp timeStamp;
+        /// <summary>
+        /// time stamp
+        /// </summary>
         public TimeStamp TimeStamp
         {
             get {
@@ -100,12 +102,43 @@ namespace Colorimeter_Config_GUI
             }
         }
 
+        /// <summary>
+        /// ccd exposure time
+        /// </summary>
+        public float ExposureTime
+        {
+            get {
+                if (m_camera.IsConnected()) {
+                    return m_camera.GetProperty(PropertyType.Shutter).absValue;
+                } 
+                else {
+                    return 0;
+                }
+            }
+            set {
+                if (m_camera.IsConnected()) {
+                    CameraProperty property = new CameraProperty(PropertyType.Shutter);
+                    property.absControl = true;
+                    property.onOff = true;
+                    property.autoManualMode = false;
+                    property.absValue = value;
+                    m_camera.SetProperty(property);
+                }
+            }
+        }
+
         public Colorimeter()
         {
             imageSize = new Size(0, 0);
             m_rawImage = new ManagedImage();
             m_processedImage = new ManagedImage();
             m_camCtlDlg = new CameraControlDialog();
+        }
+
+        public void ShowCCDControlDialog()
+        {
+            m_camCtlDlg.SetTitle("Colorimeter parameters  -- v1.0 by Microtest\n");
+            m_camCtlDlg.ShowModal();
         }
 
         public bool Connect()
@@ -134,6 +167,8 @@ namespace Colorimeter_Config_GUI
                     // Set embedded timestamp to on
                     EmbeddedImageInfo embeddedInfo = m_camera.GetEmbeddedImageInfo();
                     embeddedInfo.timestamp.onOff = true;
+                    //embeddedInfo.exposure.onOff = true;
+                    embeddedInfo.shutter.onOff = true;
                     //tbox_uptime.Text = embeddedInfo.timestamp.ToString();
                     m_camera.SetEmbeddedImageInfo(embeddedInfo);
                     flag = true;

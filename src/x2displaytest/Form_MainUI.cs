@@ -184,6 +184,7 @@ namespace Colorimeter_Config_GUI
                     Application.Exit();
                     return;
                 }
+                //m_colorimeter.ExposureTime = 1.0f;
 
                 new Action(delegate() {
                     while (!m_flagExit) {
@@ -192,8 +193,9 @@ namespace Colorimeter_Config_GUI
                         UpdateStatusBar();
                         colorimeterstatus();
                         System.Threading.Thread.Sleep(100);
+                        Console.WriteLine(m_colorimeter.ExposureTime);
                     }
-                }).BeginInvoke(null, null);
+                }).BeginInvoke(null, null);             
             }
             else
             {
@@ -336,16 +338,18 @@ namespace Colorimeter_Config_GUI
 
         private void toolStripButtonCameraControl_Click(object sender, EventArgs e)
         {
-            if (m_camCtlDlg.IsVisible())
-            {
-                m_camCtlDlg.Hide();
-                toolStripButtonCameraControl.Checked = false;
-            }
-            else
-            {
-                m_camCtlDlg.Show();
-                toolStripButtonCameraControl.Checked = true;
-            }
+            m_colorimeter.ShowCCDControlDialog();
+
+            //if (m_camCtlDlg.IsVisible())
+            //{
+            //    m_camCtlDlg.Hide();
+            //    toolStripButtonCameraControl.Checked = false;
+            //}
+            //else
+            //{
+            //    m_camCtlDlg.Show();
+            //    toolStripButtonCameraControl.Checked = true;
+            //}
         }
 
         private void OnNewCameraClick(object sender, EventArgs e)
@@ -464,28 +468,40 @@ namespace Colorimeter_Config_GUI
                 btn_start.BackColor = Color.LightBlue;
 
                 try {
-                    Bitmap bitmap = m_colorimeter.GrabImage();
+                    //dut.setwhite();
+                    //ColorPanel panel = dut.setpanelcolor(ColorPanel.eWhite);
+                    //Bitmap bitmap = m_colorimeter.GrabImage();
+                    //this.refreshtestimage(bitmap, picturebox_test);
+                    //ip.GetDisplayCornerfrombmp(bitmap, out displaycornerPoints);
+                    //bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp");
 
-                    this.refreshtestimage(bitmap, picturebox_test);
-                    ip.GetDisplayCornerfrombmp(bitmap, out displaycornerPoints);
-                    bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp");
+                    ////need save bmp outside as file format and reload so that 
+                    //Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp", true));
+                    //Bitmap updateimg = croppingimage(srcimg, displaycornerPoints);
 
-                    //need save bmp outside as file format and reload so that 
-                    Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp", true));
-                    Bitmap updateimg = croppingimage(srcimg, displaycornerPoints);
+                    //// show cropping image
+                    //this.refreshtestimage(updateimg, picturebox_test);
 
-                    // show cropping image
-                    refreshtestimage(updateimg, picturebox_test);
+                    //// show cropped image
+                    //updateimg = ip.croppedimage(bitmap, displaycornerPoints, dut.ui_width, dut.ui_height);
+                    //updateimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
 
-                    // show cropped image
-                    updateimg = ip.croppedimage(bitmap, displaycornerPoints, dut.ui_width, dut.ui_height);
-                    updateimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
+                    //picturebox_test.Width = updateimg.Width;
+                    //picturebox_test.Height = updateimg.Height;
+                    //this.refreshtestimage(updateimg, picturebox_test);
 
-                    picturebox_test.Width = updateimg.Width;
-                    picturebox_test.Height = updateimg.Height;
-                    refreshtestimage(updateimg, picturebox_test);
+                    //pf = displaytest(displaycornerPoints);
 
-                    pf = displaytest(displaycornerPoints);
+                    for (int i = 0; i < 5; i++)
+                    {
+                        string name = Enum.GetName(typeof(ColorPanel), i);
+                        dut.setpanelcolor(name);
+                        m_colorimeter.ExposureTime = (i + 1) * 20;
+                        Bitmap bitmap = m_colorimeter.GrabImage();
+                        pf &= this.DisplayTest(displaycornerPoints, bitmap, (ColorPanel)Enum.Parse(typeof(ColorPanel), name));
+                        //this.refreshtestimage(bitmap, picturebox_test);
+                    }
+
                     tbox_pf.Visible = true;
                     if (pf)
                     {
@@ -503,6 +519,108 @@ namespace Colorimeter_Config_GUI
                     MessageBox.Show(ex.Message);
                 }
             }
+        }
+
+        private void DrawZone(Bitmap binImage, ColorPanel panel)
+        {
+            zoneresult zr = new zoneresult();
+            Graphics g = Graphics.FromImage(binImage);
+
+            for (int i = 1; i < 6; i++)
+            {
+                // get corner coordinates
+                flagPoints = zr.zonecorners(i, zonesize, XYZ);
+                // zone image
+                g = zoneingimage(g, flagPoints);
+                binImage.Save(tempdirectory + i.ToString() + "_" + panel.ToString() + "_bin_zone.bmp");
+                flagPoints.Clear();
+            }
+
+            binImage.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_" + panel.ToString() + "_bin_zone1-5.bmp");
+            refreshtestimage(binImage, picturebox_test);
+            g.Dispose();
+        }
+
+        private bool DisplayTest(List<IntPoint> displaycornerPoints, Bitmap bitmap, ColorPanel panelType)
+        {
+            // show cropping image
+            this.refreshtestimage(bitmap, picturebox_test);
+
+            if (panelType == ColorPanel.eWhite)
+            {
+                ip.GetDisplayCornerfrombmp(bitmap, out displaycornerPoints);
+            }
+
+            // Ô­Ê¼Í¼Ïñ
+           // bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp");
+
+            //need save bmp outside as file format and reload so that ===reload
+            //Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp", true));
+            //Bitmap updateimg = croppingimage(srcimg, displaycornerPoints);
+            //this.refreshtestimage(updateimg, picturebox_test);
+
+            // show cropped image
+            //updateimg = ip.croppedimage(bitmap, displaycornerPoints, dut.ui_width, dut.ui_height);
+            //updateimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
+
+            //picturebox_test.Width = updateimg.Width;
+            //picturebox_test.Height = updateimg.Height;
+            //this.refreshtestimage(updateimg, picturebox_test);
+
+            // Ô­Ê¼Í¼Ïñ
+            string imageName = tempdirectory + tbox_sn.Text + str_DateTime + "_" + panelType.ToString() + ".bmp";
+            bitmap.Save(imageName);
+            //need save bmp outside as file format and reload so that 
+            Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(imageName, true));
+            // ÕÒ³öÆÁÄ»ÇøÓòµÄÍ¼Ïñ
+            Bitmap updateimg = croppingimage(srcimg, displaycornerPoints);
+            this.refreshtestimage(updateimg, picturebox_test);
+
+            // ½ØÈ¡ÇøÓòÍ¼Ïñ
+            Bitmap cropimg = ip.croppedimage(srcimg, displaycornerPoints, dut.ui_width, dut.ui_height);
+            cropimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
+            picturebox_test.Width = cropimg.Width;
+            picturebox_test.Height = cropimg.Height;
+            this.refreshtestimage(cropimg, picturebox_test);
+
+            // binary Í¼Ïñ
+            Bitmap binimg = new Bitmap(cropimg, new Size(dut.bin_width, dut.bin_height));
+            binimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_" + panelType.ToString() + "_bin.bmp");
+
+            ColorimeterResult colorimeterRst = new ColorimeterResult(binimg, panelType);
+            colorimeterRst.Analysis();
+
+            switch (panelType)
+            {
+                case ColorPanel.eWhite:
+                    this.DrawZone(binimg, panelType);
+                    cbox_white_lv.Checked = cbox_white_uniformity.Checked = cbox_white_mura.Checked = true;
+                    tbox_whitelv.Text = colorimeterRst.Luminance.ToString();   
+                    tbox_whiteunif.Text = (colorimeterRst.Uniformity5 * 100).ToString();
+                    tbox_whitemura.Text = colorimeterRst.Mura.ToString();
+                    break;
+                case ColorPanel.eBlack:
+                    this.DrawZone(binimg, panelType);
+                    cbox_black_lv.Checked = cbox_black_uniformity.Checked = cbox_black_mura.Checked = true;
+                    tbox_blacklv.Text = colorimeterRst.Luminance.ToString();
+                    tbox_blackunif.Text = (colorimeterRst.Uniformity5 * 100).ToString();
+                    tbox_blackmura.Text = colorimeterRst.Mura.ToString();
+                    break;
+                case ColorPanel.eRed:
+                    cbox_red.Checked = true;
+                    tbox_red.Text = colorimeterRst.CIE1931xyY.ToString();
+                    break;
+                case ColorPanel.eGreen:
+                    cbox_green.Checked = true;
+                    tbox_green.Text = colorimeterRst.CIE1931xyY.ToString();
+                    break;
+                case ColorPanel.eBlue:
+                    cbox_blue.Checked = true;
+                    tbox_blue.Text = colorimeterRst.CIE1931xyY.ToString();
+                    break;
+            }
+
+            return true;
         }
 
         private bool displaytest(List<IntPoint> displaycornerPoints)
@@ -574,11 +692,11 @@ namespace Colorimeter_Config_GUI
 
             //need save bmp outside as file format and reload so that 
             srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_black.bmp", true));
-            cropimg = croppedimage(srcimg);
+            cropimg = ip.croppedimage(srcimg, displaycornerPoints, dut.ui_width, dut.ui_height);
             binimg = new Bitmap(cropimg, new Size(dut.bin_width, dut.bin_height));
 
-            RGB = bmp2rgb(binimg);
-            XYZ = rgb2xyz(RGB);
+            RGB = ip.bmp2rgb(binimg);
+            XYZ = ip.rgb2xyz(RGB);
 
             blacklv = ip.getlv(XYZ);
             cbox_black_lv.Checked = true;
@@ -591,11 +709,11 @@ namespace Colorimeter_Config_GUI
             m_camera.StopCapture();
             dut.setred();
             // will develop the color patterns later
-            */
+            
             // load pass/fail item
 
             // decide the test item pass or fail
-
+            */
             return true;
         }
         
@@ -797,12 +915,72 @@ namespace Colorimeter_Config_GUI
 
     }
 
+    public enum ColorPanel{
+        eWhite,
+        eBlack,
+        eRed,
+        eGreen,
+        eBlue,
+    }
+
+    public class CIE1931Value
+    {
+        public double x { get; set; }
+        public double y { get; set; }
+        public double Y { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{({0}, {1}), {2}}", x, y, Y);
+        }
+    }
+
     public class ColorimeterResult
     {
-        public double Luminance { get; set; }
-        public double Uniformity5 { get; set; }
-        public double Mura { get; set; }
-        public double CIE1931xyY { get; set; }
+        private Bitmap m_bitmap;
+        private ColorPanel m_panel;
+        private imagingpipeline m_pipeline;
+
+        public double Luminance { get; private set; }
+        public double Uniformity5 { get; private set; }
+        public double Mura { get; private set; }
+        public CIE1931Value CIE1931xyY { get; set; }
+
+        public ColorimeterResult(Bitmap bitmap, ColorPanel panel)
+        {
+            this.m_bitmap = bitmap;
+            this.m_panel = panel;
+            m_pipeline = new imagingpipeline();
+            CIE1931xyY = new CIE1931Value();
+        }
+
+        public void Analysis()
+        {
+            if (m_bitmap != null)
+            {
+                double[, ,] rgb = m_pipeline.bmp2rgb(m_bitmap);
+                double[, ,] XYZ = m_pipeline.rgb2xyz(rgb);
+
+                switch (m_panel) { 
+                    case ColorPanel.eWhite:
+                    case ColorPanel.eBlack:
+                        this.Luminance = m_pipeline.getlv(XYZ);
+                        this.Uniformity5 = m_pipeline.getuniformity(XYZ);
+                        this.Mura = m_pipeline.getmura(XYZ);
+                        break;
+                    case ColorPanel.eRed:
+                    case ColorPanel.eGreen:
+                    case ColorPanel.eBlue:
+                        {
+                            double[] xyY = m_pipeline.getxyY(XYZ);
+                            CIE1931xyY.x = xyY[0];
+                            CIE1931xyY.y = xyY[1];
+                            CIE1931xyY.Y = xyY[2];
+                        }
+                        break;
+                }
+            }
+        }
     }
 
 }

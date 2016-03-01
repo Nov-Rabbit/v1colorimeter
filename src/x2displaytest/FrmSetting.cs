@@ -15,5 +15,14 @@ namespace Colorimeter_Config_GUI
         {
             InitializeComponent();
         }
+
+        private FeatureParam feature;
+
+        private void PanelSelect_Click(object sender, EventArgs e)
+        {
+            Button activeBtn = (sender as Button);
+            ColorPanel panel = (ColorPanel)Enum.Parse(typeof(ColorPanel), activeBtn.Text);
+            feature = new FeatureParam(panel, null);
+        }
     }
 }
