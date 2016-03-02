@@ -173,6 +173,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin64\Aforge\AForge.Math.dll</HintPath>
     </Reference>
+    <Reference Include="displaycorner, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin64\Aforge\displaycorner.dll</HintPath>
+    </Reference>
+    <Reference Include="LoginSys, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Release\LoginSys.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -181,29 +189,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD:src/x2displaytest/Colorimeter_Config_GUI.csproj
-    <Compile Include="Audit.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="colorimeter.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Test.cs">
-      <SubType>Component</SubType>
-    </Compile>
-=======
     <Compile Include="DUTclass.cs" />
-    <Compile Include="Config.cs" />
->>>>>>> cy/v1_evolution:src/x2displaytest/Colorimeter_Config_GUI.csproj
+    <Compile Include="FeatureParam.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FeatureParam.Designer.cs">
+      <DependentUpon>FeatureParam.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_MainUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form_MainUI.Designer.cs">
       <DependentUpon>Form_MainUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLogin.Designer.cs">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSetting.Designer.cs">
+      <DependentUpon>FrmSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HmzIniFile.cs" />
+    <Compile Include="HmzWin32App.cs" />
+    <Compile Include="imagingpipeline.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SFC.cs" />
+    <Compile Include="testlog.cs" />
+    <Compile Include="zoneresult.cs" />
+    <EmbeddedResource Include="FeatureParam.resx">
+      <DependentUpon>FeatureParam.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_MainUI.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Form_MainUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLogin.resx">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSetting.resx">
+      <DependentUpon>FrmSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

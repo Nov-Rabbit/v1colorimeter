@@ -47,18 +47,18 @@
             this.tbMuraLower = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.gbCIE1931 = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.tbCIE1931xUpper = new System.Windows.Forms.TextBox();
-            this.tbCIE1931xLower = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.tbCIE1931yUpper = new System.Windows.Forms.TextBox();
-            this.tbCIE1931yLower = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.tbCIE1931zUpper = new System.Windows.Forms.TextBox();
             this.tbCIE1931zLower = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tbCIE1931yUpper = new System.Windows.Forms.TextBox();
+            this.tbCIE1931yLower = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tbCIE1931xUpper = new System.Windows.Forms.TextBox();
+            this.tbCIE1931xLower = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ndExrosureTime)).BeginInit();
             this.gbLuminance.SuspendLayout();
             this.gbUniformity.SuspendLayout();
@@ -115,9 +115,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(17, 13);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 12);
+            this.label2.Size = new System.Drawing.Size(89, 12);
             this.label2.TabIndex = 18;
-            this.label2.Text = "exprosure time:";
+            this.label2.Text = "exposure time:";
             // 
             // label1
             // 
@@ -260,41 +260,41 @@
             this.gbCIE1931.TabStop = false;
             this.gbCIE1931.Text = "CIE1931xyY";
             // 
-            // label9
+            // label15
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 22);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(59, 12);
-            this.label9.TabIndex = 24;
-            this.label9.Text = "upper(x):";
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(13, 115);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(59, 12);
+            this.label15.TabIndex = 34;
+            this.label15.Text = "upper(Y):";
             // 
-            // tbCIE1931xUpper
+            // tbCIE1931zUpper
             // 
-            this.tbCIE1931xUpper.Location = new System.Drawing.Point(15, 37);
-            this.tbCIE1931xUpper.Name = "tbCIE1931xUpper";
-            this.tbCIE1931xUpper.Size = new System.Drawing.Size(68, 21);
-            this.tbCIE1931xUpper.TabIndex = 25;
-            this.tbCIE1931xUpper.Text = "0";
-            this.tbCIE1931xUpper.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbCIE1931zUpper.Location = new System.Drawing.Point(15, 131);
+            this.tbCIE1931zUpper.Name = "tbCIE1931zUpper";
+            this.tbCIE1931zUpper.Size = new System.Drawing.Size(68, 21);
+            this.tbCIE1931zUpper.TabIndex = 35;
+            this.tbCIE1931zUpper.Text = "0";
+            this.tbCIE1931zUpper.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // tbCIE1931xLower
+            // tbCIE1931zLower
             // 
-            this.tbCIE1931xLower.Location = new System.Drawing.Point(99, 37);
-            this.tbCIE1931xLower.Name = "tbCIE1931xLower";
-            this.tbCIE1931xLower.Size = new System.Drawing.Size(68, 21);
-            this.tbCIE1931xLower.TabIndex = 27;
-            this.tbCIE1931xLower.Text = "0";
-            this.tbCIE1931xLower.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbCIE1931zLower.Location = new System.Drawing.Point(99, 132);
+            this.tbCIE1931zLower.Name = "tbCIE1931zLower";
+            this.tbCIE1931zLower.Size = new System.Drawing.Size(68, 21);
+            this.tbCIE1931zLower.TabIndex = 37;
+            this.tbCIE1931zLower.Text = "0";
+            this.tbCIE1931zLower.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // label10
+            // label16
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(97, 22);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 12);
-            this.label10.TabIndex = 26;
-            this.label10.Text = "lower(x):";
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(97, 116);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(59, 12);
+            this.label16.TabIndex = 36;
+            this.label16.Text = "lower(Y):";
             // 
             // label11
             // 
@@ -332,41 +332,41 @@
             this.label13.TabIndex = 31;
             this.label13.Text = "lower(y):";
             // 
-            // label15
+            // label9
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(13, 115);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(59, 12);
-            this.label15.TabIndex = 34;
-            this.label15.Text = "upper(Y):";
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(13, 22);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(59, 12);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "upper(x):";
             // 
-            // tbCIE1931zUpper
+            // tbCIE1931xUpper
             // 
-            this.tbCIE1931zUpper.Location = new System.Drawing.Point(15, 131);
-            this.tbCIE1931zUpper.Name = "tbCIE1931zUpper";
-            this.tbCIE1931zUpper.Size = new System.Drawing.Size(68, 21);
-            this.tbCIE1931zUpper.TabIndex = 35;
-            this.tbCIE1931zUpper.Text = "0";
-            this.tbCIE1931zUpper.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbCIE1931xUpper.Location = new System.Drawing.Point(15, 37);
+            this.tbCIE1931xUpper.Name = "tbCIE1931xUpper";
+            this.tbCIE1931xUpper.Size = new System.Drawing.Size(68, 21);
+            this.tbCIE1931xUpper.TabIndex = 25;
+            this.tbCIE1931xUpper.Text = "0";
+            this.tbCIE1931xUpper.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // tbCIE1931zLower
+            // tbCIE1931xLower
             // 
-            this.tbCIE1931zLower.Location = new System.Drawing.Point(99, 132);
-            this.tbCIE1931zLower.Name = "tbCIE1931zLower";
-            this.tbCIE1931zLower.Size = new System.Drawing.Size(68, 21);
-            this.tbCIE1931zLower.TabIndex = 37;
-            this.tbCIE1931zLower.Text = "0";
-            this.tbCIE1931zLower.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tbCIE1931xLower.Location = new System.Drawing.Point(99, 37);
+            this.tbCIE1931xLower.Name = "tbCIE1931xLower";
+            this.tbCIE1931xLower.Size = new System.Drawing.Size(68, 21);
+            this.tbCIE1931xLower.TabIndex = 27;
+            this.tbCIE1931xLower.Text = "0";
+            this.tbCIE1931xLower.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // label16
+            // label10
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(97, 116);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(59, 12);
-            this.label16.TabIndex = 36;
-            this.label16.Text = "lower(Y):";
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(97, 22);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(59, 12);
+            this.label10.TabIndex = 26;
+            this.label10.Text = "lower(x):";
             // 
             // FeatureParam
             // 

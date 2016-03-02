@@ -20,6 +20,7 @@ namespace Colorimeter_Config_GUI
         private ManagedImage m_rawImage;
         private ManagedImage m_processedImage;
         private bool m_flagVideo;
+        private System.Windows.Forms.PictureBox m_videoCavaus;
 
         static void PrintBuildInfo()
         {
@@ -212,24 +213,30 @@ namespace Colorimeter_Config_GUI
             return m_processedImage.bitmap;
         }
 
+        public void SetVideoCavaus(System.Windows.Forms.PictureBox cavaus)
+        {
+            m_videoCavaus = cavaus;
+        }
+
         public void PlayVideo()
         {
             m_flagVideo = true;
 
             try {
-                if (m_camera != null) {
-                    m_camera.StartCapture();
+                if (m_camera.IsConnected()) {                    
                     new Action(delegate(){
-                        ManagedImage image = new ManagedImage();
                         while (m_flagVideo) {
-                            m_camera.RetrieveBuffer(image);
-                            image.Convert(PixelFormat.PixelFormatBgr, image);
+                            if (m_videoCavaus != null)
+                            {
+                                m_videoCavaus.Image = this.GrabImage();
+                            }
                             System.Threading.Thread.Sleep(25);
                         }
                     }).BeginInvoke(null, null);
                 }
             }
-            catch { }
+            catch {
+            }
         }
 
         public void StopVideo()

@@ -28,8 +28,16 @@ namespace Colorimeter_Config_GUI
     public partial class Form_Config : Form
     {
         //colorimeter parameters
-        private Colorimeter m_colorimeter;
         private bool m_flagExit;
+        private bool m_flagAutoMode;
+        private Colorimeter m_colorimeter;        
+        private Config m_config;
+        private TabPage m_preTabPage;
+        private Thread m_process;
+
+
+
+
 
         private FlyCapture2Managed.Gui.CameraControlDialog m_camCtlDlg;
         private ManagedCameraBase m_camera = null;
@@ -88,12 +96,62 @@ namespace Colorimeter_Config_GUI
             Form.CheckForIllegalCrossThreadCalls = false;
         }
 
+        // Online mode
+        private void RunSequence()
+        {
+            while (!dut.checkDUT()) {
+                sslStatus.Text = "Wait DUT.";
+            }
+
+            while (!checksnformat()) {
+                sslStatus.Text = "Wait type SN";
+            }
+
+            if (!checkshopfloor()) {
+                MessageBox.Show("Shopfloor system is not working");
+            }
+            else {
+                tbox_dut_connect.Text = "DUT connected";
+                tbox_dut_connect.BackColor = Color.Green;
+
+                btn_start.Enabled = false;
+                btn_start.BackColor = Color.LightBlue;
+
+                try {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        string name = Enum.GetName(typeof(ColorPanel), i);
+                        dut.setpanelcolor(name);
+                        m_colorimeter.ExposureTime = (i + 1) * 20;
+                        Bitmap bitmap = m_colorimeter.GrabImage();
+                        //pf &= this.DisplayTest(displaycornerPoints, bitmap, (ColorPanel)Enum.Parse(typeof(ColorPanel), name));
+                        this.refreshtestimage(bitmap, picturebox_test);
+                    }
+
+                    tbox_pf.Visible = true;
+
+                    if (pf)
+                    {
+                        tbox_pf.BackColor = Color.Green;
+                        tbox_pf.Text = "Pass";
+                    }
+                    else
+                    {
+                        tbox_pf.BackColor = Color.Red;
+                        tbox_pf.Text = "Fail";
+                    }
+                    //SFC.CreateResultFile(1, pf ? "PASS" : "FAIL");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
 
         // colorimeter status
-
         private double UpdateUpTime()
         {
-
             TimeSpan uptime = DateTime.Now.Subtract(timezero);
 
             string statusString = String.Format("{0:D2}h:{1:D2}m:{2:D2}s",
@@ -103,7 +161,6 @@ namespace Colorimeter_Config_GUI
             tbox_uptime.Refresh();
 
             return uptime.Hours;
-
         }
 
         private double UpdateCCDTemperature()
@@ -132,7 +189,6 @@ namespace Colorimeter_Config_GUI
                 Application.Exit();
                 return 0.0;
             }
-
 
         }
 
@@ -173,6 +229,7 @@ namespace Colorimeter_Config_GUI
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Hide();
+            m_preTabPage = Tabs.TabPages[0];
 
             if (!isdemomode)
             {
@@ -184,8 +241,6 @@ namespace Colorimeter_Config_GUI
                     Application.Exit();
                     return;
                 }
-                //m_colorimeter.ExposureTime = 1.0f;
-
                 new Action(delegate() {
                     while (!m_flagExit) {
                         UpdateCCDTemperature();
@@ -193,9 +248,12 @@ namespace Colorimeter_Config_GUI
                         UpdateStatusBar();
                         colorimeterstatus();
                         System.Threading.Thread.Sleep(100);
-                        Console.WriteLine(m_colorimeter.ExposureTime);
+                        Debug.WriteLine(m_colorimeter.ExposureTime);
                     }
-                }).BeginInvoke(null, null);             
+                }).BeginInvoke(null, null);
+
+                m_config = new Config(Application.StartupPath + @"\profile.ini");
+                m_config.ReadProfile();
             }
             else
             {
@@ -207,6 +265,45 @@ namespace Colorimeter_Config_GUI
             tbox_sn.Focus();
         }
 
+        private void tsbtnSetting_Click(object sender, EventArgs e)
+        {            
+            FrmLogin login = new FrmLogin();
+
+            if (DialogResult.OK == login.ShowDialog())
+            {
+                login.Close();
+                FrmSetting setDlg = new FrmSetting(m_config);
+
+                setDlg.ShowDialog();
+            }
+        }
+
+        private void Tabs_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            TabControl tabControl = sender as TabControl;
+
+            if ((tabControl.SelectedTab != m_preTabPage) )
+            {
+                if (tabControl.SelectedTab == tabControl.TabPages[0])
+                {
+                    m_preTabPage = tabControl.SelectedTab;
+                }
+                else
+                {
+                    FrmLogin login = new FrmLogin();
+
+                    if (DialogResult.OK == login.ShowDialog())
+                    {
+                        m_preTabPage = tabControl.SelectedTab;
+                    }
+                    else
+                    {
+                        tabControl.SelectedTab = m_preTabPage;
+                    }
+                }                
+            }
+        }
+
         private void UpdateUI(object sender, ProgressChangedEventArgs e)
         {
             if (!istestimagelock)
@@ -214,7 +311,6 @@ namespace Colorimeter_Config_GUI
                 picturebox_test.Image = m_processedImage.bitmap;
                 picturebox_test.Invalidate();
             }
-            
         }
 
         private void UpdateStatusBar()
@@ -305,11 +401,13 @@ namespace Colorimeter_Config_GUI
 
         private void toolStripButtonStart_Click(object sender, EventArgs e)
         {
-            m_camera.StartCapture();
+            m_colorimeter.SetVideoCavaus(picturebox_test);
+            m_colorimeter.PlayVideo();
+            //m_camera.StartCapture();
 
             m_grabImages = true;
 
-            StartGrabLoop();
+            //StartGrabLoop();
 
             toolStripButtonStart.Enabled = false;
             toolStripButtonStop.Enabled = true;
@@ -317,20 +415,21 @@ namespace Colorimeter_Config_GUI
 
         private void toolStripButtonStop_Click(object sender, EventArgs e)
         {
+            m_colorimeter.StopVideo();
             m_grabImages = false;
 
-            try
-            {
-                //m_camera.StopCapture();
-            }
-            catch (FC2Exception ex)
-            {
-                Debug.WriteLine("Failed to stop camera: " + ex.Message);
-            }
-            catch (NullReferenceException)
-            {
-                Debug.WriteLine("Camera is null");
-            }
+            //try
+            //{
+            //    //m_camera.StopCapture();
+            //}
+            //catch (FC2Exception ex)
+            //{
+            //    Debug.WriteLine("Failed to stop camera: " + ex.Message);
+            //}
+            //catch (NullReferenceException)
+            //{
+            //    Debug.WriteLine("Camera is null");
+            //}
 
             toolStripButtonStart.Enabled = true;
             toolStripButtonStop.Enabled = false;
@@ -441,6 +540,8 @@ namespace Colorimeter_Config_GUI
         
         private void btn_start_Click(object sender, EventArgs e)
         {
+            tbox_pf.Visible = false;
+
             if (!dut.checkDUT())
             {
                 tbox_dut_connect.Text = "No DUT";
@@ -467,49 +568,25 @@ namespace Colorimeter_Config_GUI
                 btn_start.Enabled = false;
                 btn_start.BackColor = Color.LightBlue;
 
-                try {
-                    //dut.setwhite();
-                    //ColorPanel panel = dut.setpanelcolor(ColorPanel.eWhite);
-                    //Bitmap bitmap = m_colorimeter.GrabImage();
-                    //this.refreshtestimage(bitmap, picturebox_test);
-                    //ip.GetDisplayCornerfrombmp(bitmap, out displaycornerPoints);
-                    //bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp");
-
-                    ////need save bmp outside as file format and reload so that 
-                    //Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp", true));
-                    //Bitmap updateimg = croppingimage(srcimg, displaycornerPoints);
-
-                    //// show cropping image
-                    //this.refreshtestimage(updateimg, picturebox_test);
-
-                    //// show cropped image
-                    //updateimg = ip.croppedimage(bitmap, displaycornerPoints, dut.ui_width, dut.ui_height);
-                    //updateimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
-
-                    //picturebox_test.Width = updateimg.Width;
-                    //picturebox_test.Height = updateimg.Height;
-                    //this.refreshtestimage(updateimg, picturebox_test);
-
-                    //pf = displaytest(displaycornerPoints);
-
+                try 
+                {
                     for (int i = 0; i < 5; i++)
                     {
                         string name = Enum.GetName(typeof(ColorPanel), i);
                         dut.setpanelcolor(name);
                         m_colorimeter.ExposureTime = (i + 1) * 20;
                         Bitmap bitmap = m_colorimeter.GrabImage();
-                        pf &= this.DisplayTest(displaycornerPoints, bitmap, (ColorPanel)Enum.Parse(typeof(ColorPanel), name));
-                        //this.refreshtestimage(bitmap, picturebox_test);
+                        //pf &= this.DisplayTest(displaycornerPoints, bitmap, (ColorPanel)Enum.Parse(typeof(ColorPanel), name));
+                        this.refreshtestimage(bitmap, picturebox_test);
                     }
 
                     tbox_pf.Visible = true;
-                    if (pf)
-                    {
+
+                    if (pf) {
                         tbox_pf.BackColor = Color.Green;
                         tbox_pf.Text = "Pass";
                     }
-                    else
-                    {
+                    else {
                         tbox_pf.BackColor = Color.Red;
                         tbox_pf.Text = "Fail";
                     }
@@ -546,7 +623,7 @@ namespace Colorimeter_Config_GUI
             // show cropping image
             this.refreshtestimage(bitmap, picturebox_test);
 
-            if (panelType == ColorPanel.eWhite)
+            if (panelType == ColorPanel.White)
             {
                 ip.GetDisplayCornerfrombmp(bitmap, out displaycornerPoints);
             }
@@ -592,35 +669,65 @@ namespace Colorimeter_Config_GUI
 
             switch (panelType)
             {
-                case ColorPanel.eWhite:
+                case ColorPanel.White:
                     this.DrawZone(binimg, panelType);
                     cbox_white_lv.Checked = cbox_white_uniformity.Checked = cbox_white_mura.Checked = true;
                     tbox_whitelv.Text = colorimeterRst.Luminance.ToString();   
                     tbox_whiteunif.Text = (colorimeterRst.Uniformity5 * 100).ToString();
-                    tbox_whitemura.Text = colorimeterRst.Mura.ToString();
+                    tbox_whitemura.Text = colorimeterRst.Mura.ToString();                    
                     break;
-                case ColorPanel.eBlack:
+                case ColorPanel.Black:
                     this.DrawZone(binimg, panelType);
                     cbox_black_lv.Checked = cbox_black_uniformity.Checked = cbox_black_mura.Checked = true;
                     tbox_blacklv.Text = colorimeterRst.Luminance.ToString();
                     tbox_blackunif.Text = (colorimeterRst.Uniformity5 * 100).ToString();
                     tbox_blackmura.Text = colorimeterRst.Mura.ToString();
                     break;
-                case ColorPanel.eRed:
+                case ColorPanel.Red:
                     cbox_red.Checked = true;
                     tbox_red.Text = colorimeterRst.CIE1931xyY.ToString();
                     break;
-                case ColorPanel.eGreen:
+                case ColorPanel.Green:
                     cbox_green.Checked = true;
                     tbox_green.Text = colorimeterRst.CIE1931xyY.ToString();
                     break;
-                case ColorPanel.eBlue:
+                case ColorPanel.Blue:
                     cbox_blue.Checked = true;
                     tbox_blue.Text = colorimeterRst.CIE1931xyY.ToString();
                     break;
             }
 
-            return true;
+            return this.AnaylseResult(colorimeterRst, panelType);
+        }
+
+        private bool AnaylseResult(ColorimeterResult colorimeterRst, ColorPanel panel)
+        {
+            int index = 0;
+            bool flag = false;
+            List<double> param = m_config.ConfigParams[panel.ToString().ToLower()];
+
+            switch (panel)
+            {
+                case ColorPanel.White:
+                case ColorPanel.Black:
+                    {
+                        flag &= (colorimeterRst.Luminance <= param[index++] && colorimeterRst.Luminance >= param[index++]);
+                        flag &= (colorimeterRst.Uniformity5 <= param[index++] && colorimeterRst.Luminance >= param[index++]);
+                        flag &= (colorimeterRst.Mura <= param[index++] && colorimeterRst.Mura >= param[index++]);
+                    }
+                    break;
+                case ColorPanel.Red:
+                case ColorPanel.Green:
+                case ColorPanel.Blue:
+                    {
+                        flag &= (colorimeterRst.CIE1931xyY.x <= param[index++] && colorimeterRst.CIE1931xyY.x >= param[index++]);
+                        flag &= (colorimeterRst.CIE1931xyY.y <= param[index++] && colorimeterRst.CIE1931xyY.y >= param[index++]);
+                        flag &= (colorimeterRst.CIE1931xyY.Y <= param[index++] && colorimeterRst.CIE1931xyY.Y >= param[index++]);
+                    }
+                    break;
+            }
+
+            return flag;
         }
 
         private bool displaytest(List<IntPoint> displaycornerPoints)
@@ -908,19 +1015,38 @@ namespace Colorimeter_Config_GUI
 
             }
             mean = sum / (w * h);
-
-            
-            
         }
 
+        private void TestMode_Changed(object sender, EventArgs e)
+        {
+            CheckBox mode = sender as CheckBox;
+
+            if (mode.Text == "Manual") {
+                m_flagAutoMode = false;
+
+                if (m_process != null)
+                    m_process.Abort();
+            }
+            else if (mode.Text == "Automatic") {
+                m_flagAutoMode = true;
+
+                if (m_process == null)
+                {
+                    m_process = new Thread(this.RunSequence) { 
+                        IsBackground = true
+                    };
+                }
+                m_process.Start();
+            }
+        }
     }
 
     public enum ColorPanel{
-        eWhite,
-        eBlack,
-        eRed,
-        eGreen,
-        eBlue,
+        White,
+        Black,
+        Red,
+        Green,
+        Blue,
     }
 
     public class CIE1931Value
@@ -962,15 +1088,15 @@ namespace Colorimeter_Config_GUI
                 double[, ,] XYZ = m_pipeline.rgb2xyz(rgb);
 
                 switch (m_panel) { 
-                    case ColorPanel.eWhite:
-                    case ColorPanel.eBlack:
+                    case ColorPanel.White:
+                    case ColorPanel.Black:
                         this.Luminance = m_pipeline.getlv(XYZ);
                         this.Uniformity5 = m_pipeline.getuniformity(XYZ);
                         this.Mura = m_pipeline.getmura(XYZ);
                         break;
-                    case ColorPanel.eRed:
-                    case ColorPanel.eGreen:
-                    case ColorPanel.eBlue:
+                    case ColorPanel.Red:
+                    case ColorPanel.Green:
+                    case ColorPanel.Blue:
                         {
                             double[] xyY = m_pipeline.getxyY(XYZ);
                             CIE1931xyY.x = xyY[0];

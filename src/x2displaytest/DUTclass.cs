@@ -68,8 +68,7 @@ namespace DUTclass
         // new add by jackie 
         public void setpanelcolor(string panelColorName)
         {
-            string str = panelColorName.ToString().Substring(1);
-            MessageBox.Show("Send CMD to Set " + str + " State");
+            MessageBox.Show("Send CMD to Set " + panelColorName + " State");
         }
 
 
