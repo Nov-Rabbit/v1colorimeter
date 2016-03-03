@@ -189,6 +189,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdbPipe.cs" />
     <Compile Include="colorimeter.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="DUTclass.cs" />

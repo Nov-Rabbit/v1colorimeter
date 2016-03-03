@@ -186,6 +186,7 @@ namespace Colorimeter_Config_GUI
 
         public void Disconnect()
         {
+            m_camCtlDlg.Hide();
             m_camCtlDlg.Disconnect();
             m_camera.Disconnect();
         }
