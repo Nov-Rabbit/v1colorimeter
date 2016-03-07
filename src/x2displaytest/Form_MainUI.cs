@@ -84,7 +84,9 @@ namespace Colorimeter_Config_GUI
         int zonesize = 10; // 10mm for now. 
         double[, ,] XYZzone; // used to represent the zone size XYZ array
         private bool pf;  //final pass/fail
-        
+
+        private XMLManage xml;
+
         public Form_Config()
         {
             InitializeComponent();
@@ -103,6 +105,9 @@ namespace Colorimeter_Config_GUI
                 {
                     sslStatus.Text = "Wait DUT.";
                 }
+
+                tbox_dut_connect.Text = "DUT connected";
+                tbox_dut_connect.BackColor = Color.Green;
                 sslStatus.Text = "Please type in 16 digit SN";
                 Thread.Sleep(500);
 
@@ -118,59 +123,68 @@ namespace Colorimeter_Config_GUI
                 }
                 else
                 {
-                    sslStatus.Text = "DUT connected";
-                    tbox_dut_connect.Text = "DUT connected";
-                    tbox_dut_connect.BackColor = Color.Green;
-
                     btn_start.Enabled = false;
                     btn_start.BackColor = Color.LightBlue;
 
-                    try
-                    {
-                        for (int i = 0; i < 5; i++)
-                        {
-                            string name = Enum.GetName(typeof(ColorPanel), i);
-
-                            if (dut.setpanelcolor(name))
-                            {
-                                m_colorimeter.ExposureTime = (i + 1) * 20;
-                                Bitmap bitmap = m_colorimeter.GrabImage();
-                                //pf &= this.DisplayTest(displaycornerPoints, bitmap, (ColorPanel)Enum.Parse(typeof(ColorPanel), name));
-                                this.refreshtestimage(bitmap, picturebox_test);
-                            }
-                            else
-                            {
-                                sslStatus.Text = string.Format("Can't set panel color to {0}", name);
-                                pf = false;
-                                break;
-                            }
-                        }
-
-                        tbox_pf.Visible = true;
-
-                        if (pf) {
-                            tbox_pf.BackColor = Color.Green;
-                            tbox_pf.Text = "Pass";
-                        }
-                        else {
-                            tbox_pf.BackColor = Color.Red;
-                            tbox_pf.Text = "Fail";
-                        }
-                        //SFC.CreateResultFile(1, pf ? "PASS" : "FAIL");
-
-                        //while (dut.checkDUT()) {
-                        //    sslStatus.Text = "Please take out DUT.";
-                        //    Thread.Sleep(50);
-                        //}
-                        tbox_sn.Text = "";
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                    this.RunTest();
                 }
             }
             while (!m_flagExit);           
+        }
+
+        private void RunTest()
+        {
+            try
+            {
+                DateTime startTime, stopTime;
+                startTime = DateTime.Now;
+
+                foreach (TestItem testItem in xml.Items)
+                {
+                    if (dut.setpanelcolor(testItem.TestName)) {
+                        Thread.Sleep(3000);
+                        m_colorimeter.ExposureTime = testItem.Exposure;
+                        Bitmap bitmap = m_colorimeter.GrabImage();
+                        //pf &= this.DisplayTest(displaycornerPoints, bitmap, (ColorPanel)Enum.Parse(typeof(ColorPanel), testItem.TestName));
+                        this.refreshtestimage(bitmap, picturebox_test);
+                    }
+                    else {
+                        string str = string.Format("Can't set panel color to {0}", testItem.TestName);
+                        sslStatus.Text = str;
+                        pf = false;
+                        break;
+                    }
+                }
+
+                tbox_pf.Visible = true;
+
+                if (pf) {
+                    tbox_pf.BackColor = Color.Green;
+                    tbox_pf.Text = "Pass";
+                }
+                else {
+                    tbox_pf.BackColor = Color.Red;
+                    tbox_pf.Text = "Fail";
+                }
+                stopTime = DateTime.Now;
+                testlog log = new testlog();
+                log.WriteCsv(tbox_sn.Text, startTime, stopTime, xml.Items); 
+                //SFC.CreateResultFile(1, pf ? "PASS" : "FAIL");
+
+                while (dut.checkDUT())
+                {
+                    sslStatus.Text = "Please take out DUT.";
+                    Thread.Sleep(50);
+                }
+
+                tbox_dut_connect.Text = "TBD";
+                tbox_dut_connect.BackColor = Color.FromArgb(224, 224, 224);
+                tbox_sn.Text = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         // colorimeter status
@@ -232,8 +246,7 @@ namespace Colorimeter_Config_GUI
                 tbox_colorimeterstatus.Text = "Warm CCD";
                 tbox_colorimeterstatus.BackColor = Color.LightYellow;
                 colorimeter_cooling_on();
-                return true;
-            
+                return true;            
             }
             else
             {
@@ -248,12 +261,15 @@ namespace Colorimeter_Config_GUI
         {
             // Fan is on and cooling of CCD is on.
         }
-        // UI related
 
+        // UI related
         private void Form1_Load(object sender, EventArgs e)
         {
             this.Hide();
-            m_preTabPage = Tabs.TabPages[0];            
+            m_preTabPage = Tabs.TabPages[0];
+
+            xml = new XMLManage("XMLFile1.xml");
+            xml.LoadScript();
 
             if (!isdemomode)
             {
@@ -296,9 +312,9 @@ namespace Colorimeter_Config_GUI
             if (DialogResult.OK == login.ShowDialog())
             {
                 login.Close();
-                FrmSetting setDlg = new FrmSetting(m_config);
-
+                FrmSetting setDlg = new FrmSetting(xml.Items);
                 setDlg.ShowDialog();
+                xml.SaveScript();
             }
         }
 
@@ -436,6 +452,7 @@ namespace Colorimeter_Config_GUI
                 m_flagExit = true;
                 m_colorimeter.Disconnect();
                 toolStripButtonStop_Click(sender, e);
+                dut.Dispose();
                 //m_camera.Disconnect();
             }
             catch (FC2Exception ex)
@@ -539,8 +556,6 @@ namespace Colorimeter_Config_GUI
         }
 
         // test prerequisite
-
-
         private bool checksnformat()
         {
             if (tbox_sn.Text.Length == 16) //fake condition. More input is needed from Square
@@ -629,33 +644,7 @@ namespace Colorimeter_Config_GUI
                 btn_start.Enabled = false;
                 btn_start.BackColor = Color.LightBlue;
 
-                try 
-                {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        string name = Enum.GetName(typeof(ColorPanel), i);
-                        dut.setpanelcolor(name);
-                        m_colorimeter.ExposureTime = (float)m_config.ConfigParams[name.ToLower()][6];
-                        Bitmap bitmap = m_colorimeter.GrabImage();
-                        //pf &= this.DisplayTest(displaycornerPoints, bitmap, (ColorPanel)Enum.Parse(typeof(ColorPanel), name));
-                        this.refreshtestimage(bitmap, picturebox_test);
-                    }
-
-                    tbox_pf.Visible = true;
-
-                    if (pf) {
-                        tbox_pf.BackColor = Color.Green;
-                        tbox_pf.Text = "Pass";
-                    }
-                    else {
-                        tbox_pf.BackColor = Color.Red;
-                        tbox_pf.Text = "Fail";
-                    }
-                    //SFC.CreateResultFile(1, pf ? "PASS" : "FAIL");
-                }
-                catch (Exception ex) {
-                    MessageBox.Show(ex.Message);
-                }
+                this.RunTest();
             }
         }
 
@@ -690,22 +679,6 @@ namespace Colorimeter_Config_GUI
             }
 
             // 原始图像
-           // bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp");
-
-            //need save bmp outside as file format and reload so that ===reload
-            //Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_raw.bmp", true));
-            //Bitmap updateimg = croppingimage(srcimg, displaycornerPoints);
-            //this.refreshtestimage(updateimg, picturebox_test);
-
-            // show cropped image
-            //updateimg = ip.croppedimage(bitmap, displaycornerPoints, dut.ui_width, dut.ui_height);
-            //updateimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
-
-            //picturebox_test.Width = updateimg.Width;
-            //picturebox_test.Height = updateimg.Height;
-            //this.refreshtestimage(updateimg, picturebox_test);
-
-            // 原始图像
             string imageName = tempdirectory + tbox_sn.Text + str_DateTime + "_" + panelType.ToString() + ".bmp";
             bitmap.Save(imageName);
             //need save bmp outside as file format and reload so that 
@@ -725,13 +698,13 @@ namespace Colorimeter_Config_GUI
             Bitmap binimg = new Bitmap(cropimg, new Size(dut.bin_width, dut.bin_height));
             binimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_" + panelType.ToString() + "_bin.bmp");
 
-            ColorimeterResult colorimeterRst = new ColorimeterResult(binimg, panelType);
+            ColorimeterResult colorimeterRst = new ColorimeterResult(bitmap, panelType);
             colorimeterRst.Analysis();
 
             switch (panelType)
             {
-                case ColorPanel.White:
-                    this.DrawZone(binimg, panelType);
+                case ColorPanel.White:                  
+                    this.DrawZone(binimg, panelType);                 
                     cbox_white_lv.Checked = cbox_white_uniformity.Checked = cbox_white_mura.Checked = true;
                     tbox_whitelv.Text = colorimeterRst.Luminance.ToString();   
                     tbox_whiteunif.Text = (colorimeterRst.Uniformity5 * 100).ToString();
@@ -763,128 +736,42 @@ namespace Colorimeter_Config_GUI
 
         private bool AnaylseResult(ColorimeterResult colorimeterRst, ColorPanel panel)
         {
-            int index = 0;
             bool flag = false;
-            List<double> param = m_config.ConfigParams[panel.ToString().ToLower()];
+            List<TestNode> nodes = xml.Items[(int)panel].SubNodes;
 
             switch (panel)
             {
                 case ColorPanel.White:
                 case ColorPanel.Black:
                     {
-                        flag &= (colorimeterRst.Luminance <= param[index++] && colorimeterRst.Luminance >= param[index++]);
-                        flag &= (colorimeterRst.Uniformity5 <= param[index++] && colorimeterRst.Luminance >= param[index++]);
-                        flag &= (colorimeterRst.Mura <= param[index++] && colorimeterRst.Mura >= param[index++]);
+                        nodes[0].Value = colorimeterRst.Luminance;
+                        nodes[1].Value = colorimeterRst.Uniformity5;
+                        nodes[2].Value = colorimeterRst.Mura;
+
+                        for (int i = 0; i < nodes.Count; i++)
+                        {
+                            flag &= nodes[i].Run();
+                        }
                     }
                     break;
                 case ColorPanel.Red:
                 case ColorPanel.Green:
                 case ColorPanel.Blue:
                     {
-                        flag &= (colorimeterRst.CIE1931xyY.x <= param[index++] && colorimeterRst.CIE1931xyY.x >= param[index++]);
-                        flag &= (colorimeterRst.CIE1931xyY.y <= param[index++] && colorimeterRst.CIE1931xyY.y >= param[index++]);
-                        flag &= (colorimeterRst.CIE1931xyY.Y <= param[index++] && colorimeterRst.CIE1931xyY.Y >= param[index++]);
+                        nodes[0].Value = colorimeterRst.CIE1931xyY.x;
+                        nodes[1].Value = colorimeterRst.CIE1931xyY.y;
+                        nodes[2].Value = colorimeterRst.CIE1931xyY.Y;
+
+                        for (int i = 0; i < nodes.Count; i++)
+                        {
+                            flag &= nodes[i].Run();
+                        }
                     }
                     break;
             }
 
             return flag;
-        }
-
-        //private bool displaytest(List<IntPoint> displaycornerPoints)
-        //{
-        //    // set display to desired pattern following test sequence
-        //    m_processedImage.bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white.bmp");
-
-        //    //need save bmp outside as file format and reload so that 
-        //    Bitmap srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_white.bmp", true));
-        //    Bitmap cropimg = ip.croppedimage(srcimg, displaycornerPoints, dut.ui_width, dut.ui_height);
-        //    cropimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_cropped.bmp");
-            
-        //    Bitmap binimg = new Bitmap(cropimg, new Size(dut.bin_width, dut.bin_height));
-        //    binimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white_bin.bmp");
-            
-        //    RGB = ip.bmp2rgb(binimg);
-        //    XYZ = ip.rgb2xyz(RGB);
-
-        //   // byte[] imgdata = System.IO.File.ReadAllBytes(@"D:\v1colorimeter\src\x2displaytest\bin\Debug\temp\12345620160210135726_cropped.bmp");
-            
-
-        //    whitelv = ip.getlv(XYZ);
-        //    cbox_white_lv.Checked = true;
-        //    tbox_whitelv.Text = whitelv.ToString();
-
-        //    //SFC.AddTestLog(1, 1, "luminance", "500", "0", whitelv.ToString(), "-");
-            
-        //    whiteuniformity5 = ip.getuniformity(XYZ);
-
-        //    cbox_white_uniformity.Checked = true;
-        //    double whiteuniformity5_percentage = whiteuniformity5 * 100;
-        //    tbox_whiteunif.Text = whiteuniformity5_percentage.ToString();
-        //    //SFC.AddTestLog(1, 1, "uniformity", "100", "0", whiteuniformity5_percentage.ToString(), "-");
-
-        //    zoneresult zr = new zoneresult();
-
-        //    Graphics g = Graphics.FromImage(binimg);
-        //    for (int i = 1; i < 6; i++)
-        //    {
-        //        // get corner coordinates
-                
-                
-        //        flagPoints = zr.zonecorners(i, zonesize, XYZ);
-        //        // zone image
-        //        g = zoneingimage(g, flagPoints);
-        //        binimg.Save(tempdirectory + i.ToString() + "_white_bin_zone.bmp");
-        //        flagPoints.Clear();
-        //    }
-
-        //    binimg.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_white_bin_zone1-5.bmp");
-        //    refreshtestimage(binimg, picturebox_test);
-        //    g.Dispose();
-
-        //    whitemura = ip.getmura(XYZ);
-        //    cbox_white_mura.Checked = true;
-        //    tbox_whitemura.Text = whitemura.ToString();
-
-            
-
-
-        //    /*
-        //    dut.setblack();
-        //    m_camera.StartCapture();
-            
-        //    m_camera.RetrieveBuffer(m_rawImage);
-        //    m_rawImage.Convert(FlyCapture2Managed.PixelFormat.PixelFormatBgr, m_processedImage);
-
-        //    m_processedImage.bitmap.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_black.bmp");
-
-        //    //need save bmp outside as file format and reload so that 
-        //    srcimg = new Bitmap(System.Drawing.Image.FromFile(tempdirectory + tbox_sn.Text + str_DateTime + "_black.bmp", true));
-        //    cropimg = ip.croppedimage(srcimg, displaycornerPoints, dut.ui_width, dut.ui_height);
-        //    binimg = new Bitmap(cropimg, new Size(dut.bin_width, dut.bin_height));
-
-        //    RGB = ip.bmp2rgb(binimg);
-        //    XYZ = ip.rgb2xyz(RGB);
-
-        //    blacklv = ip.getlv(XYZ);
-        //    cbox_black_lv.Checked = true;
-        //    tbox_blacklv.Text = blacklv.ToString();
-
-        //    blackmura = ip.getmura(XYZ);
-        //    cbox_black_mura.Checked = true;
-        //    tbox_blackmura.Text = blackmura.ToString();
-
-        //    m_camera.StopCapture();
-        //    dut.setred();
-        //    // will develop the color patterns later
-            
-        //    // load pass/fail item
-
-        //    // decide the test item pass or fail
-        //    */
-        //    return true;
-        //}
-        
+        }        
 
         private Bitmap croppingimage(Bitmap srcimg, List<IntPoint> cornerPoints)
         {
@@ -1123,7 +1010,8 @@ namespace Colorimeter_Config_GUI
                 double[, ,] rgb = m_pipeline.bmp2rgb(m_bitmap);
                 double[, ,] XYZ = m_pipeline.rgb2xyz(rgb);
 
-                switch (m_panel) { 
+                switch (m_panel)
+                {
                     case ColorPanel.White:
                     case ColorPanel.Black:
                         this.Luminance = m_pipeline.getlv(XYZ);
@@ -1144,7 +1032,6 @@ namespace Colorimeter_Config_GUI
             }
         }
     }
-
 }
 
 

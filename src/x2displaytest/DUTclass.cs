@@ -15,7 +15,7 @@ using Colorimeter_Config_GUI;
 
 namespace DUTclass
 {
-    public abstract class DUT
+    public abstract class DUT : IDisposable
     {
         public DUT()
         {
@@ -105,6 +105,7 @@ namespace DUTclass
             if (pipe == null) {
                 pipe = new AdbPipe();
             }
+            pipe.ReadToEnd();
 
             if (name.Equals("white")) {
                 flag = pipe.SetWhiteMode();
@@ -120,6 +121,14 @@ namespace DUTclass
 
             //MessageBox.Show("Send CMD to Set " + panelColorName + " State");
             return flag;
+        }
+
+        public void Dispose()
+        {
+            if (pipe != null)
+            {
+                pipe.ExitAdbPipe();
+            }
         }
     }
 

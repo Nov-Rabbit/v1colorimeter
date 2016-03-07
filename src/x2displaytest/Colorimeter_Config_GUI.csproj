@@ -149,17 +149,6 @@
       <PropertyGroup>
         <anycpuX86>FALSE</anycpuX86>
       </PropertyGroup>
-      <ItemGroup>
-        <Reference Include="FlyCapture2Managed, Version=$(FC2Version), Culture=neutral, processorArchitecture=AMD64">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\..\bin64\FlyCapture2Managedd_v100.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
-        <Reference Include="FlyCap2CameraControl, Version=$(FC2Version), Culture=neutral, processorArchitecture=AMD64">
-          <SpecificVersion>False</SpecificVersion>
-          <HintPath>..\..\bin64\FlyCap2CameraControld_v100.dll</HintPath>
-        </Reference>
-      </ItemGroup>
     </When>
   </Choose>
   <ItemGroup>
@@ -176,6 +165,12 @@
     <Reference Include="displaycorner, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin64\Aforge\displaycorner.dll</HintPath>
+    </Reference>
+    <Reference Include="FlyCap2CameraControl_v100">
+      <HintPath>bin\Release\FlyCap2CameraControl_v100.dll</HintPath>
+    </Reference>
+    <Reference Include="FlyCapture2Managed_v100">
+      <HintPath>bin\Release\FlyCapture2Managed_v100.dll</HintPath>
     </Reference>
     <Reference Include="LoginSys, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -223,7 +218,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SFC.cs" />
+    <Compile Include="TestItem.cs" />
     <Compile Include="testlog.cs" />
+    <Compile Include="XMLHelper.cs" />
     <Compile Include="zoneresult.cs" />
     <EmbeddedResource Include="FeatureParam.resx">
       <DependentUpon>FeatureParam.cs</DependentUpon>

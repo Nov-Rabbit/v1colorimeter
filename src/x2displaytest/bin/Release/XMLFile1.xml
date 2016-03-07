@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Colorimeter>
+  <White>
+    <ExposureTime Time="15" />
+    <Luminance TestName="white_luminance" Upper="500" Lower="100" Unit="LV" />
+    <Uniformity TestName="white_uniformity5" Upper="100" Lower="0" Unit="" />
+    <Mura TestName="white_mura" Upper="5" Lower="0" Unit="" />
+  </White>
+  <Black>
+    <ExposureTime Time="50" />
+    <Luminance TestName="black_luminance" Upper="500" Lower="100" Unit="LV" />
+    <Uniformity TestName="black_uniformity5" Upper="100" Lower="0" Unit="" />
+    <Mura TestName="black_mura" Upper="5" Lower="0" Unit="" />
+  </Black>
+  <Red>
+    <ExposureTime Time="20" />
+    <CIE1931xyY.x TestName="CIE1931xyY.x" Upper="5" Lower="0" Unit="" />
+    <CIE1931xyY.y TestName="CIE1931xyY.y" Upper="500" Lower="100" Unit="" />
+    <CIE1931xyY.z TestName="CIE1931xyY.Y" Upper="5" Lower="0" Unit="" />
+  </Red>
+  <Green>
+    <ExposureTime Time="20" />
+    <CIE1931xyY.x TestName="CIE1931xyY.x" Upper="5" Lower="0" Unit="" />
+    <CIE1931xyY.y TestName="CIE1931xyY.y" Upper="500" Lower="100" Unit="" />
+    <CIE1931xyY.z TestName="CIE1931xyY.Y" Upper="5" Lower="0" Unit="" />
+  </Green>
+  <Blue>
+    <ExposureTime Time="20" />
+    <CIE1931xyY.x TestName="CIE1931xyY.x" Upper="5" Lower="0" Unit="" />
+    <CIE1931xyY.y TestName="CIE1931xyY.y" Upper="500" Lower="100" Unit="" />
+    <CIE1931xyY.z TestName="CIE1931xyY.Y" Upper="5" Lower="0" Unit="" />
+  </Blue>
+</Colorimeter>

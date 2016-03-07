@@ -11,15 +11,13 @@ namespace Colorimeter_Config_GUI
 {
     public partial class FrmSetting : Form
     {
-        public FrmSetting(Config config)
+        public FrmSetting(List<TestItem> allItems)
         {
             InitializeComponent();
-            this.config = config;
-            this.configParams = this.config.ConfigParams;
+            this.allItems = allItems;
         }
 
-        private Dictionary<string, List<double>> configParams;
-        private Config config;
+        private List<TestItem> allItems;
         private FeatureParam feature;
         private Button preSelectBtn;
 
@@ -34,13 +32,34 @@ namespace Colorimeter_Config_GUI
             activeBtn.BackColor = Color.DarkBlue;
             activeBtn.ForeColor = Color.White;
             ColorPanel panel = (ColorPanel)Enum.Parse(typeof(ColorPanel), FrmSetting.UpperFirstChar(activeBtn.Text));
-            feature = new FeatureParam(panel, this.configParams[activeBtn.Text]);
+
+            List<TestNode> testNodes = allItems[(int)panel].SubNodes;
+            List<double> panelParam = new List<double>();
+
+            foreach (TestNode node in testNodes)
+            {
+                panelParam.Add(node.Upper);
+                panelParam.Add(node.Lower);
+            }
+            panelParam.Add(allItems[(int)panel].Exposure);
+            feature = new FeatureParam(panel, panelParam);
 
             if (pnCloth.Controls.Count > 0)
             {
                 FeatureParam fp = pnCloth.Controls[0] as FeatureParam;
                 fp.Save();
-                this.configParams[this.preSelectBtn.Text] = fp.Param;
+
+                int index = 0;
+                ColorPanel prePanel = (ColorPanel)Enum.Parse(typeof(ColorPanel), FrmSetting.UpperFirstChar(this.preSelectBtn.Text));
+                List<TestNode> nodes = allItems[(int)prePanel].SubNodes;
+
+                foreach (TestNode nd in nodes)
+                {
+                    nd.Upper = fp.Param[index++];
+                    nd.Lower = fp.Param[index++];
+                }
+                allItems[(int)prePanel].Exposure = (float)fp.Param[index];
+
                 pnCloth.Controls.Clear();
                 this.preSelectBtn.BackColor = SystemColors.Control;
                 this.preSelectBtn.ForeColor = SystemColors.WindowText;
@@ -57,7 +76,7 @@ namespace Colorimeter_Config_GUI
 
         private void FrmSetting_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.config.WriteProfile();
+            //this.config.WriteProfile();
         }
     }
 }

@@ -41,8 +41,6 @@ C:\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.dll
 C:\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Imaging.dll
 C:\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Math.dll
 C:\v1colorimeter-dev\src\x2displaytest\bin\Release\displaycorner.dll
-C:\v1colorimeter-dev\src\x2displaytest\bin\Release\FlyCap2CameraControl_v100.dll
-C:\v1colorimeter-dev\src\x2displaytest\bin\Release\FlyCapture2Managed_v100.dll
 C:\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.xml
 C:\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Imaging.xml
 C:\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Math.xml
