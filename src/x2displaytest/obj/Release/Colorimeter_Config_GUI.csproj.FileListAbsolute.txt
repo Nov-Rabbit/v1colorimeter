@@ -75,3 +75,6 @@ C:\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.csproj
 C:\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FeatureParam.resources
 C:\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FrmLogin.resources
 C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FrmLogin.resources
+C:\v1colorimeter-dev\src\x2displaytest\obj\Release\Interop.CA200SRVRLib.dll
+C:\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.csproj.ResolveComReference.cache
+C:\v1colorimeter-dev\src\x2displaytest\bin\Release\Interop.CA200SRVRLib.dll

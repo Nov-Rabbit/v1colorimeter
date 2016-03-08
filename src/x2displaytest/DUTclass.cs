@@ -82,13 +82,15 @@ namespace DUTclass
         public abstract int bin_width { get; }
         public abstract int bin_height { get; }
 
+        public string DeviceID { get; private set; }
+
         public virtual bool checkDUT()
         {
             if (pipe == null) {
                 pipe = new AdbPipe();
             }
 
-            return (pipe.GetDeviceID() != null);
+            return ((DeviceID=pipe.GetDeviceID()) != null);
         }
 
         public virtual bool setpanelcolor(string panelColorName)

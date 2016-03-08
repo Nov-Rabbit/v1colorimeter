@@ -30,8 +30,9 @@ namespace Colorimeter_Config_GUI
         //colorimeter parameters
         private bool m_flagExit;
         private bool m_flagAutoMode;
+        private bool m_flagCa310Mode;
         private Colorimeter m_colorimeter;        
-        private Config m_config;
+        //private Config m_config;
         private TabPage m_preTabPage;
         private Thread m_process;
 
@@ -86,6 +87,8 @@ namespace Colorimeter_Config_GUI
         private bool pf;  //final pass/fail
 
         private XMLManage xml;
+        private testlog log = new testlog();
+        private Fixture fixture;
 
         public Form_Config()
         {
@@ -95,6 +98,10 @@ namespace Colorimeter_Config_GUI
             //m_camCtlDlg = new CameraControlDialog();
             //m_grabThreadExited = new AutoResetEvent(false);
             Form.CheckForIllegalCrossThreadCalls = false;
+
+            // debug
+            KonicaCa310 ca = new KonicaCa310();
+            ca.Zero();
         }
 
         // Online mode
@@ -104,8 +111,10 @@ namespace Colorimeter_Config_GUI
                 while (!dut.checkDUT())
                 {
                     sslStatus.Text = "Wait DUT.";
+                    Thread.Sleep(100);
                 }
 
+                log.WriteUartLog(string.Format("DUT connected, DeviceID: {0}\r\n", dut.DeviceID));
                 tbox_dut_connect.Text = "DUT connected";
                 tbox_dut_connect.BackColor = Color.Green;
                 sslStatus.Text = "Please type in 16 digit SN";
@@ -115,14 +124,17 @@ namespace Colorimeter_Config_GUI
                 {
                     sslStatus.Text = "Wait type SN";
                 }
+                log.SerialNumber = tbox_sn.Text;
+                log.WriteUartLog(string.Format("Serial number: {0}\r\n", tbox_sn.Text));
 
                 if (!checkshopfloor())
                 {
                     sslStatus.Text = "Shopfloor system is not working";
-                    MessageBox.Show("Shopfloor system is not working");
+                    //MessageBox.Show("Shopfloor system is not working");
                 }
                 else
                 {
+                    log.WriteUartLog("Shopfloor has connected.\r\n");
                     btn_start.Enabled = false;
                     btn_start.BackColor = Color.LightBlue;
 
@@ -141,15 +153,17 @@ namespace Colorimeter_Config_GUI
 
                 foreach (TestItem testItem in xml.Items)
                 {
+                    log.WriteUartLog(string.Format("Set panel to {0}\r\n", testItem.TestName));
+
                     if (dut.setpanelcolor(testItem.TestName)) {
                         Thread.Sleep(3000);
                         m_colorimeter.ExposureTime = testItem.Exposure;
                         Bitmap bitmap = m_colorimeter.GrabImage();
                         //pf &= this.DisplayTest(displaycornerPoints, bitmap, (ColorPanel)Enum.Parse(typeof(ColorPanel), testItem.TestName));
-                        this.refreshtestimage(bitmap, picturebox_test);
+                        this.Invoke(new Action<Bitmap, PictureBox>(this.refreshtestimage), bitmap, picturebox_test);
                     }
                     else {
-                        string str = string.Format("Can't set panel color to {0}", testItem.TestName);
+                        string str = string.Format("Can't set panel color to {0}\r\n", testItem.TestName);
                         sslStatus.Text = str;
                         pf = false;
                         break;
@@ -158,23 +172,30 @@ namespace Colorimeter_Config_GUI
 
                 tbox_pf.Visible = true;
 
-                if (pf) {
+                if (pf)
+                {
+                    log.WriteUartLog("Test result is PASS\r\n");
                     tbox_pf.BackColor = Color.Green;
                     tbox_pf.Text = "Pass";
                 }
-                else {
+                else
+                {
+                    log.WriteUartLog("Test result is FAIL\r\n");
                     tbox_pf.BackColor = Color.Red;
                     tbox_pf.Text = "Fail";
                 }
-                stopTime = DateTime.Now;
-                testlog log = new testlog();
+                log.UartFlush();
+
+                stopTime = DateTime.Now;                
                 log.WriteCsv(tbox_sn.Text, startTime, stopTime, xml.Items); 
                 //SFC.CreateResultFile(1, pf ? "PASS" : "FAIL");
 
                 while (dut.checkDUT())
                 {
-                    sslStatus.Text = "Please take out DUT.";
-                    Thread.Sleep(50);
+                    this.Invoke(new Action(delegate(){
+                        sslStatus.Text = "Please take out DUT.";
+                    }));                    
+                    Thread.Sleep(100);
                 }
 
                 tbox_dut_connect.Text = "TBD";
@@ -239,13 +260,15 @@ namespace Colorimeter_Config_GUI
             {
                 tbox_colorimeterstatus.Text = "OK";
                 tbox_colorimeterstatus.BackColor = Color.Green;
+                fixture.FanOff();
                 return true;
             }
             else if (CCDTemperature < 50 && UpTime < 24)
             {
                 tbox_colorimeterstatus.Text = "Warm CCD";
                 tbox_colorimeterstatus.BackColor = Color.LightYellow;
-                colorimeter_cooling_on();
+                //colorimeter_cooling_on();
+                fixture.FanOn();
                 return true;            
             }
             else
@@ -270,6 +293,7 @@ namespace Colorimeter_Config_GUI
 
             xml = new XMLManage("XMLFile1.xml");
             xml.LoadScript();
+            fixture = new Fixture("COM1");
 
             if (!isdemomode)
             {
@@ -292,8 +316,8 @@ namespace Colorimeter_Config_GUI
                     }
                 }).BeginInvoke(null, null);
 
-                m_config = new Config(Application.StartupPath + @"\profile.ini");
-                m_config.ReadProfile();
+                //m_config = new Config(Application.StartupPath + @"\profile.ini");
+                //m_config.ReadProfile();
             }
             else
             {
@@ -331,6 +355,8 @@ namespace Colorimeter_Config_GUI
                 }
                 else
                 {
+                    rbtn_manual.Checked = true;
+
                     FrmLogin login = new FrmLogin();
 
                     if (DialogResult.OK == login.ShowDialog())
@@ -352,7 +378,7 @@ namespace Colorimeter_Config_GUI
 
             if (mode.Checked && mode.Text == "Manual")
             {
-                m_flagAutoMode = false;
+                m_flagCa310Mode = m_flagAutoMode = false;
                 sslMode.Text = "Manual mode";
                 btn_start.Show();
 
@@ -361,7 +387,27 @@ namespace Colorimeter_Config_GUI
             }
             else if (mode.Checked && mode.Text == "Automatic")
             {
+                m_flagCa310Mode = false;
                 m_flagAutoMode = true;
+                sslMode.Text = "Automatic mode";
+                btn_start.Hide();
+
+                if (m_process != null)
+                {
+                    m_process.Abort();
+                }
+
+                m_process = new Thread(this.RunSequence)
+                {
+                    IsBackground = true
+                };
+                m_process.Start();
+            }
+            else if (mode.Checked && mode.Text == "Ca-310")
+            {
+                m_flagCa310Mode = true;
+                m_flagAutoMode = false;
+
                 sslMode.Text = "Automatic mode";
                 btn_start.Hide();
 
@@ -708,7 +754,9 @@ namespace Colorimeter_Config_GUI
                     cbox_white_lv.Checked = cbox_white_uniformity.Checked = cbox_white_mura.Checked = true;
                     tbox_whitelv.Text = colorimeterRst.Luminance.ToString();   
                     tbox_whiteunif.Text = (colorimeterRst.Uniformity5 * 100).ToString();
-                    tbox_whitemura.Text = colorimeterRst.Mura.ToString();                    
+                    tbox_whitemura.Text = colorimeterRst.Mura.ToString();
+                    log.WriteUartLog(string.Format("luminance: {0}, uniformity5: {1}, mura: {2}", 
+                        colorimeterRst.Luminance, colorimeterRst.Uniformity5, colorimeterRst.Mura));
                     break;
                 case ColorPanel.Black:
                     this.DrawZone(binimg, panelType);
@@ -716,20 +764,26 @@ namespace Colorimeter_Config_GUI
                     tbox_blacklv.Text = colorimeterRst.Luminance.ToString();
                     tbox_blackunif.Text = (colorimeterRst.Uniformity5 * 100).ToString();
                     tbox_blackmura.Text = colorimeterRst.Mura.ToString();
+                    log.WriteUartLog(string.Format("luminance: {0}, uniformity5: {1}, mura: {2}",
+                        colorimeterRst.Luminance, colorimeterRst.Uniformity5, colorimeterRst.Mura));
                     break;
                 case ColorPanel.Red:
                     cbox_red.Checked = true;
                     tbox_red.Text = colorimeterRst.CIE1931xyY.ToString();
+                    log.WriteUartLog(colorimeterRst.CIE1931xyY.ToString());
                     break;
                 case ColorPanel.Green:
                     cbox_green.Checked = true;
                     tbox_green.Text = colorimeterRst.CIE1931xyY.ToString();
+                    log.WriteUartLog(colorimeterRst.CIE1931xyY.ToString());
                     break;
                 case ColorPanel.Blue:
                     cbox_blue.Checked = true;
                     tbox_blue.Text = colorimeterRst.CIE1931xyY.ToString();
+                    log.WriteUartLog(colorimeterRst.CIE1931xyY.ToString());
                     break;
             }
+            log.WriteUartLog("\r\n");
 
             return this.AnaylseResult(colorimeterRst, panelType);
         }

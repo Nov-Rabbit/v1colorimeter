@@ -8,25 +8,34 @@ using DUTclass;
 
 namespace Colorimeter_Config_GUI
 {
-    public delegate void DataDelegate(object sender);
+    public delegate void DataDelegate(object sender, DataChangeEventArgs args);
 
-    class Engine
+    public class DataChangeEventArgs
     {
-        public Engine(string configPath)
+        public string StatusInfo { get; set; }
+        public Colorimeter Colorimeter { get; set; }
+    }
+
+    public class Engine
+    {
+        public Engine(string scriptName)
         {
             colorimeter = new Colorimeter();
-            config = new Config(configPath);
-            config.ReadProfile();
+            xml = new XMLManage(scriptName);
             dut = new Hodor();
             ip = new imagingpipeline();
+            args = new DataChangeEventArgs();
+            log = new testlog();
         }
 
         public event DataDelegate dataChange;
+        private DataChangeEventArgs args;
 
         private bool flagExit;
         private bool flagAutoMode;
         private Colorimeter colorimeter;
-        private Config config;
+        private XMLManage xml;
+        private testlog log;
 
         //dut setup
         private DUT dut;
@@ -38,13 +47,16 @@ namespace Colorimeter_Config_GUI
         {
             if (!colorimeter.Connect())
             {
+                args.StatusInfo = "No Camera";
             }
 
             new Action(delegate() {
                 while (!flagExit) {
                     if (dataChange != null)
                     {
-                        dataChange(this);
+                        this.args.Colorimeter = colorimeter;
+                        dataChange.Invoke(this, args);
+                        //dataChange(this, args);
                     }
                     System.Threading.Thread.Sleep(100);
                 }
@@ -53,8 +65,7 @@ namespace Colorimeter_Config_GUI
 
         public void Start()
         {
-            if (tdBlock != null)
-            {
+            if (tdBlock != null) {
                 tdBlock.Abort();
                 tdBlock = null;
             }
@@ -66,6 +77,10 @@ namespace Colorimeter_Config_GUI
 
         private void RunSequence()
         {
+            args.StatusInfo = "Wait DUT.";
+
+            while (!dut.checkDUT()) { Thread.Sleep(100); }
+            log.WriteUartLog(string.Format("DUT connected, DeviceID: {0}\r\n", dut.DeviceID));
 
         }
     }

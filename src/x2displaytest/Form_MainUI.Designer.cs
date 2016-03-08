@@ -145,6 +145,7 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.picturebox_raw = new System.Windows.Forms.PictureBox();
             this.pictureBox_processed = new System.Windows.Forms.PictureBox();
+            this.rbtn_Ca310 = new System.Windows.Forms.RadioButton();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -919,6 +920,7 @@ namespace Colorimeter_Config_GUI
             // 
             // panel7
             // 
+            this.panel7.Controls.Add(this.rbtn_Ca310);
             this.panel7.Controls.Add(this.rbtn_auto);
             this.panel7.Controls.Add(this.rbtn_manual);
             this.panel7.Location = new System.Drawing.Point(9, 244);
@@ -930,7 +932,7 @@ namespace Colorimeter_Config_GUI
             // rbtn_auto
             // 
             this.rbtn_auto.AutoSize = true;
-            this.rbtn_auto.Location = new System.Drawing.Point(168, 20);
+            this.rbtn_auto.Location = new System.Drawing.Point(100, 20);
             this.rbtn_auto.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_auto.Name = "rbtn_auto";
             this.rbtn_auto.Size = new System.Drawing.Size(99, 24);
@@ -1464,6 +1466,17 @@ namespace Colorimeter_Config_GUI
             this.pictureBox_processed.TabIndex = 1;
             this.pictureBox_processed.TabStop = false;
             // 
+            // rbtn_Ca310
+            // 
+            this.rbtn_Ca310.AutoSize = true;
+            this.rbtn_Ca310.Location = new System.Drawing.Point(215, 20);
+            this.rbtn_Ca310.Name = "rbtn_Ca310";
+            this.rbtn_Ca310.Size = new System.Drawing.Size(79, 24);
+            this.rbtn_Ca310.TabIndex = 2;
+            this.rbtn_Ca310.TabStop = true;
+            this.rbtn_Ca310.Text = "Ca-310";
+            this.rbtn_Ca310.UseVisualStyleBackColor = true;
+            // 
             // Form_Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1640,6 +1653,7 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.ToolStripButton tsbtnSetting;
         private System.Windows.Forms.ToolStripStatusLabel sslMode;
         private System.Windows.Forms.ToolStripStatusLabel sslStatus;
+        private System.Windows.Forms.RadioButton rbtn_Ca310;
     }
 }
 

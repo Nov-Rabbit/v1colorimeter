@@ -14,6 +14,11 @@ namespace Colorimeter_Config_GUI
             {
                 Directory.CreateDirectory(strPath_SummaryLog);
             }
+
+            if (!Directory.Exists(strPath_UnitLog))
+            {
+                Directory.CreateDirectory(strPath_UnitLog);
+            }
         }
  
         // save the log to local for summary and detail information
@@ -39,6 +44,17 @@ namespace Colorimeter_Config_GUI
         string str_StopTestTime;
 
         private StringBuilder uartData;
+        private string sn;
+
+        public string SerialNumber
+        {
+            get {
+                return sn;
+            }
+            set {
+                sn = value;
+            }
+        }
 
         private void InitCsvTitle(string fullFilePath, List<TestItem> allItems)
         {
@@ -71,6 +87,7 @@ namespace Colorimeter_Config_GUI
             string csvFileName = "X2DisplayTest_" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv";
             string fullFilePath = Path.Combine(strPath_SummaryLog, csvFileName);
             bool flagResult = true;
+            string failItems = "";
 
             this.InitCsvTitle(fullFilePath, allItems);
 
@@ -82,18 +99,22 @@ namespace Colorimeter_Config_GUI
             }
             else {
                 data.Append(sn);
-            }
-            data.AppendFormat(",{0:yyyy-MM-dd HH:mm:ss},{1:yyyy-MM-dd HH:mm:ss},adminstator,", startTime, stopTime);
+            }            
 
             foreach (TestItem item in allItems)
             {
                 foreach (TestNode node in item.SubNodes)
                 {
-                    flagResult &= node.Run();
-                    nodedata.AppendFormat("{0}", node.Value);
+                    if (!(flagResult &= node.Run()))
+                    {
+                        failItems += node.NodeName + ";";
+                    }
+                    nodedata.AppendFormat("{0},", node.Value);
                 }
             }
-            data.AppendFormat("{0},", flagResult ? "PASS" : "FAIL");
+            
+            data.AppendFormat(",adminstator,{0},{1},{2:yyyy-MM-dd HH:mm:ss},{3:yyyy-MM-dd HH:mm:ss},",
+                (flagResult ? "PASS" : "FAIL"), failItems, startTime, stopTime);
             data.Append(nodedata.ToString());
             data.AppendLine();
 
@@ -117,8 +138,13 @@ namespace Colorimeter_Config_GUI
 
         public void UartFlush()
         {
-            using (StreamWriter sw = new StreamWriter(""))
+            string fileName = string.Format("{0}_{1:yyyy-MM-dd_HHmmss}.txt", sn, DateTime.Now);
+
+            using (StreamWriter sw = new StreamWriter(Path.Combine(strPath_UnitLog, fileName)))
             {
+                sw.WriteLine(uartData.ToString());
+                sw.Flush();
+                sw.Close();
             }
         }
 
