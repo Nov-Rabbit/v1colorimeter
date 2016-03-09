@@ -1,0 +1,3 @@
+C:\v1colorimeter-dev\src\x2displaytest\bin\x64\Release\Colorimeter_Config_GUI.exe.config
+C:\v1colorimeter-dev\src\x2displaytest\obj\x64\Release\Interop.CA200SRVRLib.dll
+C:\v1colorimeter-dev\src\x2displaytest\obj\x64\Release\Colorimeter_Config_GUI.csproj.ResolveComReference.cache
