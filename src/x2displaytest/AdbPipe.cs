@@ -18,7 +18,7 @@ namespace Colorimeter_Config_GUI
             process.StartInfo.RedirectStandardInput = true;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.CreateNoWindow = true;            
 
             if (process.Start())
             {
@@ -116,14 +116,15 @@ namespace Colorimeter_Config_GUI
                 }
             }
 
-            //result = this.GetPipeData(string.Format("adb shell \"mmi -c lcd -d {0}\"", colorName), 70000, "edited");
+            result = this.GetPipeData(string.Format("adb shell \"mmi -c lcd -d {0}\"", colorName), 70000, "edited");
 
-            //if (result.Contains("edited")) {
-            //    flag = true;
-            //}
-            process.StandardInput.WriteLine(string.Format("adb shell \"mmi -c lcd -d {0}\"", colorName));
+            if (result.Contains("edited"))
+            {
+                flag = true;
+            }
+           // process.StandardInput.WriteLine(string.Format("adb shell \"mmi -c lcd -d {0}\"", colorName));
 
-            flag = true;
+           // flag = true;
             return flag;
         }
 

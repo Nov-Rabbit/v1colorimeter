@@ -19,6 +19,11 @@ namespace Colorimeter_Config_GUI
             {
                 Directory.CreateDirectory(strPath_UnitLog);
             }
+
+            if (!Directory.Exists(strCa310LogPath))
+            {
+                Directory.CreateDirectory(strCa310LogPath);
+            }
         }
  
         // save the log to local for summary and detail information
@@ -43,6 +48,7 @@ namespace Colorimeter_Config_GUI
         string str_StartTestTime;
         string str_StopTestTime;
 
+        private string strCa310LogPath = @"C:\vault\LocalLog\Ca310Log\";
         private StringBuilder uartData;
         private string sn;
 
@@ -148,6 +154,33 @@ namespace Colorimeter_Config_GUI
             }
         }
 
+        public void WriteCa310Log(string sn, Dictionary<string, CIE1931Value> items)
+        {
+            string csvFileName = "X2DisplayTest_Ca310_" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv";
+            string fullFilePath = Path.Combine(strCa310LogPath, csvFileName);
+
+            if (!File.Exists(fullFilePath))
+            {
+                FileStream stream = File.Create(fullFilePath);
+                stream.Close();
+            }
+
+            StringBuilder sbStr = new StringBuilder();
+
+            foreach (string key in items.Keys)
+            {
+                CIE1931Value cie = items[key];
+                sbStr.AppendFormat("{0},{1},{2},{3}\r\n", key, cie.x, cie.y, cie.Y);
+            }
+
+            using (StreamWriter sw = new StreamWriter(fullFilePath, true))
+            {
+                sw.WriteLine(string.Format("{0},x,y,Y", sn));
+                sw.WriteLine(sbStr.ToString());
+                sw.Flush();
+                sw.Close();
+            }
+        }
 
         public void writecsv(string dir, string filename, double[,] matrix)
         {

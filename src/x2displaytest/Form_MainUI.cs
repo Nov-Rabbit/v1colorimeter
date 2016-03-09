@@ -36,6 +36,12 @@ namespace Colorimeter_Config_GUI
         private TabPage m_preTabPage;
         private Thread m_process;
 
+        private XMLManage xml;
+        private testlog log = new testlog();
+        private Fixture fixture;
+        private Ca310Pipe ca310Pipe;
+        private string serialNumber;
+
         //dut setup
         DUTclass.DUT dut = new DUTclass.Hodor();
         imagingpipeline ip = new imagingpipeline();
@@ -86,10 +92,6 @@ namespace Colorimeter_Config_GUI
         double[, ,] XYZzone; // used to represent the zone size XYZ array
         private bool pf;  //final pass/fail
 
-        private XMLManage xml;
-        private testlog log = new testlog();
-        private Fixture fixture;
-
         public Form_Config()
         {
             InitializeComponent();
@@ -98,18 +100,36 @@ namespace Colorimeter_Config_GUI
             //m_camCtlDlg = new CameraControlDialog();
             //m_grabThreadExited = new AutoResetEvent(false);
             Form.CheckForIllegalCrossThreadCalls = false;
-
-            // debug
-            KonicaCa310 ca = new KonicaCa310();
-            ca.Zero();
         }
 
         // Online mode
         private void RunSequence()
         {
+            #region Init Ca310
+            if (m_flagCa310Mode) {
+                if (ca310Pipe == null) {
+                    ca310Pipe = new Ca310Pipe(Application.StartupPath);
+                    sslStatus.Text = "Initilaze Ca310 device.";
+
+                    if (!ca310Pipe.Connect()) {
+                        sslStatus.Text = ca310Pipe.ErrorMessage;
+                    }
+                    else {
+                        sslStatus.Text = "Ca310 has Connected.";
+                        ca310Pipe.ResetZero();
+                    }
+                }
+            }
+            else {
+                if (ca310Pipe != null) {
+                    ca310Pipe.Disconnect();
+                    ca310Pipe = null;
+                }
+            }
+            #endregion
+
             do {
-                while (!dut.checkDUT())
-                {
+                while (!dut.checkDUT()) {
                     sslStatus.Text = "Wait DUT.";
                     Thread.Sleep(100);
                 }
@@ -140,6 +160,7 @@ namespace Colorimeter_Config_GUI
 
                     this.RunTest();
                 }
+                serialNumber = "";
             }
             while (!m_flagExit);           
         }
@@ -150,6 +171,33 @@ namespace Colorimeter_Config_GUI
             {
                 DateTime startTime, stopTime;
                 startTime = DateTime.Now;
+
+                if (m_flagCa310Mode)
+                {
+                    Dictionary<string, CIE1931Value> items = new Dictionary<string, CIE1931Value>();
+                    fixture.RotateOn();
+                    Thread.Sleep(1000);
+                    foreach (TestItem testItem in xml.Items)
+                    {
+                        log.WriteUartLog(string.Format("Ca310Mode - Set panel to {0}\r\n", testItem.TestName));
+
+                        if (dut.setpanelcolor(testItem.TestName)) {
+                            Thread.Sleep(3000);                            
+                            CIE1931Value cie = ca310Pipe.GetCa310Data();
+                            log.WriteUartLog(string.Format("Ca310Mode - CIE1931xyY: {0}\r\n", cie.ToString()));
+                            items.Add(testItem.TestName, cie.Copy());
+                        }
+                        else {
+                            string str = string.Format("Can't set panel color to {0}\r\n", testItem.TestName);
+                            sslStatus.Text = str;
+                            pf = false;
+                            break;
+                        }
+                    }
+                    fixture.RotateOff();
+                    Thread.Sleep(1000);
+                    log.WriteCa310Log(serialNumber, items);
+                }
 
                 foreach (TestItem testItem in xml.Items)
                 {
@@ -186,8 +234,8 @@ namespace Colorimeter_Config_GUI
                 }
                 log.UartFlush();
 
-                stopTime = DateTime.Now;                
-                log.WriteCsv(tbox_sn.Text, startTime, stopTime, xml.Items); 
+                stopTime = DateTime.Now;
+                log.WriteCsv(serialNumber, startTime, stopTime, xml.Items); 
                 //SFC.CreateResultFile(1, pf ? "PASS" : "FAIL");
 
                 while (dut.checkDUT())
@@ -293,7 +341,7 @@ namespace Colorimeter_Config_GUI
 
             xml = new XMLManage("XMLFile1.xml");
             xml.LoadScript();
-            fixture = new Fixture("COM1");
+            fixture = new Fixture("COM1");            
 
             if (!isdemomode)
             {
@@ -312,12 +360,8 @@ namespace Colorimeter_Config_GUI
                         UpdateStatusBar();
                         colorimeterstatus();
                         System.Threading.Thread.Sleep(100);
-                        Debug.WriteLine(m_colorimeter.ExposureTime);
                     }
                 }).BeginInvoke(null, null);
-
-                //m_config = new Config(Application.StartupPath + @"\profile.ini");
-                //m_config.ReadProfile();
             }
             else
             {
@@ -408,7 +452,7 @@ namespace Colorimeter_Config_GUI
                 m_flagCa310Mode = true;
                 m_flagAutoMode = false;
 
-                sslMode.Text = "Automatic mode";
+                sslMode.Text = "Ca-310 mode";
                 btn_start.Hide();
 
                 if (m_process != null)
@@ -499,6 +543,7 @@ namespace Colorimeter_Config_GUI
                 m_colorimeter.Disconnect();
                 toolStripButtonStop_Click(sender, e);
                 dut.Dispose();
+                ca310Pipe.Disconnect();
                 //m_camera.Disconnect();
             }
             catch (FC2Exception ex)
@@ -608,6 +653,7 @@ namespace Colorimeter_Config_GUI
             {
                 tbox_sn.SelectAll();
                 tbox_sn.Focus();
+                serialNumber = tbox_sn.Text;
                 return true;
             }
             else
@@ -1034,7 +1080,17 @@ namespace Colorimeter_Config_GUI
 
         public override string ToString()
         {
-            return string.Format("{({0}, {1}), {2}}", x, y, Y);
+            return string.Format("([{0}, {1}], {2})", x, y, Y);
+        }
+
+        public CIE1931Value Copy()
+        {
+            CIE1931Value cie = new CIE1931Value();
+            cie.x = this.x;
+            cie.y = this.y;
+            cie.Y = this.Y;
+
+            return cie;
         }
     }
 

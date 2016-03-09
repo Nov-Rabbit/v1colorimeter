@@ -33,7 +33,7 @@ namespace Colorimeter_Config_GUI
             port.WriteLine(command);
             System.Threading.Thread.Sleep(100);
 
-            return port.ReadTo("*_*");
+            return port.ReadExisting();//port.ReadTo("*_*");
         }
 
         private bool ParseCmd(string command)

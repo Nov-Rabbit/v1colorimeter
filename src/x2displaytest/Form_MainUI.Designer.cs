@@ -101,6 +101,7 @@ namespace Colorimeter_Config_GUI
             this.label8 = new System.Windows.Forms.Label();
             this.tbox_sn = new System.Windows.Forms.TextBox();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.rbtn_Ca310 = new System.Windows.Forms.RadioButton();
             this.rbtn_auto = new System.Windows.Forms.RadioButton();
             this.rbtn_manual = new System.Windows.Forms.RadioButton();
             this.tbox_errorcode = new System.Windows.Forms.TextBox();
@@ -145,7 +146,6 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.picturebox_raw = new System.Windows.Forms.PictureBox();
             this.pictureBox_processed = new System.Windows.Forms.PictureBox();
-            this.rbtn_Ca310 = new System.Windows.Forms.RadioButton();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -929,6 +929,18 @@ namespace Colorimeter_Config_GUI
             this.panel7.Size = new System.Drawing.Size(331, 63);
             this.panel7.TabIndex = 18;
             // 
+            // rbtn_Ca310
+            // 
+            this.rbtn_Ca310.AutoSize = true;
+            this.rbtn_Ca310.Location = new System.Drawing.Point(215, 20);
+            this.rbtn_Ca310.Name = "rbtn_Ca310";
+            this.rbtn_Ca310.Size = new System.Drawing.Size(79, 24);
+            this.rbtn_Ca310.TabIndex = 2;
+            this.rbtn_Ca310.TabStop = true;
+            this.rbtn_Ca310.Text = "Ca-310";
+            this.rbtn_Ca310.UseVisualStyleBackColor = true;
+            this.rbtn_Ca310.CheckedChanged += new System.EventHandler(this.TestMode_Changed);
+            // 
             // rbtn_auto
             // 
             this.rbtn_auto.AutoSize = true;
@@ -1465,17 +1477,6 @@ namespace Colorimeter_Config_GUI
             this.pictureBox_processed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox_processed.TabIndex = 1;
             this.pictureBox_processed.TabStop = false;
-            // 
-            // rbtn_Ca310
-            // 
-            this.rbtn_Ca310.AutoSize = true;
-            this.rbtn_Ca310.Location = new System.Drawing.Point(215, 20);
-            this.rbtn_Ca310.Name = "rbtn_Ca310";
-            this.rbtn_Ca310.Size = new System.Drawing.Size(79, 24);
-            this.rbtn_Ca310.TabIndex = 2;
-            this.rbtn_Ca310.TabStop = true;
-            this.rbtn_Ca310.Text = "Ca-310";
-            this.rbtn_Ca310.UseVisualStyleBackColor = true;
             // 
             // Form_Config
             // 

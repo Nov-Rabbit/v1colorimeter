@@ -5,6 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Colorimeter_Config_GUI", "C
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Colorimeter|Any CPU = Colorimeter|Any CPU
+		Colorimeter|x64 = Colorimeter|x64
+		Colorimeter|x86 = Colorimeter|x86
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -13,6 +16,12 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{349C8F44-6F3F-47E3-8599-C0BCA956BDCA}.Colorimeter|Any CPU.ActiveCfg = Release|Any CPU
+		{349C8F44-6F3F-47E3-8599-C0BCA956BDCA}.Colorimeter|Any CPU.Build.0 = Release|Any CPU
+		{349C8F44-6F3F-47E3-8599-C0BCA956BDCA}.Colorimeter|x64.ActiveCfg = Colorimeter|x64
+		{349C8F44-6F3F-47E3-8599-C0BCA956BDCA}.Colorimeter|x64.Build.0 = Colorimeter|x64
+		{349C8F44-6F3F-47E3-8599-C0BCA956BDCA}.Colorimeter|x86.ActiveCfg = Colorimeter|x86
+		{349C8F44-6F3F-47E3-8599-C0BCA956BDCA}.Colorimeter|x86.Build.0 = Colorimeter|x86
 		{349C8F44-6F3F-47E3-8599-C0BCA956BDCA}.Debug|Any CPU.ActiveCfg = Release|Any CPU
 		{349C8F44-6F3F-47E3-8599-C0BCA956BDCA}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{349C8F44-6F3F-47E3-8599-C0BCA956BDCA}.Debug|x64.ActiveCfg = Debug|x64
