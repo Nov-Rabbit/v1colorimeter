@@ -93,7 +93,7 @@ namespace DUTclass
             return ((DeviceID=pipe.GetDeviceID()) != null);
         }
 
-        public virtual bool setpanelcolor(string panelColorName)
+        public virtual bool ChangePanelColor(string panelColorName)
         {
             bool flag = false;
 

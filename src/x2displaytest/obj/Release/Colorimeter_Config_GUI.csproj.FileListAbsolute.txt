@@ -59,8 +59,6 @@ C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.d
 C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Imaging.dll
 C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Math.dll
 C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\displaycorner.dll
-C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\FlyCap2CameraControl_v100.dll
-C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\FlyCapture2Managed_v100.dll
 C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.xml
 C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Imaging.xml
 C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Math.xml
@@ -75,3 +73,4 @@ C:\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.csproj
 C:\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FeatureParam.resources
 C:\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FrmLogin.resources
 C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FrmLogin.resources
+C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\LoginSys.xml

@@ -181,7 +181,7 @@ namespace Colorimeter_Config_GUI
                     {
                         log.WriteUartLog(string.Format("Ca310Mode - Set panel to {0}\r\n", testItem.TestName));
 
-                        if (dut.setpanelcolor(testItem.TestName)) {
+                        if (dut.ChangePanelColor(testItem.TestName)) {
                             Thread.Sleep(3000);                            
                             CIE1931Value cie = ca310Pipe.GetCa310Data();
                             log.WriteUartLog(string.Format("Ca310Mode - CIE1931xyY: {0}\r\n", cie.ToString()));
@@ -203,7 +203,7 @@ namespace Colorimeter_Config_GUI
                 {
                     log.WriteUartLog(string.Format("Set panel to {0}\r\n", testItem.TestName));
 
-                    if (dut.setpanelcolor(testItem.TestName)) {
+                    if (dut.ChangePanelColor(testItem.TestName)) {
                         Thread.Sleep(3000);
                         m_colorimeter.ExposureTime = testItem.Exposure;
                         Bitmap bitmap = m_colorimeter.GrabImage();
@@ -1011,6 +1011,9 @@ namespace Colorimeter_Config_GUI
         private void btn_focus_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Adjust Colorimeter Focus");
+            Btn_Size.Enabled = true;
+            btn_focus.Enabled = false;
+            m_colorimeter.StopVideo();          
         }
 
         public static byte[] ImageToByte2(System.Drawing.Image img)
@@ -1061,6 +1064,129 @@ namespace Colorimeter_Config_GUI
 
             }
             mean = sum / (w * h);
+        }
+
+        private void Btn_Size_Click(object sender, EventArgs e)
+        {
+            int x = (picturebox_config.Location.X + picturebox_config.Width) / 2;
+            int y = (picturebox_config.Location.Y + picturebox_config.Height) / 2;
+            Cursor.Position = this.PointToScreen(new System.Drawing.Point(x, y));
+            this.picturebox_config.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picturebox_config_MouseClick);
+        }
+
+        private void Tabs_Selected(object sender, TabControlEventArgs e)
+        {
+            TabControl page = (TabControl)sender;
+
+            if (page.SelectedTab == Tab_Config) {
+                Btn_Size.Enabled = Btn_Lv.Enabled = Btn_Color.Enabled = Btn_FF.Enabled = false;
+                lbMM.Visible = lbTips.Visible = tbSizeCal.Visible = false;
+                m_colorimeter.SetVideoCavaus(picturebox_config);
+                m_colorimeter.PlayVideo();
+            }
+            else {
+                m_colorimeter.StopVideo();
+            }
+        }
+
+        private System.Drawing.PointF ptFirstLine;
+        private bool isFirstLine = true;
+
+        private void picturebox_config_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (isFirstLine) {
+                this.picturebox_config.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picturebox_config_MouseMove);
+            }
+            else {
+                this.picturebox_config.MouseMove -= new System.Windows.Forms.MouseEventHandler(this.picturebox_config_MouseMove);
+            }
+            
+            if (picturebox_config.Image != null)
+            {
+                Pen pen = new Pen(Color.Red, 3);
+                Graphics g = Graphics.FromImage(picturebox_config.Image);
+                System.Drawing.PointF pt = picturebox_config.PointToClient(Cursor.Position);
+                ptFirstLine = pt;
+                g.DrawLine(pen, new PointF(pt.X, 0), new PointF(pt.X, picturebox_config.Height));
+                picturebox_config.Invalidate();
+            }
+            isFirstLine = !isFirstLine;
+
+            // 3条线已画完
+            if (isFirstLine)
+            {
+                this.picturebox_config.MouseClick -= new System.Windows.Forms.MouseEventHandler(this.picturebox_config_MouseClick);
+                lbMM.Visible = lbTips.Visible = tbSizeCal.Visible = true;
+            }
+        }
+
+        private void picturebox_config_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (picturebox_config.Image != null)
+            {
+                Pen pen = new Pen(Color.Red, 3);
+                Graphics g = Graphics.FromImage(picturebox_config.Image);
+                System.Drawing.PointF pt = picturebox_config.PointToClient(Cursor.Position);
+                g.DrawLine(pen, new PointF(ptFirstLine.X, ptFirstLine.Y), new PointF(pt.X, ptFirstLine.Y));
+                picturebox_config.Invalidate();
+            }
+        }
+
+        private void picturebox_config_MouseHover(object sender, EventArgs e)
+        {
+            System.Drawing.Point ptCursor = picturebox_config.PointToClient(Cursor.Position);
+
+            if (ptCursor.X <= 0)
+            {
+                ptCursor.X = 0;
+            }
+            if (ptCursor.X >= picturebox_config.Width)
+            {
+                ptCursor.X = picturebox_config.Width;
+            }
+            if (ptCursor.Y <= 0)
+            {
+                ptCursor.Y = 0;
+            }
+            if (ptCursor.Y >= picturebox_config.Height)
+            {
+                ptCursor.Y = picturebox_config.Height;
+            }
+        }
+
+        private void tbSizeCal_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) {
+                double value;
+
+                if (!double.TryParse(tbSizeCal.Text.TrimEnd('\n'), out value))
+                {
+                    MessageBox.Show("Please type a number.");
+                    tbSizeCal.Text = "";
+                    return;
+                }
+                lbMM.Visible = lbTips.Visible = tbSizeCal.Visible = false;
+                btn_focus.Enabled = Btn_Size.Enabled = Btn_Color.Enabled = Btn_FF.Enabled = false;
+                Btn_Lv.Enabled = true;
+            }
+        }
+
+        private void Btn_Lv_Click(object sender, EventArgs e)
+        {
+            fixture.IntegratingSphereUp();
+            Thread.Sleep(1000);
+            fixture.RotateOn();
+            Thread.Sleep(1000);
+            CIE1931Value value = ca310Pipe.GetCa310Data();
+
+            Bitmap bitmap = m_colorimeter.GrabImage();
+            double[,,] rgb = ip.bmp2rgb(bitmap);
+
+
+            fixture.RotateOff();
+            Thread.Sleep(1000);
+            fixture.IntegratingSphereDown();
+            Thread.Sleep(1000);
         }
     }
 
