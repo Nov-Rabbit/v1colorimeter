@@ -191,7 +191,7 @@ namespace Colorimeter_Config_GUI
                             string str = string.Format("Can't set panel color to {0}\r\n", testItem.TestName);
                             sslStatus.Text = str;
                             pf = false;
-                            break;
+                            break; 
                         }
                     }
                     fixture.RotateOff();
@@ -216,21 +216,25 @@ namespace Colorimeter_Config_GUI
                         pf = false;
                         break;
                     }
-                }
-
-                tbox_pf.Visible = true;
+                }                
 
                 if (pf)
                 {
                     log.WriteUartLog("Test result is PASS\r\n");
-                    tbox_pf.BackColor = Color.Green;
-                    tbox_pf.Text = "Pass";
+                    this.Invoke(new Action(delegate() {
+                        tbox_pf.Visible = true;
+                        tbox_pf.BackColor = Color.Green;
+                        tbox_pf.Text = "Pass";
+                    }));                    
                 }
                 else
                 {
                     log.WriteUartLog("Test result is FAIL\r\n");
-                    tbox_pf.BackColor = Color.Red;
-                    tbox_pf.Text = "Fail";
+                    this.Invoke(new Action(delegate() {
+                        tbox_pf.Visible = true;
+                        tbox_pf.BackColor = Color.Red;
+                        tbox_pf.Text = "Fail";
+                    }));                    
                 }
                 log.UartFlush();
 
@@ -1117,6 +1121,7 @@ namespace Colorimeter_Config_GUI
             {
                 this.picturebox_config.MouseClick -= new System.Windows.Forms.MouseEventHandler(this.picturebox_config_MouseClick);
                 lbMM.Visible = lbTips.Visible = tbSizeCal.Visible = true;
+                tbSizeCal.Focus();
             }
         }
 
@@ -1168,106 +1173,80 @@ namespace Colorimeter_Config_GUI
                 lbMM.Visible = lbTips.Visible = tbSizeCal.Visible = false;
                 btn_focus.Enabled = Btn_Size.Enabled = Btn_Color.Enabled = Btn_FF.Enabled = false;
                 Btn_Lv.Enabled = true;
+                xml.SaveSizeCalibrationValue(value);
             }
         }
 
         private void Btn_Lv_Click(object sender, EventArgs e)
         {
-            fixture.IntegratingSphereUp();
-            Thread.Sleep(1000);
-            fixture.RotateOn();
-            Thread.Sleep(1000);
-            CIE1931Value value = ca310Pipe.GetCa310Data();
-
-            Bitmap bitmap = m_colorimeter.GrabImage();
-            double[,,] rgb = ip.bmp2rgb(bitmap);
-
-
-            fixture.RotateOff();
-            Thread.Sleep(1000);
-            fixture.IntegratingSphereDown();
-            Thread.Sleep(1000);
-        }
-    }
-
-    public enum ColorPanel{
-        White,
-        Black,
-        Red,
-        Green,
-        Blue,
-    }
-
-    public class CIE1931Value
-    {
-        public double x { get; set; }
-        public double y { get; set; }
-        public double Y { get; set; }
-
-        public override string ToString()
-        {
-            return string.Format("([{0}, {1}], {2})", x, y, Y);
+            btn_focus.Enabled = Btn_Size.Enabled = Btn_Lv.Enabled = Btn_FF.Enabled = false;
+            Btn_Color.Enabled = true;
+            new Action(delegate() { LvCalibration(); }).BeginInvoke(null, null);
         }
 
-        public CIE1931Value Copy()
+        private void LvCalibration()
         {
-            CIE1931Value cie = new CIE1931Value();
-            cie.x = this.x;
-            cie.y = this.y;
-            cie.Y = this.Y;
-
-            return cie;
-        }
-    }
-
-    public class ColorimeterResult
-    {
-        private Bitmap m_bitmap;
-        private ColorPanel m_panel;
-        private imagingpipeline m_pipeline;
-
-        public double Luminance { get; private set; }
-        public double Uniformity5 { get; private set; }
-        public double Mura { get; private set; }
-        public CIE1931Value CIE1931xyY { get; set; }
-
-        public ColorimeterResult(Bitmap bitmap, ColorPanel panel)
-        {
-            this.m_bitmap = bitmap;
-            this.m_panel = panel;
-            m_pipeline = new imagingpipeline();
-            CIE1931xyY = new CIE1931Value();
-        }
-
-        public void Analysis()
-        {
-            if (m_bitmap != null)
+            try
             {
-                double[, ,] rgb = m_pipeline.bmp2rgb(m_bitmap);
-                double[, ,] XYZ = m_pipeline.rgb2xyz(rgb);
+                fixture.IntegratingSphereUp();
+                Thread.Sleep(1000);
+                fixture.RotateOn();
+                Thread.Sleep(1000);
+                CIE1931Value value = ca310Pipe.GetCa310Data();
+                fixture.RotateOff();
+                Thread.Sleep(1000);
 
-                switch (m_panel)
+                for (int i = 0; i < 10; i++)
                 {
-                    case ColorPanel.White:
-                    case ColorPanel.Black:
-                        this.Luminance = m_pipeline.getlv(XYZ);
-                        this.Uniformity5 = m_pipeline.getuniformity(XYZ);
-                        this.Mura = m_pipeline.getmura(XYZ);
+                    m_colorimeter.ExposureTime = 10 * (i + 1);
+                    Bitmap bitmap = m_colorimeter.GrabImage();
+                    double[] rgbMean = this.Mean(ip.bmp2rgb(bitmap));
+
+                    if (Math.Abs(rgbMean[0] - 220) < 3
+                        && Math.Abs(rgbMean[1] - 220) < 3
+                        && Math.Abs(rgbMean[2] - 220) < 3)
+                    {
+                        xml.SetWhiteExposure(m_colorimeter.ExposureTime);
                         break;
-                    case ColorPanel.Red:
-                    case ColorPanel.Green:
-                    case ColorPanel.Blue:
-                        {
-                            double[] xyY = m_pipeline.getxyY(XYZ);
-                            CIE1931xyY.x = xyY[0];
-                            CIE1931xyY.y = xyY[1];
-                            CIE1931xyY.Y = xyY[2];
-                        }
-                        break;
+                    }
                 }
+
+                fixture.IntegratingSphereDown();
+                Thread.Sleep(1000);
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
+            finally {
+                this.Invoke(new Action(delegate(){
+                    btn_focus.Enabled = Btn_Size.Enabled = Btn_Lv.Enabled = Btn_Color.Enabled = false;
+                    Btn_FF.Enabled = true;
+                }));
             }
         }
-    }
+
+        private double[] Mean(double[, ,] color)
+        {
+            double[] v = new double[3];
+            int count = v.GetLength(0) * v.GetLength(1);
+
+            for (int i = 0; i < v.GetLength(0); i++)
+            {
+                for (int j = 0; j < v.GetLength(1); j++)
+                {
+                    v[0] += color[i, j, 0];
+                    v[1] += color[i, j, 1];
+                    v[2] += color[i, j, 2];
+                }
+            }
+
+            v[0] /= count;
+            v[1] /= count;
+            v[2] /= count;
+
+            return v;
+        }
+    }   
 }
 
 

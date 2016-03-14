@@ -75,6 +75,12 @@ namespace Colorimeter_Config_GUI
                 XmlElement element = (XmlElement)nd;
                 testItem.TestName = element.Name;
 
+                if (!(element.Name.Equals("White") || element.Name.Equals("Black") || element.Name.Equals("Red")
+                    || element.Name.Equals("Green") || element.Name.Equals("Blue")))
+                {
+                    continue;
+                }
+
                 foreach (XmlNode subNode in element.ChildNodes)
                 {
                     XmlElement subElement = (XmlElement)subNode;
@@ -110,6 +116,12 @@ namespace Colorimeter_Config_GUI
                 TestItem testItem = allItems[index++];
                 XmlElement element = (XmlElement)nd;
 
+                if (!(element.Name.Equals("White") || element.Name.Equals("Black") || element.Name.Equals("Red")
+                    || element.Name.Equals("Green") || element.Name.Equals("Blue")))
+                {
+                    continue;
+                }
+
                 foreach (XmlNode subNode in element.ChildNodes)
                 {
                     XmlElement subElement = (XmlElement)subNode;
@@ -128,6 +140,59 @@ namespace Colorimeter_Config_GUI
                     }
                 }
             }
+            xmlDoc.Save(this.scriptName);
+        }
+
+        public void SaveSizeCalibrationValue(double value)
+        {
+            bool flag = false;
+            xmlDoc.Load(this.scriptName);
+            XmlNode node = xmlDoc.SelectSingleNode("Colorimeter");
+            XmlNodeList nodeList = node.ChildNodes;
+ 
+            foreach (XmlNode nd in nodeList)
+            {
+                XmlElement element = (XmlElement)nd;
+
+                if (element.Name.Equals("Calibration"))
+                {
+                    element.SetAttribute("Value", value.ToString());
+                    flag = true;
+                }
+            }
+
+            if (!flag) {
+                XmlNode nd = xmlDoc.CreateNode(XmlNodeType.Element, "Calibration", "");
+                ((XmlElement)nd).SetAttribute("Value", value.ToString());
+                node.AppendChild(nd);
+            }
+            xmlDoc.Save(this.scriptName);
+        }
+
+        public void SetWhiteExposure(float time)
+        {
+            xmlDoc.Load(this.scriptName);
+            XmlNode node = xmlDoc.SelectSingleNode("Colorimeter");
+            XmlNodeList nodeList = node.ChildNodes;
+
+            foreach (XmlNode nd in nodeList)
+            {
+                XmlElement element = (XmlElement)nd;
+
+                if (element.Name.Equals("White"))
+                {
+                    foreach (XmlNode sub in nd.ChildNodes)
+                    {
+                        XmlElement subElem = (XmlElement)sub;
+
+                        if (subElem.Name.Equals("ExposureTime"))
+                        {
+                            subElem.SetAttribute("Time", time.ToString());
+                        }
+                    }
+                }
+            }
+
             xmlDoc.Save(this.scriptName);
         }
     }

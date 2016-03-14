@@ -30,6 +30,7 @@ namespace Colorimeter_Config_GUI
             ip = new imagingpipeline();
             args = new DataChangeEventArgs();
             log = new testlog();
+            fixture = new Fixture("COM1");
             SerialNumber = "";
 
             if (!System.IO.Directory.Exists(IMAGE_SAVE_PATH))
@@ -45,9 +46,12 @@ namespace Colorimeter_Config_GUI
 
         private bool flagExit;
         private bool flagAutoMode;
+        private bool flagCa310Mode;
         private Colorimeter colorimeter;
         private XMLManage xml;
         private testlog log;
+        private Ca310Pipe ca310Pipe;
+        private Fixture fixture;
 
         //dut setup
         private DUT dut;
@@ -91,9 +95,68 @@ namespace Colorimeter_Config_GUI
             };
         }
 
+        private void InitCa310()
+        {
+            #region Init Ca310
+            if (flagCa310Mode)
+            {
+                if (ca310Pipe == null) {
+                    ca310Pipe = new Ca310Pipe(System.Windows.Forms.Application.StartupPath);
+                    args.StatusInfo = "Initilaze Ca310 device.";
+
+                    if (!ca310Pipe.Connect()) {
+                        args.StatusInfo = ca310Pipe.ErrorMessage;
+                    }
+                    else {
+                        args.StatusInfo = "Ca310 has Connected.";
+                        ca310Pipe.ResetZero();
+                    }
+                }
+            }
+            else {
+                if (ca310Pipe != null) {
+                    ca310Pipe.Disconnect();
+                    ca310Pipe = null;
+                }
+            }
+            #endregion
+        }
+
+        private void RunCa310Test()
+        {
+            if (flagCa310Mode)
+            {
+                Dictionary<string, CIE1931Value> items = new Dictionary<string, CIE1931Value>();
+                fixture.RotateOn();
+                Thread.Sleep(1000);
+
+                foreach (TestItem testItem in xml.Items)
+                {
+                    log.WriteUartLog(string.Format("Ca310Mode - Set panel to {0}\r\n", testItem.TestName));
+
+                    if (dut.ChangePanelColor(testItem.TestName))
+                    {
+                        Thread.Sleep(3000);
+                        CIE1931Value cie = ca310Pipe.GetCa310Data();
+                        log.WriteUartLog(string.Format("Ca310Mode - CIE1931xyY: {0}\r\n", cie.ToString()));
+                        items.Add(testItem.TestName, cie.Copy());
+                    }
+                    else
+                    {
+                        args.StatusInfo = string.Format("Can't set panel color to {0}\r\n", testItem.TestName);
+                        break;
+                    }
+                }
+                fixture.RotateOff();
+                Thread.Sleep(1000);
+                log.WriteCa310Log(SerialNumber, items);
+            }
+        }
+
         private void RunSequence()
         {
             do {
+                this.InitCa310();
                 this.RunSignalSequence();
             }
             while (!flagExit);
@@ -133,6 +196,9 @@ namespace Colorimeter_Config_GUI
                 args.StatusInfo = "Testing...";
                 dataChange.Invoke(this, args);
 
+                // run Ca310 if the mode is Ca310Mode
+                this.RunCa310Test();
+                
                 DateTime startTime = DateTime.Now, stopTime;
                 List<IntPoint> ptCorners = new List<IntPoint>();
                 TestResult = true;
@@ -152,9 +218,8 @@ namespace Colorimeter_Config_GUI
                         //this.Invoke(new Action<Bitmap, PictureBox>(this.refreshtestimage), bitmap, picturebox_test);
                     }
                     else {
-                        string str = string.Format("Can't set panel color to {0}\r\n", testItem.TestName);
-                        //sslStatus.Text = str;
-                        //pf = false;
+                        args.StatusInfo = string.Format("Can't set panel color to {0}\r\n", testItem.TestName);
+                        dataChange.Invoke(this, args);
                         break;
                     }
                 }
@@ -214,6 +279,7 @@ namespace Colorimeter_Config_GUI
             // anaylse
             ColorimeterResult colorimeterRst = new ColorimeterResult(cropimg, panel);
             colorimeterRst.Analysis();
+            this.DrawZone(cropimg, panel);
 
             switch (panel) { 
                 case ColorPanel.White:
@@ -240,25 +306,39 @@ namespace Colorimeter_Config_GUI
             return flag;
         }
 
-        //private void DrawZone(Bitmap binImage, ColorPanel panel)
-        //{
-        //    zoneresult zr = new zoneresult();
-        //    Graphics g = Graphics.FromImage(binImage);
+        private Graphics ZoneImage(Graphics g, List<IntPoint> cornerPoints)
+        {
+            List<System.Drawing.Point> Points = new List<System.Drawing.Point>();
+            foreach (var point in cornerPoints)
+            {
+                Points.Add(new System.Drawing.Point(point.X, point.Y));
+            }
+            g.DrawPolygon(new Pen(Color.Red, 1.0f), Points.ToArray());
+            return g;
+        }
 
-        //    for (int i = 1; i < 6; i++)
-        //    {
-        //        // get corner coordinates
-        //        flagPoints = zr.zonecorners(i, zonesize, XYZ);
-        //        // zone image
-        //        g = zoneingimage(g, flagPoints);
-        //        binImage.Save(tempdirectory + i.ToString() + "_" + panel.ToString() + "_bin_zone.bmp");
-        //        flagPoints.Clear();
-        //    }
+        private void DrawZone(Bitmap binImage, ColorPanel panel)
+        {
+            string imageName = string.Format("{0}{1}{2:yyyyMMddHHmmss}_{3}", IMAGE_SAVE_PATH, SerialNumber, DateTime.Now, panel.ToString());
+            zoneresult zr = new zoneresult();
+            Graphics g = Graphics.FromImage(binImage);
 
-        //    binImage.Save(tempdirectory + tbox_sn.Text + str_DateTime + "_" + panel.ToString() + "_bin_zone1-5.bmp");
-        //    refreshtestimage(binImage, picturebox_test);
-        //    g.Dispose();
-        //}
+            for (int i = 1; i < 6; i++)
+            {
+                // get corner coordinates
+                List<IntPoint> flagPoints = zr.zonecorners(i, 10, ip.bmp2rgb(binImage));
+                // zone image
+                g = ZoneImage(g, flagPoints);
+                binImage.Save(IMAGE_SAVE_PATH + i.ToString() + "_" + panel.ToString() + "_bin_zone.bmp");
+                flagPoints.Clear();
+            }
+
+            binImage.Save(imageName + "_bin_zone1-5.bmp");
+            //refreshtestimage(binImage, picturebox_test);
+            args.Image = binImage;
+            dataChange.Invoke(this, args);
+            g.Dispose();
+        }
 
         private Bitmap CroppingImage(Bitmap srcimg, List<IntPoint> cornerPoints)
         {
@@ -273,6 +353,64 @@ namespace Colorimeter_Config_GUI
             srcimg.Save(IMAGE_SAVE_PATH + SerialNumber + DateTime.Now.ToString("yyyyMMddHHmmss") + "_cropping.bmp");
             g.Dispose();
             return srcimg;
+        }
+
+        private void LvCalibration(Action callBack)
+        {
+            try
+            {
+                fixture.IntegratingSphereUp();
+                Thread.Sleep(1000);
+                fixture.RotateOn();
+                Thread.Sleep(1000);
+                CIE1931Value value = ca310Pipe.GetCa310Data();
+                fixture.RotateOff();
+                Thread.Sleep(1000);
+
+                for (int i = 0; i < 10; i++)
+                {
+                    colorimeter.ExposureTime = 10 * (i + 1);
+                    Bitmap bitmap = colorimeter.GrabImage();
+                    double[] rgbMean = this.Mean(ip.bmp2rgb(bitmap));
+
+                    if (Math.Abs(rgbMean[0] - 220) < 3
+                        && Math.Abs(rgbMean[1] - 220) < 3
+                        && Math.Abs(rgbMean[2] - 220) < 3)
+                    {
+                        xml.SetWhiteExposure(colorimeter.ExposureTime);
+                        break;
+                    }
+                }
+
+                fixture.IntegratingSphereDown();
+                Thread.Sleep(1000);
+            }
+            catch (Exception ex)
+            {
+              //  MessageBox.Show(ex.Message);
+            }
+        }
+
+        private double[] Mean(double[, ,] color)
+        {
+            double[] v = new double[3];
+            int count = v.GetLength(0) * v.GetLength(1);
+
+            for (int i = 0; i < v.GetLength(0); i++)
+            {
+                for (int j = 0; j < v.GetLength(1); j++)
+                {
+                    v[0] += color[i, j, 0];
+                    v[1] += color[i, j, 1];
+                    v[2] += color[i, j, 2];
+                }
+            }
+
+            v[0] /= count;
+            v[1] /= count;
+            v[2] /= count;
+
+            return v;
         }
 
         private bool DisplayTest(List<IntPoint> displaycornerPoints, Bitmap bitmap, ColorPanel panelType)

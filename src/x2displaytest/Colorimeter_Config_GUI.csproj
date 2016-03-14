@@ -241,6 +241,7 @@
   <ItemGroup>
     <Compile Include="AdbPipe.cs" />
     <Compile Include="colorimeter.cs" />
+    <Compile Include="ColorimeterResult.cs" />
     <Compile Include="DUTclass.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="FeatureParam.cs">
