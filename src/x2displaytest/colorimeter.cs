@@ -147,7 +147,10 @@ namespace Colorimeter_Config_GUI
             bool flag = false;
             CameraSelectionDialog camSlnDlg = new CameraSelectionDialog();
 
-            if (camSlnDlg.ShowModal())
+            camSlnDlg.Show();
+            camSlnDlg.Hide();
+
+            //if (camSlnDlg.ShowModal())
             {
                 try {
                     ManagedPGRGuid[] selectedGuids = camSlnDlg.GetSelectedCameraGuids();
@@ -318,6 +321,7 @@ namespace Colorimeter_Config_GUI
             // Disconnect the camera
             cam.Disconnect();
         }
+
         /*
         static void run(string[] args)
         {

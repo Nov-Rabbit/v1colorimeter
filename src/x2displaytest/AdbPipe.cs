@@ -18,48 +18,84 @@ namespace Colorimeter_Config_GUI
             process.StartInfo.RedirectStandardInput = true;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.CreateNoWindow = true;            
 
             if (process.Start())
             {
-                string str = null;
-                while ("" != (str = process.StandardOutput.ReadLine()))
-                {
-                    Console.WriteLine(str);
-                }
-
+                this.ReadToEnd();
                 process.StandardInput.AutoFlush = true;
-                str = this.GetPipeData(string.Format("cd {0}", adbStartPath));
-                Console.WriteLine(str);
+                string str = this.GetPipeData(string.Format("cd {0}", adbStartPath));
+                Debug.WriteLine(str);
+                str = this.GetPipeData("adb root");
+                Debug.WriteLine(str);
             }
         }
 
         private Process process;
+        private bool isHasDUT;
         private readonly string adbStartPath;
 
-        private string GetPipeData(string command)
+        public string ReadToEnd()
         {
             StringBuilder result = new StringBuilder();
             string line = null;
 
-            if (string.IsNullOrEmpty(command))
-            {
+            do {
+                line = process.StandardOutput.ReadLine();
+               
+                if (!string.IsNullOrEmpty(line)) {
+                    result.Append(line);
+                }
+                System.Threading.Thread.Sleep(20);
+            }
+            while (!string.IsNullOrEmpty(line));
+
+            return result.ToString();
+        }
+
+        private string GetPipeData(string command, int timeout = 0, string readTo = "")
+        {
+            string line = null;
+            StringBuilder result = new StringBuilder();            
+
+            if (string.IsNullOrEmpty(command)) {
                 return result.ToString();
             }
 
+            process.StandardOutput.DiscardBufferedData();
             process.StandardInput.WriteLine(command);
-            System.Threading.Thread.Sleep(50);
+            Console.WriteLine("send command: {0}", command);
 
-            do {
-                line = process.StandardOutput.ReadLine();
-
-                if (!string.IsNullOrEmpty(line))
-                {
-                    result.Append(line);
-                }
+            if (timeout <= 0) {
+                System.Threading.Thread.Sleep(100);
+                result.Append(this.ReadToEnd());
             }
-            while (!string.IsNullOrEmpty(line));
-            
+            else {
+                DateTime timeNow = DateTime.Now;
+
+                do {
+                    if (DateTime.Now.Subtract(timeNow).TotalMilliseconds > timeout) {
+                        break;
+                    }
+
+                    line = process.StandardOutput.ReadLine();
+                    Console.WriteLine(line);
+
+                    if (!string.IsNullOrEmpty(line)) {
+                        result.Append(line);
+                    }
+
+                    if (!string.IsNullOrEmpty(readTo)) {
+                        if (line.LastIndexOf(readTo) > 0)
+                        {
+                            break;
+                        }
+                    }
+                    System.Threading.Thread.Sleep(20);
+                }
+                while (true);                
+            }
+
             return result.ToString();
         }
 
@@ -67,22 +103,54 @@ namespace Colorimeter_Config_GUI
         {
             bool flag = false;
             string result = null;
-            result = this.GetPipeData("adb devices");
 
-            Regex regex = new Regex(@"\d{8}");
+            if (!isHasDUT) {
+                this.ReadToEnd();
+                result = this.GetPipeData("adb devices");
+                Regex regex = new Regex(@"\d{8}");
 
-            if (regex.IsMatch(result))
-            {
-                Console.WriteLine("Device ID: {0}", regex.Match(result).Value);
-                result = this.GetPipeData("adb root");
-
-                Console.WriteLine(result);
-                result = this.GetPipeData(string.Format("adb shell mmi -c lcd -d \"{0}\"", colorName));
-                Console.WriteLine(result);
+                if (!regex.IsMatch(result))
+                {
+                    Debug.WriteLine("Can't find device");
+                    return false;
+                }
             }
-            else
+
+            result = this.GetPipeData(string.Format("adb shell \"mmi -c lcd -d {0}\"", colorName), 70000, "edited");
+
+            if (result.Contains("edited"))
             {
-                Console.WriteLine("Can't find device");
+                flag = true;
+            }
+           // process.StandardInput.WriteLine(string.Format("adb shell \"mmi -c lcd -d {0}\"", colorName));
+
+           // flag = true;
+            return flag;
+        }
+
+        public bool SetRGBValue(int r, int g, int b)
+        {
+            bool flag = false;
+            string result = null;
+
+            if (!isHasDUT)
+            {
+                this.ReadToEnd();
+                result = this.GetPipeData("adb devices");
+                Regex regex = new Regex(@"\d{8}");
+
+                if (!regex.IsMatch(result))
+                {
+                    Debug.WriteLine("Can't find device");
+                    return false;
+                }
+            }
+
+            result = this.GetPipeData(string.Format("adb shell mmi -c lcd -s {0:000}{1:000}{2:000}", r, g, b), 70000, "edited");
+
+            if (result.Contains("edited"))
+            {
+                flag = true;
             }
 
             return flag;
@@ -116,20 +184,33 @@ namespace Colorimeter_Config_GUI
         public string GetDeviceID()
         {
             string result = null;
-            result = this.GetPipeData("adb devices");
+
+            for (int i = 0; i < 3; i++)
+            {
+                System.Threading.Thread.Sleep(100);
+                process.StandardOutput.DiscardBufferedData();
+                result = this.GetPipeData("adb devices");                
+            }            
 
             Regex regex = new Regex(@"\d{8}");
 
             if (regex.IsMatch(result))
             {
                 result = regex.Match(result).Value;
+                isHasDUT = true;
             }
             else
             {
                 result = null;
+                isHasDUT = false;
             }
 
             return result;
+        }
+
+        public void ExitAdbPipe()
+        {
+            process.Kill();
         }
     }
 }

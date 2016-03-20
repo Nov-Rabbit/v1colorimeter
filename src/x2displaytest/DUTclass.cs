@@ -15,7 +15,7 @@ using Colorimeter_Config_GUI;
 
 namespace DUTclass
 {
-    public abstract class DUT
+    public abstract class DUT : IDisposable
     {
         public DUT()
         {
@@ -82,16 +82,18 @@ namespace DUTclass
         public abstract int bin_width { get; }
         public abstract int bin_height { get; }
 
+        public string DeviceID { get; private set; }
+
         public virtual bool checkDUT()
         {
             if (pipe == null) {
                 pipe = new AdbPipe();
             }
 
-            return (pipe.GetDeviceID() != null);
+            return ((DeviceID=pipe.GetDeviceID()) != null);
         }
 
-        public virtual bool setpanelcolor(string panelColorName)
+        public virtual bool ChangePanelColor(string panelColorName)
         {
             bool flag = false;
 
@@ -105,6 +107,7 @@ namespace DUTclass
             if (pipe == null) {
                 pipe = new AdbPipe();
             }
+            pipe.ReadToEnd();
 
             if (name.Equals("white")) {
                 flag = pipe.SetWhiteMode();
@@ -118,8 +121,31 @@ namespace DUTclass
                 flag = pipe.SetBlueMode();
             }
 
-            //MessageBox.Show("Send CMD to Set " + panelColorName + " State");
             return flag;
+        }
+
+        public virtual bool ChangePanelColor(int r, int g, int b)
+        {
+            bool flag = false;
+
+            if (r < 0) { r = 0; }
+            else if (r > 255) { r = 255; }
+            if (g < 0) { g = 0; }
+            else if (g > 255) { g = 255; }
+            if (b < 0) { b = 0; }
+            else if (b > 255) { b = 255; }
+
+            flag = pipe.SetRGBValue(r, g, b);
+
+            return flag;
+        }
+
+        public void Dispose()
+        {
+            if (pipe != null)
+            {
+                pipe.ExitAdbPipe();
+            }
         }
     }
 

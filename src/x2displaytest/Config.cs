@@ -9,6 +9,15 @@ namespace Colorimeter_Config_GUI
 {
     public class Config
     {
+
+        
+
+
+
+
+
+
+
         public Config(string path)
         {
             this.path = path;

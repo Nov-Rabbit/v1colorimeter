@@ -30,14 +30,14 @@
         {
             this.cbSFC = new System.Windows.Forms.CheckBox();
             this.cbSN = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnHolderIn = new System.Windows.Forms.Button();
+            this.btnIntergeDown = new System.Windows.Forms.Button();
             this.btnIntergeUp = new System.Windows.Forms.Button();
             this.btnDown = new System.Windows.Forms.Button();
             this.btnUp = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.btnHolderOut = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.nudStep = new System.Windows.Forms.NumericUpDown();
             this.lbLocation = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -48,7 +48,11 @@
             this.btnBlack = new System.Windows.Forms.Button();
             this.btnWhite = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.btnRotateOn = new System.Windows.Forms.Button();
+            this.btnRotateOff = new System.Windows.Forms.Button();
+            this.btnFanOn = new System.Windows.Forms.Button();
+            this.btnFanOff = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStep)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -69,98 +73,114 @@
             // 
             this.cbSN.AutoSize = true;
             this.cbSN.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cbSN.Location = new System.Drawing.Point(266, 56);
+            this.cbSN.Location = new System.Drawing.Point(300, 56);
             this.cbSN.Name = "cbSN";
             this.cbSN.Size = new System.Drawing.Size(171, 20);
             this.cbSN.TabIndex = 1;
             this.cbSN.Text = "Scan serial number";
             this.cbSN.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnHolderIn
             // 
-            this.button1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(265, 135);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(57, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "in";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnHolderIn.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnHolderIn.Location = new System.Drawing.Point(300, 106);
+            this.btnHolderIn.Name = "btnHolderIn";
+            this.btnHolderIn.Size = new System.Drawing.Size(113, 34);
+            this.btnHolderIn.TabIndex = 6;
+            this.btnHolderIn.Text = "holder in";
+            this.btnHolderIn.UseVisualStyleBackColor = true;
+            this.btnHolderIn.Click += new System.EventHandler(this.btnHolderIn_Click);
             // 
-            // button2
+            // btnIntergeDown
             // 
-            this.button2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button2.Location = new System.Drawing.Point(320, 175);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(58, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "down";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnIntergeDown.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnIntergeDown.Location = new System.Drawing.Point(413, 141);
+            this.btnIntergeDown.Name = "btnIntergeDown";
+            this.btnIntergeDown.Size = new System.Drawing.Size(113, 34);
+            this.btnIntergeDown.TabIndex = 7;
+            this.btnIntergeDown.Text = "Interge down";
+            this.btnIntergeDown.UseVisualStyleBackColor = true;
+            this.btnIntergeDown.Click += new System.EventHandler(this.btnIntergeDown_Click);
             // 
             // btnIntergeUp
             // 
             this.btnIntergeUp.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnIntergeUp.Location = new System.Drawing.Point(320, 95);
+            this.btnIntergeUp.Location = new System.Drawing.Point(413, 106);
             this.btnIntergeUp.Name = "btnIntergeUp";
-            this.btnIntergeUp.Size = new System.Drawing.Size(58, 23);
+            this.btnIntergeUp.Size = new System.Drawing.Size(113, 34);
             this.btnIntergeUp.TabIndex = 5;
-            this.btnIntergeUp.Text = "up";
+            this.btnIntergeUp.Text = "Interge up";
             this.btnIntergeUp.UseVisualStyleBackColor = true;
+            this.btnIntergeUp.Click += new System.EventHandler(this.btnIntergeUp_Click);
             // 
             // btnDown
             // 
             this.btnDown.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnDown.Location = new System.Drawing.Point(149, 137);
+            this.btnDown.Location = new System.Drawing.Point(166, 173);
             this.btnDown.Name = "btnDown";
-            this.btnDown.Size = new System.Drawing.Size(48, 25);
+            this.btnDown.Size = new System.Drawing.Size(113, 34);
             this.btnDown.TabIndex = 4;
-            this.btnDown.Text = "down";
+            this.btnDown.Text = "motor down";
             this.btnDown.UseVisualStyleBackColor = true;
+            this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
             // 
             // btnUp
             // 
             this.btnUp.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnUp.Location = new System.Drawing.Point(149, 111);
+            this.btnUp.Location = new System.Drawing.Point(166, 139);
             this.btnUp.Name = "btnUp";
-            this.btnUp.Size = new System.Drawing.Size(48, 23);
+            this.btnUp.Size = new System.Drawing.Size(113, 34);
             this.btnUp.TabIndex = 3;
-            this.btnUp.Text = "up";
+            this.btnUp.Text = "motor up";
             this.btnUp.UseVisualStyleBackColor = true;
+            this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
             // 
-            // button6
+            // btnHolderOut
             // 
-            this.button6.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button6.Location = new System.Drawing.Point(379, 135);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(56, 23);
-            this.button6.TabIndex = 8;
-            this.button6.Text = "out";
-            this.button6.UseVisualStyleBackColor = true;
+            this.btnHolderOut.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnHolderOut.Location = new System.Drawing.Point(300, 141);
+            this.btnHolderOut.Name = "btnHolderOut";
+            this.btnHolderOut.Size = new System.Drawing.Size(113, 34);
+            this.btnHolderOut.TabIndex = 8;
+            this.btnHolderOut.Text = "holder out";
+            this.btnHolderOut.UseVisualStyleBackColor = true;
+            this.btnHolderOut.Click += new System.EventHandler(this.btnHolderOut_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(47, 127);
+            this.label1.Location = new System.Drawing.Point(29, 167);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(48, 16);
             this.label1.TabIndex = 9;
             this.label1.Text = "step:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // numericUpDown1
+            // nudStep
             // 
-            this.numericUpDown1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.numericUpDown1.Location = new System.Drawing.Point(92, 125);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(50, 26);
-            this.numericUpDown1.TabIndex = 2;
+            this.nudStep.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.nudStep.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.nudStep.Location = new System.Drawing.Point(80, 163);
+            this.nudStep.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudStep.Name = "nudStep";
+            this.nudStep.Size = new System.Drawing.Size(80, 26);
+            this.nudStep.TabIndex = 2;
             // 
             // lbLocation
             // 
             this.lbLocation.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lbLocation.Location = new System.Drawing.Point(47, 163);
+            this.lbLocation.Location = new System.Drawing.Point(29, 216);
             this.lbLocation.Name = "lbLocation";
-            this.lbLocation.Size = new System.Drawing.Size(150, 24);
+            this.lbLocation.Size = new System.Drawing.Size(194, 24);
             this.lbLocation.TabIndex = 11;
             this.lbLocation.Text = "position: 0";
             this.lbLocation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -185,7 +205,7 @@
             this.tabPage1.Controls.Add(this.btnWhite);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(545, 324);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "colorimeter";
@@ -250,24 +270,70 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnFanOff);
+            this.tabPage2.Controls.Add(this.btnFanOn);
+            this.tabPage2.Controls.Add(this.btnRotateOff);
+            this.tabPage2.Controls.Add(this.btnRotateOn);
             this.tabPage2.Controls.Add(this.btnIntergeUp);
             this.tabPage2.Controls.Add(this.lbLocation);
             this.tabPage2.Controls.Add(this.cbSFC);
-            this.tabPage2.Controls.Add(this.numericUpDown1);
+            this.tabPage2.Controls.Add(this.nudStep);
             this.tabPage2.Controls.Add(this.cbSN);
             this.tabPage2.Controls.Add(this.label1);
-            this.tabPage2.Controls.Add(this.button1);
-            this.tabPage2.Controls.Add(this.button6);
-            this.tabPage2.Controls.Add(this.button2);
+            this.tabPage2.Controls.Add(this.btnHolderIn);
+            this.tabPage2.Controls.Add(this.btnHolderOut);
+            this.tabPage2.Controls.Add(this.btnIntergeDown);
             this.tabPage2.Controls.Add(this.btnUp);
             this.tabPage2.Controls.Add(this.btnDown);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(545, 324);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "fixture";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnRotateOn
+            // 
+            this.btnRotateOn.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRotateOn.Location = new System.Drawing.Point(300, 176);
+            this.btnRotateOn.Name = "btnRotateOn";
+            this.btnRotateOn.Size = new System.Drawing.Size(113, 34);
+            this.btnRotateOn.TabIndex = 12;
+            this.btnRotateOn.Text = "rotate on";
+            this.btnRotateOn.UseVisualStyleBackColor = true;
+            this.btnRotateOn.Click += new System.EventHandler(this.btnRotateOn_Click);
+            // 
+            // btnRotateOff
+            // 
+            this.btnRotateOff.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnRotateOff.Location = new System.Drawing.Point(300, 211);
+            this.btnRotateOff.Name = "btnRotateOff";
+            this.btnRotateOff.Size = new System.Drawing.Size(113, 34);
+            this.btnRotateOff.TabIndex = 12;
+            this.btnRotateOff.Text = "rotate off";
+            this.btnRotateOff.UseVisualStyleBackColor = true;
+            this.btnRotateOff.Click += new System.EventHandler(this.btnRotateOff_Click);
+            // 
+            // btnFanOn
+            // 
+            this.btnFanOn.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnFanOn.Location = new System.Drawing.Point(413, 176);
+            this.btnFanOn.Name = "btnFanOn";
+            this.btnFanOn.Size = new System.Drawing.Size(113, 34);
+            this.btnFanOn.TabIndex = 13;
+            this.btnFanOn.Text = "fan on";
+            this.btnFanOn.UseVisualStyleBackColor = true;
+            // 
+            // btnFanOff
+            // 
+            this.btnFanOff.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btnFanOff.Location = new System.Drawing.Point(413, 211);
+            this.btnFanOff.Name = "btnFanOff";
+            this.btnFanOff.Size = new System.Drawing.Size(113, 34);
+            this.btnFanOff.TabIndex = 13;
+            this.btnFanOff.Text = "fan off";
+            this.btnFanOff.UseVisualStyleBackColor = true;
             // 
             // FrmSetting
             // 
@@ -285,7 +351,7 @@
             this.Text = "setting";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmSetting_FormClosing);
             this.Load += new System.EventHandler(this.FrmSetting_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudStep)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -298,14 +364,14 @@
 
         private System.Windows.Forms.CheckBox cbSFC;
         private System.Windows.Forms.CheckBox cbSN;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnHolderIn;
+        private System.Windows.Forms.Button btnIntergeDown;
         private System.Windows.Forms.Button btnIntergeUp;
         private System.Windows.Forms.Button btnDown;
         private System.Windows.Forms.Button btnUp;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button btnHolderOut;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown nudStep;
         private System.Windows.Forms.Label lbLocation;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
@@ -316,5 +382,9 @@
         private System.Windows.Forms.Button btnBlack;
         private System.Windows.Forms.Button btnWhite;
         private System.Windows.Forms.Panel pnCloth;
+        private System.Windows.Forms.Button btnRotateOff;
+        private System.Windows.Forms.Button btnRotateOn;
+        private System.Windows.Forms.Button btnFanOff;
+        private System.Windows.Forms.Button btnFanOn;
     }
 }

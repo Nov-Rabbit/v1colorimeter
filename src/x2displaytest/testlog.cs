@@ -8,15 +8,33 @@ namespace Colorimeter_Config_GUI
 {
     class testlog
     {
+        public testlog()
+        {
+            if (!Directory.Exists(strPath_SummaryLog))
+            {
+                Directory.CreateDirectory(strPath_SummaryLog);
+            }
+
+            if (!Directory.Exists(strPath_UnitLog))
+            {
+                Directory.CreateDirectory(strPath_UnitLog);
+            }
+
+            if (!Directory.Exists(strCa310LogPath))
+            {
+                Directory.CreateDirectory(strCa310LogPath);
+            }
+        }
+ 
         // save the log to local for summary and detail information
         string strPath_SummaryLog = "C:\\vault\\LocalLog\\";
         string strPath_UnitLog = "C:\\vault\\LocalLog\\UnitSpecialLog\\";
         string strName_SummaryLog = "J1J2_LCD Uniformity";
-        string strHead_SummaryLog = "SerialNumber,TestStatus,Fail List Item,Start Time,Stop Time";
+        string strHead_SummaryLog = "SerialNumber,Operator,TestStatus,Fail List Item,Start Time,Stop Time";
         string strValue_SummaryLog = "";
-        string strUpperLimit_SummaryLog = "UpperLimit,,,,";
-        string strLowerLimit_SummaryLog = "LowerLimit,,,,";
-        string strUnits_SummaryLog = "Units,,,,";
+        string strUpperLimit_SummaryLog = "UpperLimit,,,,,";
+        string strLowerLimit_SummaryLog = "LowerLimit,,,,,";
+        string strUnits_SummaryLog = "Units,,,,,";
         string strUsingLogName = "";
         string str_FailList = "";
 
@@ -30,11 +48,149 @@ namespace Colorimeter_Config_GUI
         string str_StartTestTime;
         string str_StopTestTime;
 
+        private string strCa310LogPath = @"C:\vault\LocalLog\Ca310Log\";
+        private StringBuilder uartData;
+        private string sn;
+
+        public string SerialNumber
+        {
+            get {
+                return sn;
+            }
+            set {
+                sn = value;
+            }
+        }
+
+        private void InitCsvTitle(string fullFilePath, List<TestItem> allItems)
+        {
+            if (!File.Exists(fullFilePath))
+            {
+                foreach (TestItem testItem in allItems)
+                {
+                    foreach (TestNode node in testItem.SubNodes)
+                    {
+                        strHead_SummaryLog += "," + node.NodeName;
+                        strUpperLimit_SummaryLog += "," + node.Upper;
+                        strLowerLimit_SummaryLog += "," + node.Lower;
+                        strUnits_SummaryLog += "," + node.Unit;
+                    }
+                }
+
+                using (StreamWriter wf = new StreamWriter(File.Create(fullFilePath)))
+                {
+                    wf.WriteLine(strHead_SummaryLog);
+                    wf.WriteLine(strUpperLimit_SummaryLog);
+                    wf.WriteLine(strLowerLimit_SummaryLog);
+                    wf.WriteLine(strUnits_SummaryLog);
+                    wf.Close();
+                }
+            }
+        }
+
+        public void WriteCsv(string sn, DateTime startTime, DateTime stopTime, List<TestItem> allItems)
+        {
+            string csvFileName = "X2DisplayTest_" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv";
+            string fullFilePath = Path.Combine(strPath_SummaryLog, csvFileName);
+            bool flagResult = true;
+            string failItems = "";
+
+            this.InitCsvTitle(fullFilePath, allItems);
+
+            StringBuilder nodedata = new StringBuilder();
+            StringBuilder data = new StringBuilder();
+
+            if (string.IsNullOrEmpty(sn)) {
+                data.Append("xxxxxxxxxxxxxxxx");
+            }
+            else {
+                data.Append(sn);
+            }            
+
+            foreach (TestItem item in allItems)
+            {
+                foreach (TestNode node in item.SubNodes)
+                {
+                    if (!(flagResult &= node.Run()))
+                    {
+                        failItems += node.NodeName + ";";
+                    }
+                    nodedata.AppendFormat("{0},", node.Value);
+                }
+            }
+            
+            data.AppendFormat(",adminstator,{0},{1},{2:yyyy-MM-dd HH:mm:ss},{3:yyyy-MM-dd HH:mm:ss},",
+                (flagResult ? "PASS" : "FAIL"), failItems, startTime, stopTime);
+            data.Append(nodedata.ToString());
+            data.AppendLine();
+
+            using (StreamWriter sw = new StreamWriter(fullFilePath, true))
+            {
+                sw.Write(data.ToString());
+                sw.Flush();
+                sw.Close();
+            }
+        }
+
+        public void WriteUartLog(string data)
+        {
+            if (uartData == null)
+            {
+                uartData = new StringBuilder();
+            }
+
+            uartData.AppendFormat("[{0:yyyy-MM-dd HH:mm:ss}]: {1}\n", DateTime.Now, data);
+        }
+
+        public void UartFlush()
+        {
+            string fileName = string.Format("{0}_{1:yyyy-MM-dd_HHmmss}.txt", sn, DateTime.Now);
+
+            using (StreamWriter sw = new StreamWriter(Path.Combine(strPath_UnitLog, fileName)))
+            {
+                sw.WriteLine(uartData.ToString());
+                sw.Flush();
+                sw.Close();
+            }
+        }
+
+        public void WriteCa310Log(string sn, Dictionary<string, CIE1931Value> items)
+        {
+            string csvFileName = "X2DisplayTest_Ca310_" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv";
+            string fullFilePath = Path.Combine(strCa310LogPath, csvFileName);
+
+            if (!File.Exists(fullFilePath))
+            {
+                FileStream stream = File.Create(fullFilePath);
+                stream.Close();
+            }
+
+            StringBuilder sbStr = new StringBuilder();
+
+            foreach (string key in items.Keys)
+            {
+                CIE1931Value cie = items[key];
+                sbStr.AppendFormat("{0},{1},{2},{3}\r\n", key, cie.x, cie.y, cie.Y);
+            }
+
+            using (StreamWriter sw = new StreamWriter(fullFilePath, true))
+            {
+                sw.WriteLine(string.Format("{0},x,y,Y", sn));
+                sw.WriteLine(sbStr.ToString());
+                sw.Flush();
+                sw.Close();
+            }
+        }
 
         public void writecsv(string dir, string filename, double[,] matrix)
         {
-            Directory.CreateDirectory(dir);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+            
             StreamWriter fileLV = File.AppendText(filename);
+
             int rowNum = matrix.GetLength(0);
             int columnNum = matrix.GetLength(1);
             for (int i = 0; i < rowNum; i++)
@@ -59,7 +215,8 @@ namespace Colorimeter_Config_GUI
 
         }
 
-        private void AddLocalAndPDCALog(string str_ItemName, string str_TestValue, string str_Result, string str_UpperLimit, string str_LowerLimit, string str_Units)
+        public void AddLocalAndPDCALog(string str_ItemName, string str_TestValue, 
+            string str_Result, string str_UpperLimit, string str_LowerLimit, string str_Units)
         {
             string str_UpperLimit_Tmp = str_UpperLimit;
             string str_LowerLimit_Tmp = str_LowerLimit;
@@ -109,7 +266,7 @@ namespace Colorimeter_Config_GUI
         }
 
         ///
-        private void CheckLocalLogForOneDay()
+        public void CheckLocalLogForOneDay()
         {
             if (bol_IsCheckOneDay)
             {
@@ -173,7 +330,7 @@ namespace Colorimeter_Config_GUI
         }
 
 
-        private void FinishLocalLog()
+        public void FinishLocalLog()
         {
             DateTime testTime = DateTime.Now;
             //Str_DateTime = string.Format("{0:yyyyMMdd}" + "_" + "{0:HHmmss}", testTime, testTime);

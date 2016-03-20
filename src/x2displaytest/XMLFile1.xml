@@ -1,1 +1,123 @@
-﻿<?xml version="1.0" encoding="utf-8" ?> 
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Colorimeter>
+  <White Number="luminance">
+    <TestName>white_luminance</TestName>
+    <ExposureTime>10</ExposureTime>
+    <Upper>500</Upper>
+    <Lower>100</Lower>
+    <Unit>LV</Unit>
+    <Value>0</Value>
+  </White>
+  <White Number="uniformity5">
+    <TestName>white_uniformity5</TestName>
+    <ExposureTime>10</ExposureTime>
+    <Upper>100</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </White>
+  <White Number="mura">
+    <TestName>white_mura</TestName>
+    <ExposureTime>10</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </White>
+  <Black Number="luminance">
+    <TestName>black_luminance</TestName>
+    <ExposureTime>50</ExposureTime>
+    <Upper>500</Upper>
+    <Lower>100</Lower>
+    <Unit>LV</Unit>
+    <Value>0</Value>
+  </Black>
+  <Black Number="uniformity5">
+    <TestName>black_uniformity5</TestName>
+    <ExposureTime>50</ExposureTime>
+    <Upper>100</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Black>
+  <Black Number="mura">
+    <TestName>black_mura</TestName>
+    <ExposureTime>50</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Black>
+  <Red Number="CIE1931xyY.x">
+    <TestName>CIE1931xyY_x</TestName>
+    <ExposureTime>20</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Red>
+  <Red Number="CIE1931xyY.y">
+    <TestName>CIE1931xyY_y</TestName>
+    <ExposureTime>20</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Red>
+  <Red Number="CIE1931xyY.Y">
+    <TestName>CIE1931xyY_Y</TestName>
+    <ExposureTime>20</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Red>
+  <Green Number="CIE1931xyY.x">
+    <TestName>CIE1931xyY_x</TestName>
+    <ExposureTime>20</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Green>
+  <Green Number="CIE1931xyY.y">
+    <TestName>CIE1931xyY_y</TestName>
+    <ExposureTime>20</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Green>
+  <Green Number="CIE1931xyY.Y">
+    <TestName>CIE1931xyY_Y</TestName>
+    <ExposureTime>20</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Green>
+  <Blue Number="CIE1931xyY.x">
+    <TestName>CIE1931xyY_x</TestName>
+    <ExposureTime>20</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Blue>
+  <Blue Number="CIE1931xyY.y">
+    <TestName>CIE1931xyY_y</TestName>
+    <ExposureTime>20</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Blue>
+  <Blue Number="CIE1931xyY.Y">
+    <TestName>CIE1931xyY_Y</TestName>
+    <ExposureTime>20</ExposureTime>
+    <Upper>5</Upper>
+    <Lower>0</Lower>
+    <Unit>null</Unit>
+    <Value>0</Value>
+  </Blue>
+</Colorimeter>
