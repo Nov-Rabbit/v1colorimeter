@@ -74,3 +74,25 @@ C:\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.Featur
 C:\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FrmLogin.resources
 C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FrmLogin.resources
 C:\Users\Jackie\Desktop\v1colorimeter-dev\src\x2displaytest\bin\Release\LoginSys.xml
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\Colorimeter_Config_GUI.exe.config
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.exe
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.pdb
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\Colorimeter_Config_GUI.exe
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\Colorimeter_Config_GUI.pdb
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.dll
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Imaging.dll
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Math.dll
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\displaycorner.dll
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.xml
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Imaging.xml
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\AForge.Math.xml
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\bin\Release\LoginSys.xml
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.csprojResolveAssemblyReference.cache
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FeatureParam.resources
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.Form_Config.resources
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FrmLogin.resources
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FrmSetting.resources
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.Properties.Resources.resources
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.csproj.GenerateResource.Cache
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.CalibrationPanel.resources
+D:\X2 display test\v1colorimeter-dev\src\x2displaytest\obj\Release\Colorimeter_Config_GUI.FixturePanel.resources

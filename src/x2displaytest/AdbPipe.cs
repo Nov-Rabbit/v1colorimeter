@@ -128,6 +128,34 @@ namespace Colorimeter_Config_GUI
             return flag;
         }
 
+        public bool SetRGBValue(int r, int g, int b)
+        {
+            bool flag = false;
+            string result = null;
+
+            if (!isHasDUT)
+            {
+                this.ReadToEnd();
+                result = this.GetPipeData("adb devices");
+                Regex regex = new Regex(@"\d{8}");
+
+                if (!regex.IsMatch(result))
+                {
+                    Debug.WriteLine("Can't find device");
+                    return false;
+                }
+            }
+
+            result = this.GetPipeData(string.Format("adb shell mmi -c lcd -s {0:000}{1:000}{2:000}", r, g, b), 70000, "edited");
+
+            if (result.Contains("edited"))
+            {
+                flag = true;
+            }
+
+            return flag;
+        }
+
         public bool SetWhiteMode()
         {
             return this.SetMode("white");

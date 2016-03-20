@@ -11,13 +11,15 @@ namespace Colorimeter_Config_GUI
 {
     public partial class FrmSetting : Form
     {
-        public FrmSetting(List<TestItem> allItems)
+        public FrmSetting(List<TestItem> allItems, Fixture fixture)
         {
             InitializeComponent();
             this.allItems = allItems;
+            this.fixture = fixture;
         }
 
         private List<TestItem> allItems;
+        private Fixture fixture;
         private FeatureParam feature;
         private Button preSelectBtn;
 
@@ -77,6 +79,48 @@ namespace Colorimeter_Config_GUI
         private void FrmSetting_FormClosing(object sender, FormClosingEventArgs e)
         {
             //this.config.WriteProfile();
+        }
+
+        private void btnUp_Click(object sender, EventArgs e)
+        {
+            int step = (int)nudStep.Value;
+            fixture.MotorMove(-Math.Abs(step));
+        }
+
+        private void btnDown_Click(object sender, EventArgs e)
+        {
+            int step = (int)nudStep.Value;
+            fixture.MotorMove(Math.Abs(step));
+        }
+
+        private void btnHolderIn_Click(object sender, EventArgs e)
+        {
+            fixture.HoldIn();
+        }
+
+        private void btnHolderOut_Click(object sender, EventArgs e)
+        {
+            fixture.HoldOut();
+        }
+
+        private void btnIntergeUp_Click(object sender, EventArgs e)
+        {
+            fixture.IntegratingSphereUp();
+        }
+
+        private void btnIntergeDown_Click(object sender, EventArgs e)
+        {
+            fixture.IntegratingSphereDown();
+        }
+
+        private void btnRotateOn_Click(object sender, EventArgs e)
+        {
+            fixture.RotateOn();
+        }
+
+        private void btnRotateOff_Click(object sender, EventArgs e)
+        {
+            fixture.RotateOff();
         }
     }
 }

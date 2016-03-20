@@ -30,5 +30,5 @@
     <CIE1931xyY.y TestName="CIE1931xyY.y" Upper="500" Lower="100" Unit="" />
     <CIE1931xyY.z TestName="CIE1931xyY.Y" Upper="5" Lower="0" Unit="" />
   </Blue>
-  <Calibration Value="12" />
+  <Calibration Value="8" />
 </Colorimeter>

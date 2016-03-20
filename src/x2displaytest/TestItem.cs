@@ -112,8 +112,6 @@ namespace Colorimeter_Config_GUI
 
             foreach (XmlNode nd in nodeList)
             {
-                int subIndex = 0;
-                TestItem testItem = allItems[index++];
                 XmlElement element = (XmlElement)nd;
 
                 if (!(element.Name.Equals("White") || element.Name.Equals("Black") || element.Name.Equals("Red")
@@ -121,6 +119,9 @@ namespace Colorimeter_Config_GUI
                 {
                     continue;
                 }
+
+                int subIndex = 0;
+                TestItem testItem = allItems[index++];
 
                 foreach (XmlNode subNode in element.ChildNodes)
                 {

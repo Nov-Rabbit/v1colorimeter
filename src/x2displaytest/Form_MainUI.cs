@@ -46,6 +46,8 @@ namespace Colorimeter_Config_GUI
         DUTclass.DUT dut = new DUTclass.Hodor();
         imagingpipeline ip = new imagingpipeline();
 
+        private float calibExposure;
+
 
 
         //private FlyCapture2Managed.Gui.CameraControlDialog m_camCtlDlg;
@@ -95,10 +97,6 @@ namespace Colorimeter_Config_GUI
         public Form_Config()
         {
             InitializeComponent();
-            //m_rawImage = new ManagedImage();
-            //m_processedImage = new ManagedImage();
-            //m_camCtlDlg = new CameraControlDialog();
-            //m_grabThreadExited = new AutoResetEvent(false);
             Form.CheckForIllegalCrossThreadCalls = false;
         }
 
@@ -115,6 +113,7 @@ namespace Colorimeter_Config_GUI
                         sslStatus.Text = ca310Pipe.ErrorMessage;
                     }
                     else {
+                        MessageBox.Show("Please switch the Ca310 to init.");
                         sslStatus.Text = "Ca310 has Connected.";
                         ca310Pipe.ResetZero();
                     }
@@ -129,9 +128,14 @@ namespace Colorimeter_Config_GUI
             #endregion
 
             do {
+                fixture.CheckDoubleStart();
+                fixture.HoldIn();
+
                 while (!dut.checkDUT()) {
                     sslStatus.Text = "Wait DUT.";
                     Thread.Sleep(100);
+
+                    if (m_flagExit) { break; }
                 }
 
                 log.WriteUartLog(string.Format("DUT connected, DeviceID: {0}\r\n", dut.DeviceID));
@@ -140,20 +144,17 @@ namespace Colorimeter_Config_GUI
                 sslStatus.Text = "Please type in 16 digit SN";
                 Thread.Sleep(500);
 
-                while (!checksnformat())
+                while (serialNumber == "")
                 {
                     sslStatus.Text = "Wait type SN";
                 }
                 log.SerialNumber = tbox_sn.Text;
                 log.WriteUartLog(string.Format("Serial number: {0}\r\n", tbox_sn.Text));
 
-                if (!checkshopfloor())
-                {
+                if (!checkshopfloor()) {
                     sslStatus.Text = "Shopfloor system is not working";
-                    //MessageBox.Show("Shopfloor system is not working");
                 }
-                else
-                {
+                else {
                     log.WriteUartLog("Shopfloor has connected.\r\n");
                     btn_start.Enabled = false;
                     btn_start.BackColor = Color.LightBlue;
@@ -161,6 +162,9 @@ namespace Colorimeter_Config_GUI
                     this.RunTest();
                 }
                 serialNumber = "";
+                fixture.IntegratingSphereDown();
+                fixture.RotateOff();
+                fixture.HoldOut();
             }
             while (!m_flagExit);           
         }
@@ -207,8 +211,8 @@ namespace Colorimeter_Config_GUI
                         Thread.Sleep(3000);
                         m_colorimeter.ExposureTime = testItem.Exposure;
                         Bitmap bitmap = m_colorimeter.GrabImage();
-                        //pf &= this.DisplayTest(displaycornerPoints, bitmap, (ColorPanel)Enum.Parse(typeof(ColorPanel), testItem.TestName));
-                        this.Invoke(new Action<Bitmap, PictureBox>(this.refreshtestimage), bitmap, picturebox_test);
+                        pf &= this.DisplayTest(displaycornerPoints, bitmap, (ColorPanel)Enum.Parse(typeof(ColorPanel), testItem.TestName));
+                        //this.Invoke(new Action<Bitmap, PictureBox>(this.refreshtestimage), bitmap, picturebox_test);
                     }
                     else {
                         string str = string.Format("Can't set panel color to {0}\r\n", testItem.TestName);
@@ -248,6 +252,8 @@ namespace Colorimeter_Config_GUI
                         sslStatus.Text = "Please take out DUT.";
                     }));                    
                     Thread.Sleep(100);
+
+                    if (m_flagExit) { break; }
                 }
 
                 tbox_dut_connect.Text = "TBD";
@@ -345,7 +351,7 @@ namespace Colorimeter_Config_GUI
 
             xml = new XMLManage("XMLFile1.xml");
             xml.LoadScript();
-            fixture = new Fixture("COM1");            
+            fixture = new Fixture("COM21");            
 
             if (!isdemomode)
             {
@@ -358,7 +364,8 @@ namespace Colorimeter_Config_GUI
                     return;
                 }
                 new Action(delegate() {
-                    while (!m_flagExit) {
+            //        fixture.Reset();
+                    while (true) {
                         UpdateCCDTemperature();
                         UpdateUpTime();
                         UpdateStatusBar();
@@ -384,7 +391,7 @@ namespace Colorimeter_Config_GUI
             if (DialogResult.OK == login.ShowDialog())
             {
                 login.Close();
-                FrmSetting setDlg = new FrmSetting(xml.Items);
+                FrmSetting setDlg = new FrmSetting(xml.Items, fixture);
                 setDlg.ShowDialog();
                 xml.SaveScript();
             }
@@ -400,10 +407,15 @@ namespace Colorimeter_Config_GUI
                 if (tabControl.SelectedTab == tabControl.TabPages[0])
                 {
                     m_preTabPage = tabControl.SelectedTab;
+                    m_flagExit = false;
                 }
                 else
                 {
                     rbtn_manual.Checked = true;
+                    m_flagExit = true;
+
+                    if (m_process != null)
+                        m_process.Abort();
 
                     FrmLogin login = new FrmLogin();
 
@@ -422,6 +434,7 @@ namespace Colorimeter_Config_GUI
         // mode choice
         private void TestMode_Changed(object sender, EventArgs e)
         {
+            //fixture.Reset();
             RadioButton mode = sender as RadioButton;
 
             if (mode.Checked && mode.Text == "Manual")
@@ -437,6 +450,7 @@ namespace Colorimeter_Config_GUI
             {
                 m_flagCa310Mode = false;
                 m_flagAutoMode = true;
+                m_flagExit = false;
                 sslMode.Text = "Automatic mode";
                 btn_start.Hide();
 
@@ -455,6 +469,7 @@ namespace Colorimeter_Config_GUI
             {
                 m_flagCa310Mode = true;
                 m_flagAutoMode = false;
+                m_flagExit = false;
 
                 sslMode.Text = "Ca-310 mode";
                 btn_start.Hide();
@@ -471,15 +486,6 @@ namespace Colorimeter_Config_GUI
                 m_process.Start();
             }
         }
-
-        //private void UpdateUI(object sender, ProgressChangedEventArgs e)
-        //{
-        //    if (!istestimagelock)
-        //    {
-        //        picturebox_test.Image = m_processedImage.bitmap;
-        //        picturebox_test.Invalidate();
-        //    }
-        //}
 
         private void UpdateStatusBar()
         {
@@ -650,6 +656,16 @@ namespace Colorimeter_Config_GUI
             picturebox_test.Refresh();
         }
 
+        private void tbox_sn_TextChanged(object sender, EventArgs e)
+        {
+            if (tbox_sn.Text.Length == 16) //fake condition. More input is needed from Square
+            {
+                tbox_sn.SelectAll();
+                tbox_sn.Focus();
+                serialNumber = tbox_sn.Text;
+            }
+        }
+
         // test prerequisite
         private bool checksnformat()
         {
@@ -669,20 +685,25 @@ namespace Colorimeter_Config_GUI
 
         private bool checkshopfloor()
         {
-            bool flag = true;
+            bool flag = false;
             int sfcHandle = 1;
             const uint port = 1;
+            DateTime timeNow = DateTime.Now;
 
-            SFC.SFCInit();
-            //sfcHandle = SFC.ReportStatus(tbox_sn.Text, port);
+            do {
+                // do something to check shopfloor
+                SFC.SFCInit();
+                //sfcHandle = SFC.ReportStatus(tbox_sn.Text, port);
+                flag = (sfcHandle == 1) ? true : false;
+                flag = true;
+            }
+            while (DateTime.Now.Subtract(timeNow).TotalMilliseconds < 5000);
 
-            if (sfcHandle == 1)
-            {
+            if (flag) {
                 tbox_shopfloor.Text = "OK";
                 tbox_shopfloor.BackColor = Color.Green;
             }
-            else
-            {
+            else {
                 tbox_shopfloor.Text = "NG";
                 tbox_shopfloor.BackColor = Color.Red;
             }
@@ -713,35 +734,39 @@ namespace Colorimeter_Config_GUI
         private void btn_start_Click(object sender, EventArgs e)
         {
             tbox_pf.Visible = false;
+            m_flagCa310Mode = false;
+            m_flagExit = true;
 
-            if (!dut.checkDUT())
-            {
-                tbox_dut_connect.Text = "No DUT";
-                tbox_dut_connect.BackColor = Color.Red;
-                MessageBox.Show("Please insert DUT");
-            }
-            else if (string.IsNullOrEmpty(tbox_sn.Text))
-            {
-                MessageBox.Show("Please type SN");
-            }
-            else if (!checksnformat())
-            {
-                MessageBox.Show("SN format is wrong");
-            }
-            else if (!checkshopfloor())
-            {
-                MessageBox.Show("Shopfloor system is not working");
-            }
-            else
-            {
-                tbox_dut_connect.Text = "DUT connected";
-                tbox_dut_connect.BackColor = Color.Green;
+            new Action(delegate() { this.RunSequence(); }).BeginInvoke(null, null);
 
-                btn_start.Enabled = false;
-                btn_start.BackColor = Color.LightBlue;
+            //if (!dut.checkDUT())
+            //{
+            //    tbox_dut_connect.Text = "No DUT";
+            //    tbox_dut_connect.BackColor = Color.Red;
+            //    MessageBox.Show("Please insert DUT");
+            //}
+            //else if (string.IsNullOrEmpty(tbox_sn.Text))
+            //{
+            //    MessageBox.Show("Please type SN");
+            //}
+            //else if (!checksnformat())
+            //{
+            //    MessageBox.Show("SN format is wrong");
+            //}
+            //else if (!checkshopfloor())
+            //{
+            //    MessageBox.Show("Shopfloor system is not working");
+            //}
+            //else
+            //{
+            //    tbox_dut_connect.Text = "DUT connected";
+            //    tbox_dut_connect.BackColor = Color.Green;
 
-                this.RunTest();
-            }
+            //    btn_start.Enabled = false;
+            //    btn_start.BackColor = Color.LightBlue;
+
+            //    this.RunTest();
+            //}
         }
 
         private void DrawZone(Bitmap binImage, ColorPanel panel)
@@ -1179,73 +1204,54 @@ namespace Colorimeter_Config_GUI
 
         private void Btn_Lv_Click(object sender, EventArgs e)
         {
-            btn_focus.Enabled = Btn_Size.Enabled = Btn_Lv.Enabled = Btn_FF.Enabled = false;
-            Btn_Color.Enabled = true;
-            new Action(delegate() { LvCalibration(); }).BeginInvoke(null, null);
-        }
+            lbCalibration.Text = "Luminance calibration...";
+            btn_focus.Enabled = Btn_Size.Enabled = Btn_Lv.Enabled = Btn_FF.Enabled = Btn_Color.Enabled = false;
 
-        private void LvCalibration()
-        {
-            try
-            {
-                fixture.IntegratingSphereUp();
-                Thread.Sleep(1000);
-                fixture.RotateOn();
-                Thread.Sleep(1000);
-                CIE1931Value value = ca310Pipe.GetCa310Data();
-                fixture.RotateOff();
-                Thread.Sleep(1000);
-
-                for (int i = 0; i < 10; i++)
-                {
-                    m_colorimeter.ExposureTime = 10 * (i + 1);
-                    Bitmap bitmap = m_colorimeter.GrabImage();
-                    double[] rgbMean = this.Mean(ip.bmp2rgb(bitmap));
-
-                    if (Math.Abs(rgbMean[0] - 220) < 3
-                        && Math.Abs(rgbMean[1] - 220) < 3
-                        && Math.Abs(rgbMean[2] - 220) < 3)
-                    {
-                        xml.SetWhiteExposure(m_colorimeter.ExposureTime);
-                        break;
-                    }
-                }
-
-                fixture.IntegratingSphereDown();
-                Thread.Sleep(1000);
-            }
-            catch (Exception ex) {
-                MessageBox.Show(ex.Message);
-            }
-            finally {
+            new Action(delegate() {
+                LuminanceCalibration lv = new LuminanceCalibration(ca310Pipe, fixture, m_colorimeter);
+                lv.Calibration();
+                calibExposure = lv.OptimalExposure;
                 this.Invoke(new Action(delegate(){
-                    btn_focus.Enabled = Btn_Size.Enabled = Btn_Lv.Enabled = Btn_Color.Enabled = false;
-                    Btn_FF.Enabled = true;
+                    btn_focus.Enabled = Btn_Size.Enabled = Btn_Lv.Enabled = Btn_FF.Enabled = false;
+                    Btn_Color.Enabled = true;
+                    lbCalibration.Text = "Luminance calibration finish.";
                 }));
-            }
+            }).BeginInvoke(null, null);
         }
 
-        private double[] Mean(double[, ,] color)
+        private void Btn_Color_Click(object sender, EventArgs e)
         {
-            double[] v = new double[3];
-            int count = v.GetLength(0) * v.GetLength(1);
+            lbCalibration.Text = "Color calibration...";
+            btn_focus.Enabled = Btn_Size.Enabled = Btn_Lv.Enabled = Btn_Color.Enabled = Btn_FF.Enabled = false;
 
-            for (int i = 0; i < v.GetLength(0); i++)
-            {
-                for (int j = 0; j < v.GetLength(1); j++)
-                {
-                    v[0] += color[i, j, 0];
-                    v[1] += color[i, j, 1];
-                    v[2] += color[i, j, 2];
-                }
-            }
-
-            v[0] /= count;
-            v[1] /= count;
-            v[2] /= count;
-
-            return v;
+            new Action(delegate() {
+                ICalibration clrCalibration = new ColorCalibration(dut, ca310Pipe, fixture, m_colorimeter);
+                clrCalibration.SerialNumber = serialNumber;
+                clrCalibration.Calibration(calibExposure);
+                this.Invoke(new Action(delegate() {
+                    btn_focus.Enabled = Btn_Size.Enabled = Btn_Lv.Enabled = Btn_FF.Enabled = false;
+                    Btn_Color.Enabled = true;
+                    lbCalibration.Text = "Color calibration finish.";
+                }));
+            }).BeginInvoke(null, null);      
         }
+
+        private void Btn_FF_Click(object sender, EventArgs e)
+        {
+            lbCalibration.Text = "Flex calibration...";
+            Btn_FF.Enabled = Btn_Size.Enabled = Btn_Lv.Enabled = Btn_Color.Enabled = btn_focus.Enabled = false;
+
+            new Action(delegate() {
+                ICalibration flexCalib = new FlexCalibration(m_colorimeter);
+                flexCalib.SerialNumber = serialNumber;
+                flexCalib.Calibration(calibExposure);
+                this.Invoke(new Action(delegate() {
+                    btn_focus.Enabled = Btn_Size.Enabled = Btn_Lv.Enabled = Btn_FF.Enabled = false;
+                    Btn_Color.Enabled = true;
+                    lbCalibration.Text = "Flex calibration finish.";
+                }));
+            }).BeginInvoke(null, null);
+        } 
     }   
 }
 

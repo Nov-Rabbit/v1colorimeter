@@ -30,6 +30,20 @@ namespace Colorimeter_Config_GUI
             }
         }
 
+        public enum Ca310TesMode
+        {
+            DSP_LXY = 0,
+            DSP_DUV = 1,
+            DSP_ANL = 2,
+            DSP_ANLG = 3,
+            DSP_ANLR = 4,
+            DSP_PUV = 5,
+            DSP_FMA = 6,
+            DSP_XYZC = 7,
+            DSP_JEITA = 8,
+            DSP_XYZ = 9,
+        }
+
         private Process process;
         private NamedPipeClientStream pipeClient;
         private StreamReader sr;
@@ -110,6 +124,24 @@ namespace Colorimeter_Config_GUI
             }
 
             return CIE1931xyY;
+        }
+
+        public bool ChangeMode(Ca310TesMode mode)
+        {
+            bool flag = true;
+            string str;
+
+            sw.WriteLine("chgmode");
+            sr.ReadLine();
+            Console.WriteLine(mode.ToString());
+            sw.WriteLine(mode.ToString());
+
+            if ((str = sr.ReadLine()) != "OK") {
+                errorInfo = str;
+                flag = false;
+            }
+
+            return flag;
         }
 
         public void Disconnect()

@@ -52,6 +52,7 @@ namespace Colorimeter_Config_GUI
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.Tab_Config = new System.Windows.Forms.TabPage();
+            this.lbCalibration = new System.Windows.Forms.Label();
             this.lbMM = new System.Windows.Forms.Label();
             this.tbSizeCal = new System.Windows.Forms.TextBox();
             this.lbTips = new System.Windows.Forms.Label();
@@ -183,7 +184,7 @@ namespace Colorimeter_Config_GUI
             this.tsbtnSetting});
             this.toolStrip1.Location = new System.Drawing.Point(0, 29);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(1);
             this.toolStrip1.Size = new System.Drawing.Size(1232, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
@@ -373,6 +374,7 @@ namespace Colorimeter_Config_GUI
             // 
             // Tab_Config
             // 
+            this.Tab_Config.Controls.Add(this.lbCalibration);
             this.Tab_Config.Controls.Add(this.lbMM);
             this.Tab_Config.Controls.Add(this.tbSizeCal);
             this.Tab_Config.Controls.Add(this.lbTips);
@@ -384,13 +386,20 @@ namespace Colorimeter_Config_GUI
             this.Tab_Config.Controls.Add(this.picturebox_config);
             this.Tab_Config.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Tab_Config.Location = new System.Drawing.Point(4, 29);
-            this.Tab_Config.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tab_Config.Margin = new System.Windows.Forms.Padding(2);
             this.Tab_Config.Name = "Tab_Config";
-            this.Tab_Config.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tab_Config.Padding = new System.Windows.Forms.Padding(2);
             this.Tab_Config.Size = new System.Drawing.Size(1207, 644);
             this.Tab_Config.TabIndex = 0;
             this.Tab_Config.Text = "Configuration";
             this.Tab_Config.UseVisualStyleBackColor = true;
+            // 
+            // lbCalibration
+            // 
+            this.lbCalibration.Location = new System.Drawing.Point(732, 606);
+            this.lbCalibration.Name = "lbCalibration";
+            this.lbCalibration.Size = new System.Drawing.Size(446, 20);
+            this.lbCalibration.TabIndex = 19;
             // 
             // lbMM
             // 
@@ -466,7 +475,7 @@ namespace Colorimeter_Config_GUI
             this.panel2.Controls.Add(this.Btn_Color);
             this.panel2.Controls.Add(this.Btn_Lv);
             this.panel2.Location = new System.Drawing.Point(737, 31);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(219, 343);
             this.panel2.TabIndex = 9;
@@ -503,6 +512,7 @@ namespace Colorimeter_Config_GUI
             this.Btn_FF.TabIndex = 9;
             this.Btn_FF.Text = "Flat Field Calibration";
             this.Btn_FF.UseVisualStyleBackColor = true;
+            this.Btn_FF.Click += new System.EventHandler(this.Btn_FF_Click);
             // 
             // Btn_Color
             // 
@@ -513,6 +523,7 @@ namespace Colorimeter_Config_GUI
             this.Btn_Color.TabIndex = 8;
             this.Btn_Color.Text = "Color Calibration";
             this.Btn_Color.UseVisualStyleBackColor = true;
+            this.Btn_Color.Click += new System.EventHandler(this.Btn_Color_Click);
             // 
             // Btn_Lv
             // 
@@ -538,7 +549,7 @@ namespace Colorimeter_Config_GUI
             // picturebox_config
             // 
             this.picturebox_config.Location = new System.Drawing.Point(18, 21);
-            this.picturebox_config.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.picturebox_config.Margin = new System.Windows.Forms.Padding(2);
             this.picturebox_config.Name = "picturebox_config";
             this.picturebox_config.Size = new System.Drawing.Size(672, 605);
             this.picturebox_config.TabIndex = 15;
@@ -553,9 +564,9 @@ namespace Colorimeter_Config_GUI
             this.Tab_Audit.Controls.Add(this.label12);
             this.Tab_Audit.Controls.Add(this.picturebox_audit);
             this.Tab_Audit.Location = new System.Drawing.Point(4, 29);
-            this.Tab_Audit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tab_Audit.Margin = new System.Windows.Forms.Padding(2);
             this.Tab_Audit.Name = "Tab_Audit";
-            this.Tab_Audit.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tab_Audit.Padding = new System.Windows.Forms.Padding(2);
             this.Tab_Audit.Size = new System.Drawing.Size(1207, 644);
             this.Tab_Audit.TabIndex = 2;
             this.Tab_Audit.Text = "Audit";
@@ -565,7 +576,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_audit_result.Font = new System.Drawing.Font("Microsoft Sans Serif", 72F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_audit_result.Location = new System.Drawing.Point(67, 397);
-            this.tbox_audit_result.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_audit_result.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_audit_result.Name = "tbox_audit_result";
             this.tbox_audit_result.Size = new System.Drawing.Size(198, 116);
             this.tbox_audit_result.TabIndex = 15;
@@ -590,7 +601,7 @@ namespace Colorimeter_Config_GUI
             this.Panel_Audit.Controls.Add(this.button3);
             this.Panel_Audit.Controls.Add(this.button1);
             this.Panel_Audit.Location = new System.Drawing.Point(17, 36);
-            this.Panel_Audit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Panel_Audit.Margin = new System.Windows.Forms.Padding(2);
             this.Panel_Audit.Name = "Panel_Audit";
             this.Panel_Audit.Size = new System.Drawing.Size(290, 329);
             this.Panel_Audit.TabIndex = 8;
@@ -598,7 +609,7 @@ namespace Colorimeter_Config_GUI
             // textBox8
             // 
             this.textBox8.Location = new System.Drawing.Point(203, 58);
-            this.textBox8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox8.Margin = new System.Windows.Forms.Padding(2);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(45, 26);
             this.textBox8.TabIndex = 5;
@@ -606,7 +617,7 @@ namespace Colorimeter_Config_GUI
             // textBox7
             // 
             this.textBox7.Location = new System.Drawing.Point(128, 58);
-            this.textBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox7.Margin = new System.Windows.Forms.Padding(2);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(45, 26);
             this.textBox7.TabIndex = 4;
@@ -614,7 +625,7 @@ namespace Colorimeter_Config_GUI
             // textBox6
             // 
             this.textBox6.Location = new System.Drawing.Point(54, 58);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox6.Margin = new System.Windows.Forms.Padding(2);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(45, 26);
             this.textBox6.TabIndex = 3;
@@ -622,7 +633,7 @@ namespace Colorimeter_Config_GUI
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(51, 290);
-            this.button3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(204, 31);
             this.button3.TabIndex = 2;
@@ -632,7 +643,7 @@ namespace Colorimeter_Config_GUI
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(51, 12);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(204, 31);
             this.button1.TabIndex = 0;
@@ -697,9 +708,9 @@ namespace Colorimeter_Config_GUI
             this.Tab_Test.Controls.Add(this.label4);
             this.Tab_Test.Controls.Add(this.picturebox_test);
             this.Tab_Test.Location = new System.Drawing.Point(4, 29);
-            this.Tab_Test.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tab_Test.Margin = new System.Windows.Forms.Padding(2);
             this.Tab_Test.Name = "Tab_Test";
-            this.Tab_Test.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Tab_Test.Padding = new System.Windows.Forms.Padding(2);
             this.Tab_Test.Size = new System.Drawing.Size(1207, 644);
             this.Tab_Test.TabIndex = 1;
             this.Tab_Test.Text = "Test";
@@ -709,7 +720,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_blackmura.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_blackmura.Location = new System.Drawing.Point(184, 456);
-            this.tbox_blackmura.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_blackmura.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_blackmura.Name = "tbox_blackmura";
             this.tbox_blackmura.Size = new System.Drawing.Size(156, 23);
             this.tbox_blackmura.TabIndex = 43;
@@ -718,7 +729,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_whitemura.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_whitemura.Location = new System.Drawing.Point(184, 381);
-            this.tbox_whitemura.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_whitemura.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_whitemura.Name = "tbox_whitemura";
             this.tbox_whitemura.Size = new System.Drawing.Size(156, 23);
             this.tbox_whitemura.TabIndex = 42;
@@ -727,7 +738,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_gamut.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_gamut.Location = new System.Drawing.Point(184, 555);
-            this.tbox_gamut.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_gamut.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_gamut.Name = "tbox_gamut";
             this.tbox_gamut.Size = new System.Drawing.Size(156, 23);
             this.tbox_gamut.TabIndex = 41;
@@ -736,7 +747,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_blue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_blue.Location = new System.Drawing.Point(184, 532);
-            this.tbox_blue.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_blue.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_blue.Name = "tbox_blue";
             this.tbox_blue.Size = new System.Drawing.Size(156, 23);
             this.tbox_blue.TabIndex = 40;
@@ -745,7 +756,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_green.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_green.Location = new System.Drawing.Point(184, 509);
-            this.tbox_green.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_green.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_green.Name = "tbox_green";
             this.tbox_green.Size = new System.Drawing.Size(156, 23);
             this.tbox_green.TabIndex = 39;
@@ -754,7 +765,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_red.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_red.Location = new System.Drawing.Point(184, 486);
-            this.tbox_red.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_red.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_red.Name = "tbox_red";
             this.tbox_red.Size = new System.Drawing.Size(156, 23);
             this.tbox_red.TabIndex = 38;
@@ -763,7 +774,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_blackunif.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_blackunif.Location = new System.Drawing.Point(184, 433);
-            this.tbox_blackunif.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_blackunif.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_blackunif.Name = "tbox_blackunif";
             this.tbox_blackunif.Size = new System.Drawing.Size(156, 23);
             this.tbox_blackunif.TabIndex = 37;
@@ -772,7 +783,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_blacklv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_blacklv.Location = new System.Drawing.Point(184, 410);
-            this.tbox_blacklv.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_blacklv.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_blacklv.Name = "tbox_blacklv";
             this.tbox_blacklv.Size = new System.Drawing.Size(156, 23);
             this.tbox_blacklv.TabIndex = 36;
@@ -781,7 +792,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_whiteunif.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_whiteunif.Location = new System.Drawing.Point(184, 358);
-            this.tbox_whiteunif.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_whiteunif.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_whiteunif.Name = "tbox_whiteunif";
             this.tbox_whiteunif.Size = new System.Drawing.Size(156, 23);
             this.tbox_whiteunif.TabIndex = 35;
@@ -790,7 +801,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_whitelv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_whitelv.Location = new System.Drawing.Point(184, 335);
-            this.tbox_whitelv.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_whitelv.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_whitelv.Name = "tbox_whitelv";
             this.tbox_whitelv.Size = new System.Drawing.Size(156, 23);
             this.tbox_whitelv.TabIndex = 34;
@@ -799,7 +810,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(16, 555);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(122, 24);
             this.checkBox1.TabIndex = 33;
@@ -810,7 +821,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.cbox_blue.AutoSize = true;
             this.cbox_blue.Location = new System.Drawing.Point(16, 532);
-            this.cbox_blue.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_blue.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_blue.Name = "cbox_blue";
             this.cbox_blue.Size = new System.Drawing.Size(156, 24);
             this.cbox_blue.TabIndex = 32;
@@ -821,7 +832,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.cbox_green.AutoSize = true;
             this.cbox_green.Location = new System.Drawing.Point(16, 510);
-            this.cbox_green.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_green.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_green.Name = "cbox_green";
             this.cbox_green.Size = new System.Drawing.Size(169, 24);
             this.cbox_green.TabIndex = 31;
@@ -832,7 +843,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.cbox_red.AutoSize = true;
             this.cbox_red.Location = new System.Drawing.Point(16, 485);
-            this.cbox_red.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_red.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_red.Name = "cbox_red";
             this.cbox_red.Size = new System.Drawing.Size(154, 24);
             this.cbox_red.TabIndex = 30;
@@ -843,7 +854,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.cbox_black_mura.AutoSize = true;
             this.cbox_black_mura.Location = new System.Drawing.Point(16, 455);
-            this.cbox_black_mura.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_black_mura.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_black_mura.Name = "cbox_black_mura";
             this.cbox_black_mura.Size = new System.Drawing.Size(107, 24);
             this.cbox_black_mura.TabIndex = 29;
@@ -854,7 +865,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.cbox_black_uniformity.AutoSize = true;
             this.cbox_black_uniformity.Location = new System.Drawing.Point(16, 434);
-            this.cbox_black_uniformity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_black_uniformity.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_black_uniformity.Name = "cbox_black_uniformity";
             this.cbox_black_uniformity.Size = new System.Drawing.Size(142, 24);
             this.cbox_black_uniformity.TabIndex = 28;
@@ -865,7 +876,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.cbox_black_lv.AutoSize = true;
             this.cbox_black_lv.Location = new System.Drawing.Point(16, 409);
-            this.cbox_black_lv.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_black_lv.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_black_lv.Name = "cbox_black_lv";
             this.cbox_black_lv.Size = new System.Drawing.Size(149, 24);
             this.cbox_black_lv.TabIndex = 27;
@@ -876,7 +887,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.cbox_white_mura.AutoSize = true;
             this.cbox_white_mura.Location = new System.Drawing.Point(16, 380);
-            this.cbox_white_mura.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_white_mura.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_white_mura.Name = "cbox_white_mura";
             this.cbox_white_mura.Size = new System.Drawing.Size(109, 24);
             this.cbox_white_mura.TabIndex = 26;
@@ -887,7 +898,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.cbox_white_uniformity.AutoSize = true;
             this.cbox_white_uniformity.Location = new System.Drawing.Point(16, 359);
-            this.cbox_white_uniformity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_white_uniformity.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_white_uniformity.Name = "cbox_white_uniformity";
             this.cbox_white_uniformity.Size = new System.Drawing.Size(144, 24);
             this.cbox_white_uniformity.TabIndex = 25;
@@ -898,7 +909,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.cbox_white_lv.AutoSize = true;
             this.cbox_white_lv.Location = new System.Drawing.Point(16, 335);
-            this.cbox_white_lv.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_white_lv.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_white_lv.Name = "cbox_white_lv";
             this.cbox_white_lv.Size = new System.Drawing.Size(151, 24);
             this.cbox_white_lv.TabIndex = 24;
@@ -956,10 +967,11 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_sn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_sn.Location = new System.Drawing.Point(594, 604);
-            this.tbox_sn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_sn.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_sn.Name = "tbox_sn";
             this.tbox_sn.Size = new System.Drawing.Size(195, 29);
             this.tbox_sn.TabIndex = 13;
+            this.tbox_sn.TextChanged += new System.EventHandler(this.tbox_sn_TextChanged);
             // 
             // panel7
             // 
@@ -967,7 +979,7 @@ namespace Colorimeter_Config_GUI
             this.panel7.Controls.Add(this.rbtn_auto);
             this.panel7.Controls.Add(this.rbtn_manual);
             this.panel7.Location = new System.Drawing.Point(9, 244);
-            this.panel7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel7.Margin = new System.Windows.Forms.Padding(2);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(331, 63);
             this.panel7.TabIndex = 18;
@@ -988,7 +1000,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.rbtn_auto.AutoSize = true;
             this.rbtn_auto.Location = new System.Drawing.Point(100, 20);
-            this.rbtn_auto.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbtn_auto.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_auto.Name = "rbtn_auto";
             this.rbtn_auto.Size = new System.Drawing.Size(99, 24);
             this.rbtn_auto.TabIndex = 1;
@@ -1001,7 +1013,7 @@ namespace Colorimeter_Config_GUI
             this.rbtn_manual.AutoSize = true;
             this.rbtn_manual.Checked = true;
             this.rbtn_manual.Location = new System.Drawing.Point(15, 20);
-            this.rbtn_manual.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbtn_manual.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_manual.Name = "rbtn_manual";
             this.rbtn_manual.Size = new System.Drawing.Size(79, 24);
             this.rbtn_manual.TabIndex = 0;
@@ -1013,7 +1025,7 @@ namespace Colorimeter_Config_GUI
             // tbox_errorcode
             // 
             this.tbox_errorcode.Location = new System.Drawing.Point(260, 607);
-            this.tbox_errorcode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_errorcode.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_errorcode.Name = "tbox_errorcode";
             this.tbox_errorcode.ReadOnly = true;
             this.tbox_errorcode.Size = new System.Drawing.Size(59, 26);
@@ -1024,7 +1036,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_pf.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbox_pf.Location = new System.Drawing.Point(75, 591);
-            this.tbox_pf.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_pf.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_pf.Name = "tbox_pf";
             this.tbox_pf.ReadOnly = true;
             this.tbox_pf.Size = new System.Drawing.Size(163, 44);
@@ -1050,7 +1062,7 @@ namespace Colorimeter_Config_GUI
             this.panel4.Controls.Add(this.tbox_dut_connect);
             this.panel4.Controls.Add(this.label15);
             this.panel4.Location = new System.Drawing.Point(9, 136);
-            this.panel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel4.Margin = new System.Windows.Forms.Padding(2);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(331, 90);
             this.panel4.TabIndex = 11;
@@ -1059,7 +1071,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_shopfloor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.tbox_shopfloor.Location = new System.Drawing.Point(180, 44);
-            this.tbox_shopfloor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_shopfloor.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_shopfloor.Name = "tbox_shopfloor";
             this.tbox_shopfloor.ReadOnly = true;
             this.tbox_shopfloor.Size = new System.Drawing.Size(115, 26);
@@ -1081,7 +1093,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_dut_connect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.tbox_dut_connect.Location = new System.Drawing.Point(180, 19);
-            this.tbox_dut_connect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_dut_connect.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_dut_connect.Name = "tbox_dut_connect";
             this.tbox_dut_connect.ReadOnly = true;
             this.tbox_dut_connect.Size = new System.Drawing.Size(115, 26);
@@ -1121,7 +1133,7 @@ namespace Colorimeter_Config_GUI
             this.panel3.Controls.Add(this.tbox_ccdtemp);
             this.panel3.Controls.Add(this.label9);
             this.panel3.Location = new System.Drawing.Point(9, 25);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(331, 83);
             this.panel3.TabIndex = 10;
@@ -1130,7 +1142,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_colorimeterstatus.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.tbox_colorimeterstatus.Location = new System.Drawing.Point(180, 54);
-            this.tbox_colorimeterstatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_colorimeterstatus.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_colorimeterstatus.Name = "tbox_colorimeterstatus";
             this.tbox_colorimeterstatus.ReadOnly = true;
             this.tbox_colorimeterstatus.Size = new System.Drawing.Size(115, 26);
@@ -1162,7 +1174,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_uptime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.tbox_uptime.Location = new System.Drawing.Point(180, 28);
-            this.tbox_uptime.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_uptime.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_uptime.Name = "tbox_uptime";
             this.tbox_uptime.ReadOnly = true;
             this.tbox_uptime.Size = new System.Drawing.Size(115, 26);
@@ -1183,7 +1195,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.tbox_ccdtemp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.tbox_ccdtemp.Location = new System.Drawing.Point(180, 4);
-            this.tbox_ccdtemp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbox_ccdtemp.Margin = new System.Windows.Forms.Padding(2);
             this.tbox_ccdtemp.Name = "tbox_ccdtemp";
             this.tbox_ccdtemp.ReadOnly = true;
             this.tbox_ccdtemp.Size = new System.Drawing.Size(115, 26);
@@ -1204,7 +1216,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.btn_start.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_start.Location = new System.Drawing.Point(840, 602);
-            this.btn_start.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_start.Margin = new System.Windows.Forms.Padding(2);
             this.btn_start.Name = "btn_start";
             this.btn_start.Size = new System.Drawing.Size(103, 34);
             this.btn_start.TabIndex = 14;
@@ -1242,7 +1254,7 @@ namespace Colorimeter_Config_GUI
             this.Tabs.Controls.Add(this.tab_Analysis);
             this.Tabs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Tabs.Location = new System.Drawing.Point(0, 52);
-            this.Tabs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Tabs.Margin = new System.Windows.Forms.Padding(4);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
             this.Tabs.Size = new System.Drawing.Size(1215, 677);
@@ -1261,9 +1273,9 @@ namespace Colorimeter_Config_GUI
             this.tab_Analysis.Controls.Add(this.btn_load);
             this.tab_Analysis.Controls.Add(this.tableLayoutPanel1);
             this.tab_Analysis.Location = new System.Drawing.Point(4, 29);
-            this.tab_Analysis.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tab_Analysis.Margin = new System.Windows.Forms.Padding(2);
             this.tab_Analysis.Name = "tab_Analysis";
-            this.tab_Analysis.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tab_Analysis.Padding = new System.Windows.Forms.Padding(2);
             this.tab_Analysis.Size = new System.Drawing.Size(1207, 644);
             this.tab_Analysis.TabIndex = 3;
             this.tab_Analysis.Text = "Analysis";
@@ -1272,7 +1284,7 @@ namespace Colorimeter_Config_GUI
             // btn_savedata
             // 
             this.btn_savedata.Location = new System.Drawing.Point(771, 466);
-            this.btn_savedata.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_savedata.Margin = new System.Windows.Forms.Padding(2);
             this.btn_savedata.Name = "btn_savedata";
             this.btn_savedata.Size = new System.Drawing.Size(154, 43);
             this.btn_savedata.TabIndex = 14;
@@ -1286,9 +1298,9 @@ namespace Colorimeter_Config_GUI
             this.groupBox1.Controls.Add(this.cbox_image);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(963, 391);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(189, 128);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
@@ -1299,7 +1311,7 @@ namespace Colorimeter_Config_GUI
             this.cbox_data.AutoSize = true;
             this.cbox_data.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbox_data.Location = new System.Drawing.Point(15, 52);
-            this.cbox_data.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_data.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_data.Name = "cbox_data";
             this.cbox_data.Size = new System.Drawing.Size(63, 24);
             this.cbox_data.TabIndex = 1;
@@ -1311,7 +1323,7 @@ namespace Colorimeter_Config_GUI
             this.cbox_image.AutoSize = true;
             this.cbox_image.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbox_image.Location = new System.Drawing.Point(15, 26);
-            this.cbox_image.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbox_image.Margin = new System.Windows.Forms.Padding(2);
             this.cbox_image.Name = "cbox_image";
             this.cbox_image.Size = new System.Drawing.Size(73, 24);
             this.cbox_image.TabIndex = 0;
@@ -1328,9 +1340,9 @@ namespace Colorimeter_Config_GUI
             this.gbox_process.Controls.Add(this.rbtn_corner);
             this.gbox_process.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbox_process.Location = new System.Drawing.Point(269, 415);
-            this.gbox_process.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbox_process.Margin = new System.Windows.Forms.Padding(2);
             this.gbox_process.Name = "gbox_process";
-            this.gbox_process.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbox_process.Padding = new System.Windows.Forms.Padding(2);
             this.gbox_process.Size = new System.Drawing.Size(465, 128);
             this.gbox_process.TabIndex = 12;
             this.gbox_process.TabStop = false;
@@ -1341,7 +1353,7 @@ namespace Colorimeter_Config_GUI
             this.rbtn_5zone.AutoSize = true;
             this.rbtn_5zone.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtn_5zone.Location = new System.Drawing.Point(179, 49);
-            this.rbtn_5zone.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbtn_5zone.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_5zone.Name = "rbtn_5zone";
             this.rbtn_5zone.Size = new System.Drawing.Size(128, 24);
             this.rbtn_5zone.TabIndex = 5;
@@ -1354,7 +1366,7 @@ namespace Colorimeter_Config_GUI
             this.rbtn_cropping.AutoSize = true;
             this.rbtn_cropping.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtn_cropping.Location = new System.Drawing.Point(179, 26);
-            this.rbtn_cropping.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbtn_cropping.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_cropping.Name = "rbtn_cropping";
             this.rbtn_cropping.Size = new System.Drawing.Size(99, 24);
             this.rbtn_cropping.TabIndex = 4;
@@ -1367,7 +1379,7 @@ namespace Colorimeter_Config_GUI
             this.rbtn_worstzone.AutoSize = true;
             this.rbtn_worstzone.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtn_worstzone.Location = new System.Drawing.Point(15, 98);
-            this.rbtn_worstzone.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbtn_worstzone.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_worstzone.Name = "rbtn_worstzone";
             this.rbtn_worstzone.Size = new System.Drawing.Size(120, 24);
             this.rbtn_worstzone.TabIndex = 3;
@@ -1380,7 +1392,7 @@ namespace Colorimeter_Config_GUI
             this.rbtn_16ptuniformity.AutoSize = true;
             this.rbtn_16ptuniformity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtn_16ptuniformity.Location = new System.Drawing.Point(15, 74);
-            this.rbtn_16ptuniformity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbtn_16ptuniformity.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_16ptuniformity.Name = "rbtn_16ptuniformity";
             this.rbtn_16ptuniformity.Size = new System.Drawing.Size(155, 24);
             this.rbtn_16ptuniformity.TabIndex = 2;
@@ -1393,7 +1405,7 @@ namespace Colorimeter_Config_GUI
             this.rbtn_9ptuniformity.AutoSize = true;
             this.rbtn_9ptuniformity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtn_9ptuniformity.Location = new System.Drawing.Point(15, 51);
-            this.rbtn_9ptuniformity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbtn_9ptuniformity.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_9ptuniformity.Name = "rbtn_9ptuniformity";
             this.rbtn_9ptuniformity.Size = new System.Drawing.Size(145, 24);
             this.rbtn_9ptuniformity.TabIndex = 1;
@@ -1406,7 +1418,7 @@ namespace Colorimeter_Config_GUI
             this.rbtn_corner.AutoSize = true;
             this.rbtn_corner.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtn_corner.Location = new System.Drawing.Point(15, 26);
-            this.rbtn_corner.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbtn_corner.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_corner.Name = "rbtn_corner";
             this.rbtn_corner.Size = new System.Drawing.Size(167, 24);
             this.rbtn_corner.TabIndex = 0;
@@ -1417,7 +1429,7 @@ namespace Colorimeter_Config_GUI
             // btn_process
             // 
             this.btn_process.Location = new System.Drawing.Point(418, 553);
-            this.btn_process.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_process.Margin = new System.Windows.Forms.Padding(2);
             this.btn_process.Name = "btn_process";
             this.btn_process.Size = new System.Drawing.Size(118, 32);
             this.btn_process.TabIndex = 9;
@@ -1428,7 +1440,7 @@ namespace Colorimeter_Config_GUI
             // btn_save
             // 
             this.btn_save.Location = new System.Drawing.Point(807, 553);
-            this.btn_save.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_save.Margin = new System.Windows.Forms.Padding(2);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(126, 32);
             this.btn_save.TabIndex = 8;
@@ -1441,9 +1453,9 @@ namespace Colorimeter_Config_GUI
             this.gbox_sourcefile.Controls.Add(this.rbtn_loadfile);
             this.gbox_sourcefile.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbox_sourcefile.Location = new System.Drawing.Point(4, 409);
-            this.gbox_sourcefile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbox_sourcefile.Margin = new System.Windows.Forms.Padding(2);
             this.gbox_sourcefile.Name = "gbox_sourcefile";
-            this.gbox_sourcefile.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbox_sourcefile.Padding = new System.Windows.Forms.Padding(2);
             this.gbox_sourcefile.Size = new System.Drawing.Size(249, 128);
             this.gbox_sourcefile.TabIndex = 6;
             this.gbox_sourcefile.TabStop = false;
@@ -1454,7 +1466,7 @@ namespace Colorimeter_Config_GUI
             this.rbtn_colorimeter.AutoSize = true;
             this.rbtn_colorimeter.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtn_colorimeter.Location = new System.Drawing.Point(14, 29);
-            this.rbtn_colorimeter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbtn_colorimeter.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_colorimeter.Name = "rbtn_colorimeter";
             this.rbtn_colorimeter.Size = new System.Drawing.Size(157, 24);
             this.rbtn_colorimeter.TabIndex = 0;
@@ -1466,7 +1478,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.rbtn_loadfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbtn_loadfile.Location = new System.Drawing.Point(14, 45);
-            this.rbtn_loadfile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbtn_loadfile.Margin = new System.Windows.Forms.Padding(2);
             this.rbtn_loadfile.Name = "rbtn_loadfile";
             this.rbtn_loadfile.Size = new System.Drawing.Size(126, 44);
             this.rbtn_loadfile.TabIndex = 1;
@@ -1475,7 +1487,7 @@ namespace Colorimeter_Config_GUI
             // btn_load
             // 
             this.btn_load.Location = new System.Drawing.Point(46, 553);
-            this.btn_load.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_load.Margin = new System.Windows.Forms.Padding(2);
             this.btn_load.Name = "btn_load";
             this.btn_load.Size = new System.Drawing.Size(120, 32);
             this.btn_load.TabIndex = 2;
@@ -1491,7 +1503,7 @@ namespace Colorimeter_Config_GUI
             this.tableLayoutPanel1.Controls.Add(this.picturebox_raw, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.pictureBox_processed, 1, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(2, 4);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 86.39761F));
@@ -1504,7 +1516,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.picturebox_raw.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picturebox_raw.Location = new System.Drawing.Point(2, 2);
-            this.picturebox_raw.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.picturebox_raw.Margin = new System.Windows.Forms.Padding(2);
             this.picturebox_raw.Name = "picturebox_raw";
             this.picturebox_raw.Size = new System.Drawing.Size(467, 397);
             this.picturebox_raw.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1515,7 +1527,7 @@ namespace Colorimeter_Config_GUI
             // 
             this.pictureBox_processed.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox_processed.Location = new System.Drawing.Point(473, 2);
-            this.pictureBox_processed.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox_processed.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox_processed.Name = "pictureBox_processed";
             this.pictureBox_processed.Size = new System.Drawing.Size(468, 397);
             this.pictureBox_processed.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1536,6 +1548,7 @@ namespace Colorimeter_Config_GUI
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(628, 407);
             this.Name = "Form_Config";
             this.Text = "X2 Display Test";
@@ -1703,6 +1716,7 @@ namespace Colorimeter_Config_GUI
         private System.Windows.Forms.Label lbMM;
         private System.Windows.Forms.TextBox tbSizeCal;
         private System.Windows.Forms.Label lbTips;
+        private System.Windows.Forms.Label lbCalibration;
     }
 }
 
