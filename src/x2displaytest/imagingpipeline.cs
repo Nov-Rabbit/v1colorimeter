@@ -17,10 +17,11 @@ using AForge;
 using AForge.Imaging;
 using AForge.Math;
 using AForge.Math.Geometry;
+using FlyCapture2Managed;
 
-namespace Colorimeter_Config_GUI
+namespace X2DisplayTest
 {
-    class imagingpipeline
+    public class imagingpipeline
     {
         private List<IntPoint> flagPoints;
 
@@ -33,7 +34,6 @@ namespace Colorimeter_Config_GUI
             
             return des;
         }
-
 
         public void GetDisplayCornerfrombmp(Bitmap processbmp, out List<IntPoint> displaycornerPoints)
         {
@@ -63,8 +63,7 @@ namespace Colorimeter_Config_GUI
                         continue;
                     }
                     else
-                    {
-                        MessageBox.Show("Cannot Find the Display");
+                    {                        
                         flagPoints = null;
                         //                       picturebox_test.Image = m;
                         continue;
@@ -72,8 +71,115 @@ namespace Colorimeter_Config_GUI
                 }
 
             }
+
+            if (flagPoints == null)
+                MessageBox.Show("Cannot Find the Display");
+
             displaycornerPoints = flagPoints;
 
+        }
+
+        public void GetDisplayCorner(ManagedImage m_processedImage, out List<IntPoint> displaycornerPoints)
+        {
+            // get display corner position 
+            //Process Image to 1bpp to increase SNR 
+            Bitmap m_orig = m_processedImage.bitmap.Clone(new Rectangle(0, 0, m_processedImage.bitmap.Width, m_processedImage.bitmap.Height), System.Drawing.Imaging.PixelFormat.Format1bppIndexed);
+            // only support the 32bppArgb for Aforge Blob Counter
+            Bitmap processbmp = m_orig.Clone(new Rectangle(0, 0, m_orig.Width, m_orig.Height), System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            BlobCounter bbc = new BlobCounter();
+            bbc.FilterBlobs = true;
+            bbc.MinHeight = 5;
+            bbc.MinWidth = 5;
+
+            bbc.ProcessImage(processbmp);
+
+            Blob[] blobs = bbc.GetObjectsInformation();
+            SimpleShapeChecker shapeChecker = new SimpleShapeChecker();
+
+            foreach (var blob in blobs)
+            {
+                List<IntPoint> edgePoints = bbc.GetBlobsEdgePoints(blob);
+                List<IntPoint> cornerPoints;
+                int count = 0;
+
+                // use the shape checker to extract the corner points
+                if (shapeChecker.IsQuadrilateral(edgePoints, out cornerPoints))
+                {
+                    // only do things if the corners from a rectangle 
+                    if (shapeChecker.CheckPolygonSubType(cornerPoints) == PolygonSubType.Rectangle)
+                    {
+                        flagPoints = cornerPoints;
+                        continue;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cannot Find the Display");
+                        flagPoints = null;
+                        //                       picturebox_test.Image = m;
+                        count++;
+                        if (count < 3)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Cannot Find the Display for 3 times. Quit Program");
+                            Environment.ExitCode = -1;
+                            Application.Exit();
+
+
+                        }
+                    }
+                }
+
+            }
+            displaycornerPoints = flagPoints;
+
+        }
+
+        // get X/Y/Z
+        private double getweight(double[, ,] XYZ, int index)
+        {
+            if (index < 0) {
+                index = 0;
+            }
+            else if (index > 2) {
+                index = 2;
+            }
+
+            double sum = 0;
+            double mean = 0;
+            float w = XYZ.GetLength(0);
+            float h = XYZ.GetLength(1);
+
+            for (int r = 0; r < w; r++)
+            {
+                for (int c = 0; c < h; c++)
+                {
+                    sum += XYZ[r, c, index];
+                }
+
+            }
+            mean = sum / (w * h);
+            return mean;
+        }
+
+        // get xyY, return:x = xyY[0], y = xyY[1], Y = luminance
+        // 5 decimal places
+        public double[] getxyY(double[, ,] XYZ)
+        {
+            double[] xyY = new double[3];
+            double X = getweight(XYZ, 0);
+            double Y = getweight(XYZ, 1);
+            double Z = getweight(XYZ, 2);
+
+            double sum = X + Y + Z;
+            xyY[0] = Math.Round(X / sum, 5);
+            xyY[1] = Math.Round(Z / sum, 5);
+            xyY[2] = Y;
+
+            return xyY;
         }
 
         // get average Y from input XYZ matrix

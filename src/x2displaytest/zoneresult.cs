@@ -20,7 +20,7 @@ using System.Linq;
 using System.Text;
 using AForge; 
 
-namespace Colorimeter_Config_GUI
+namespace X2DisplayTest
 {
     class zoneresult
     {

@@ -1,0 +1,13 @@
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\corner\bin\Debug\corner.dll
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\corner\bin\Debug\corner.pdb
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\corner\obj\Debug\corner.dll
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\corner\obj\Debug\corner.pdb
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\corner\obj\Debug\corner.Properties.Resources.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\corner\obj\Debug\corner.csproj.GenerateResource.Cache
+E:\Project\v1colorimeter-jackie_32bit\corner\bin\Debug\corner.dll
+E:\Project\v1colorimeter-jackie_32bit\corner\bin\Debug\corner.pdb
+E:\Project\v1colorimeter-jackie_32bit\corner\obj\Debug\corner.csprojResolveAssemblyReference.cache
+E:\Project\v1colorimeter-jackie_32bit\corner\obj\Debug\corner.Properties.Resources.resources
+E:\Project\v1colorimeter-jackie_32bit\corner\obj\Debug\corner.csproj.GenerateResource.Cache
+E:\Project\v1colorimeter-jackie_32bit\corner\obj\Debug\corner.dll
+E:\Project\v1colorimeter-jackie_32bit\corner\obj\Debug\corner.pdb

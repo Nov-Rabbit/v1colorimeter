@@ -1,0 +1,96 @@
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\bin\Debug\X2DisplayTest.exe.config
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\bin\Debug\X2DisplayTest.exe
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\bin\Debug\X2DisplayTest.pdb
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\ResolveAssemblyReference.cache
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Interop.CA200SRVRLib.dll
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.csproj.ResolveComReference.cache
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.CalibrationPanel.resources
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.FeatureParam.resources
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.FixturePanel.resources
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.Form_Config.resources
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.FrmLogin.resources
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.FrmSetting.resources
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.ModeSwithDlg.resources
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.Properties.Resources.resources
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\GenerateResource.read.1.tlog
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\GenerateResource.write.1.tlog
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.exe
+D:\microtest\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.pdb
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\bin\Debug\X2DisplayTest.exe.config
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.csproj.ResolveComReference.cache
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.exe
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.pdb
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.CalibrationPanel.resources
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.FeatureParam.resources
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.FixturePanel.resources
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.Form_Config.resources
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.FrmLogin.resources
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.FrmSetting.resources
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.ModeSwithDlg.resources
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.Properties.Resources.resources
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\GenerateResource.read.1.tlog
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\bin\Debug\X2DisplayTest.exe
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\bin\Debug\X2DisplayTest.pdb
+C:\Users\Administrator\Desktop\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Interop.CA200SRVRLib.dll
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\bin\Debug\X2DisplayTest.exe.config
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Interop.CA200SRVRLib.dll
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.csproj.ResolveComReference.cache
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.exe
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.pdb
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\bin\Debug\X2DisplayTest.exe
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\bin\Debug\X2DisplayTest.pdb
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\ResolveAssemblyReference.cache
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.CalibrationPanel.resources
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.FeatureParam.resources
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.FixturePanel.resources
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.Form_Config.resources
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.FrmLogin.resources
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.FrmSetting.resources
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\Colorimeter_Config_GUI.ModeSwithDlg.resources
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\X2DisplayTest.Properties.Resources.resources
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\GenerateResource.read.1.tlog
+D:\4.5 X2ForX32OK\Project\X2DisplayTest\X2DisplayTest\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\bin\Debug\X2DisplayTest.exe.config
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\Interop.CA200SRVRLib.dll
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.csproj.ResolveComReference.cache
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.exe
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.pdb
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\bin\Debug\X2DisplayTest.exe
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\bin\Debug\X2DisplayTest.pdb
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.csprojResolveAssemblyReference.cache
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.Properties.Resources.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.csproj.GenerateResource.Cache
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.DCPower3005Panel.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.TestNodePanel.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.CalibrationPanel.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.FeaturePanel.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.FixturePanel.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.Form_Config.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.FrmLogin.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.FrmSetting.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.ModeSwithDlg.resources
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\bin\Debug\corner.dll
+C:\Users\Jackie\Desktop\v1colorimeter-jackie_32bit\X2DisplayTest\bin\Debug\corner.pdb
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\bin\Debug\X2DisplayTest.exe.config
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\Interop.CA200SRVRLib.dll
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.csproj.ResolveComReference.cache
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.exe
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.pdb
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\bin\Debug\X2DisplayTest.exe
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\bin\Debug\X2DisplayTest.pdb
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\bin\Debug\corner.dll
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\bin\Debug\corner.pdb
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.csprojResolveAssemblyReference.cache
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.CalibrationPanel.resources
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.DCPower3005Panel.resources
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.FeaturePanel.resources
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.FixturePanel.resources
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.Form_Config.resources
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.FrmLogin.resources
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.FrmSetting.resources
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.ModeSwithDlg.resources
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.Properties.Resources.resources
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.TestNodePanel.resources
+E:\Project\v1colorimeter-jackie_32bit\X2DisplayTest\obj\Debug\X2DisplayTest.csproj.GenerateResource.Cache
